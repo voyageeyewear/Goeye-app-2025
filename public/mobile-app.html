@@ -6,6 +6,10 @@
     <title>Eyejack Mobile App - Live Demo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -114,6 +118,1490 @@
         @keyframes pulse {
             0%, 100% { opacity: 0.9; }
             50% { opacity: 0.6; }
+        }
+
+        /* Authentication Modal Styles */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+            backdrop-filter: blur(5px);
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUpModal 0.3s ease-out;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .auth-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .auth-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .auth-body {
+            padding: 25px;
+        }
+
+        .auth-screen {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .auth-welcome {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-welcome p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .social-login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .google-btn {
+            color: #4285f4;
+        }
+
+        .google-btn:hover {
+            border-color: #4285f4;
+            background: #f8faff;
+        }
+
+        .facebook-btn {
+            color: #1877f2;
+        }
+
+        .facebook-btn:hover {
+            border-color: #1877f2;
+            background: #f0f7ff;
+        }
+
+        .apple-btn {
+            color: #000;
+        }
+
+        .apple-btn:hover {
+            border-color: #000;
+            background: #f9f9f9;
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .auth-divider span {
+            background: white;
+            padding: 0 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .phone-login-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .phone-login-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .phone-login h3 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 8px 0;
+        }
+
+        .phone-login p {
+            text-align: center;
+            color: #6b7280;
+            margin: 0 0 30px 0;
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .country-code {
+            width: 100px;
+            padding: 15px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .phone-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .auth-submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .auth-submit-btn:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        .auth-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px 0;
+            transition: color 0.2s;
+        }
+
+        .auth-back-btn:hover {
+            color: #374151;
+        }
+
+        .otp-verification h3 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 8px 0;
+        }
+
+        .otp-verification p {
+            text-align: center;
+            color: #6b7280;
+            margin: 0 0 30px 0;
+        }
+
+        .otp-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .otp-digit {
+            width: 45px;
+            height: 55px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .otp-digit:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .resend-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            transition: color 0.2s;
+        }
+
+        .resend-text {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .resend-btn:hover .resend-text {
+            text-decoration: underline;
+        }
+
+        .auth-loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-spinner-large {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        .auth-loading h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 10px 0;
+        }
+
+        .auth-loading p {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .btn-loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes slideUpModal {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Profile Drawer Styles */
+        .profile-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 21000;
+            backdrop-filter: blur(3px);
+        }
+
+        .profile-drawer.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .profile-drawer-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            overflow-y: auto;
+        }
+
+        .profile-drawer.active .profile-drawer-content {
+            transform: translateX(0);
+        }
+
+        .profile-header {
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .profile-back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .profile-back-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .profile-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .profile-body {
+            padding: 0;
+        }
+
+        .profile-section {
+            background: white;
+            margin-bottom: 12px;
+            padding: 20px;
+        }
+
+        .profile-section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 15px 0;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-phone-icon {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .account-phone {
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .birthday-section {
+            background: #fff4e6;
+            margin-bottom: 12px;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 0 20px 12px 20px;
+        }
+
+        .birthday-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .birthday-text h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .birthday-subtitle {
+            color: #059669;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .birthday-icon {
+            font-size: 32px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            padding: 0 20px;
+            margin-bottom: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+        }
+
+        .action-btn i {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .action-btn span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            text-align: center;
+        }
+
+        .update-notification {
+            background: #e0f2fe;
+            margin: 0 20px 12px 20px;
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .update-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .update-content i:first-child {
+            color: #0277bd;
+            font-size: 18px;
+        }
+
+        .update-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .update-version {
+            color: #0277bd;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .update-content i:last-child {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .appearance-setting {
+            background: white;
+            margin-bottom: 12px;
+            padding: 20px;
+        }
+
+        .appearance-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .appearance-content i:first-child {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .appearance-content > span {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .appearance-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .appearance-toggle i {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .section-subtitle {
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        .info-menu {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item:hover {
+            background: #f9fafb;
+        }
+
+        .info-item i:first-child {
+            color: #666;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .info-item > span {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .info-item i:last-child {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .profile-actions {
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .sign-out-btn {
+            width: 100%;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .sign-out-btn:hover {
+            background: #dc2626;
+        }
+
+        @media (min-width: 768px) {
+            .profile-drawer-content {
+                width: 400px;
+                right: 0;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Feature Modals Styles */
+        .feature-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 22000;
+        }
+
+        /* Appearance Modal specific styling */
+        #appearanceModal {
+            z-index: 23000;
+        }
+
+        #appearanceModal .modal-content {
+            z-index: 23001;
+        }
+
+        .feature-modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-modal.active .modal-content {
+            transform: translateX(0);
+        }
+
+        .modal-header {
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .modal-back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-back-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .modal-title {
+            flex: 1;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .modal-action-btn {
+            background: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-action-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Orders Styles */
+        .order-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .order-status.delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .order-status.processing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .order-status.shipped {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .order-details {
+            display: flex;
+            gap: 15px;
+        }
+
+        .order-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .order-info {
+            flex: 1;
+        }
+
+        .order-product-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .order-date {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .order-total {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2563EB;
+        }
+
+        /* Wishlist Styles */
+        .wishlist-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .wishlist-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .wishlist-info {
+            flex: 1;
+        }
+
+        .wishlist-product-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .wishlist-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2563EB;
+            margin-bottom: 10px;
+        }
+
+        .wishlist-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .wishlist-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wishlist-btn.primary {
+            background: #2563EB;
+            color: white;
+            border: none;
+        }
+
+        .wishlist-btn.secondary {
+            background: none;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .wishlist-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Recipes Styles */
+        .recipe-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .recipe-content {
+            padding: 15px;
+        }
+
+        .recipe-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .recipe-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .recipe-tag {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Address Styles */
+        .address-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-item:hover {
+            border-color: #2563EB;
+        }
+
+        .address-item.selected {
+            border-color: #2563EB;
+            background: #eff6ff;
+        }
+
+        .address-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .address-type {
+            background: #2563EB;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .address-action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .address-action-btn:hover {
+            color: #2563EB;
+        }
+
+        .address-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .address-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .address-phone {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* GST Form Styles */
+        .gst-form {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Gift Cards Styles */
+        .gift-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .gift-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .gift-card-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .gift-card-type {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .gift-card-amount {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .gift-card-code {
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        /* Appearance Settings Styles */
+        .appearance-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .theme-option {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-option:hover {
+            border-color: #2563EB;
+        }
+
+        .theme-option.selected {
+            border-color: #2563EB;
+            background: #eff6ff;
+        }
+
+        .theme-preview {
+            width: 60px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-preview {
+            background: #ffffff;
+        }
+
+        .dark-preview {
+            background: #1f2937;
+        }
+
+        .preview-header {
+            height: 12px;
+            background: #f3f4f6;
+        }
+
+        .dark-preview .preview-header {
+            background: #374151;
+        }
+
+        .preview-content {
+            height: 28px;
+            background: #ffffff;
+        }
+
+        .dark-preview .preview-content {
+            background: #111827;
+        }
+
+        .theme-info {
+            flex: 1;
+        }
+
+        .theme-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+
+        .theme-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .theme-radio {
+            position: relative;
+        }
+
+        .theme-radio input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-radio input[type="radio"]:checked {
+            border-color: #2563EB;
+            background: #2563EB;
+        }
+
+        .theme-radio input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .loading-state i {
+            font-size: 24px;
+            color: #2563EB;
+            margin-bottom: 15px;
+        }
+
+        .loading-state p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content {
+                width: 400px;
+                right: 0;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Dark Theme Styles */
+        .dark-theme {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+
+        .dark-theme .mobile-container {
+            background: #1f2937;
+            color: #f9fafb;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        .dark-theme .header {
+            background: #111827;
+            border-bottom: 1px solid #374151;
+        }
+
+        .dark-theme .announcement-bar {
+            background: #374151;
+            color: #f9fafb;
+        }
+
+        .dark-theme .hero-slide {
+            background-color: #374151;
+        }
+
+        .dark-theme .product-card {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #f9fafb;
+        }
+
+        .dark-theme .section-title {
+            color: #f9fafb;
+        }
+
+        .dark-theme .footer {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        .dark-theme .bottom-nav {
+            background: #111827;
+            border-top: 1px solid #374151;
+        }
+
+        .dark-theme .nav-item {
+            color: #9ca3af;
+        }
+
+        .dark-theme .nav-item.active {
+            color: #60a5fa;
+        }
+
+        .dark-theme .profile-drawer-content {
+            background: #374151;
+            color: #f9fafb;
+        }
+
+        .dark-theme .profile-section {
+            background: #4b5563;
+            color: #f9fafb;
+        }
+
+        .dark-theme .modal-content {
+            background: #374151;
+            color: #f9fafb;
+        }
+
+        .dark-theme .modal-header {
+            background: #4b5563;
+            border-bottom: 1px solid #6b7280;
+        }
+
+        .dark-theme .gst-form {
+            background: #4b5563;
+        }
+
+        .dark-theme .form-group input,
+        .dark-theme .form-group textarea {
+            background: #374151;
+            border: 1px solid #6b7280;
+            color: #f9fafb;
+        }
+
+        .dark-theme .form-group input:focus,
+        .dark-theme .form-group textarea:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .dark-theme .empty-state {
+            color: #9ca3af;
+        }
+
+        .dark-theme .empty-state h3 {
+            color: #f9fafb;
+        }
+
+        /* Light Theme Explicit Styles */
+        .light-theme {
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+
+        .light-theme .mobile-container {
+            background: #ffffff;
+            color: #1f2937;
         }
 
         .mobile-container {
@@ -596,6 +2084,14 @@
             -webkit-overflow-scrolling: touch;
             /* Ensure circles don't get cut off during hover */
             overflow-y: visible;
+            /* Hide scrollbar while maintaining functionality */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer and Edge */
+        }
+
+        /* Hide scrollbar for WebKit browsers */
+        .categories-grid::-webkit-scrollbar {
+            display: none;
         }
 
         .category-card {
@@ -2256,6 +3752,442 @@
                 <div class="search-empty-icon">🔍</div>
                 <div style="font-weight: 600; margin-bottom: 8px;">No products found</div>
                 <div>Try different keywords or check the spelling</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <div class="auth-header">
+                <h2 class="auth-title">Welcome to EyeJack</h2>
+                <button class="auth-close" onclick="closeAuthModal()">&times;</button>
+            </div>
+            
+            <div class="auth-body">
+                <!-- Login Options -->
+                <div id="authOptions" class="auth-screen">
+                    <div class="auth-welcome">
+                        <p>Sign in to access your account, orders, and personalized shopping experience.</p>
+                    </div>
+                    
+                    <!-- Social Login Buttons -->
+                    <div class="social-login-buttons">
+                        <button class="social-btn google-btn" onclick="signInWithGoogle()">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                        
+                        <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                            <i class="fab fa-facebook-f"></i>
+                            Continue with Facebook
+                        </button>
+                        
+                        <button class="social-btn apple-btn" onclick="signInWithApple()">
+                            <i class="fab fa-apple"></i>
+                            Continue with Apple
+                        </button>
+                    </div>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <!-- Phone Login -->
+                    <button class="phone-login-btn" onclick="showPhoneLogin()">
+                        <i class="fas fa-phone"></i>
+                        Continue with Phone
+                    </button>
+                </div>
+                
+                <!-- Phone Login Screen -->
+                <div id="phoneLoginScreen" class="auth-screen" style="display: none;">
+                    <div class="phone-login">
+                        <h3>Enter your phone number</h3>
+                        <p>We'll send you a verification code</p>
+                        
+                        <div class="phone-input-group">
+                            <select id="countryCode" class="country-code">
+                                <option value="+1">🇺🇸 +1</option>
+                                <option value="+91">🇮🇳 +91</option>
+                                <option value="+44">🇬🇧 +44</option>
+                                <option value="+86">🇨🇳 +86</option>
+                                <option value="+81">🇯🇵 +81</option>
+                                <option value="+49">🇩🇪 +49</option>
+                                <option value="+33">🇫🇷 +33</option>
+                            </select>
+                            <input type="tel" id="phoneNumber" placeholder="Phone number" class="phone-input">
+                        </div>
+                        
+                        <button class="auth-submit-btn" onclick="sendOTP()">
+                            <span id="otpBtnText">Send Code</span>
+                            <div id="otpBtnLoader" class="btn-loader" style="display: none;"></div>
+                        </button>
+                        
+                        <button class="auth-back-btn" onclick="showAuthOptions()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- OTP Verification Screen -->
+                <div id="otpVerificationScreen" class="auth-screen" style="display: none;">
+                    <div class="otp-verification">
+                        <h3>Enter verification code</h3>
+                        <p id="otpSentMessage">Code sent to your phone number</p>
+                        
+                        <div class="otp-input-group">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 0)">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 1)">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 2)">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 3)">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 4)">
+                            <input type="text" maxlength="1" class="otp-digit" oninput="moveToNext(this, 5)">
+                        </div>
+                        
+                        <button class="auth-submit-btn" onclick="verifyOTP()">
+                            <span id="verifyBtnText">Verify</span>
+                            <div id="verifyBtnLoader" class="btn-loader" style="display: none;"></div>
+                        </button>
+                        
+                        <button class="resend-btn" onclick="resendOTP()">
+                            Didn't receive code? <span class="resend-text">Resend</span>
+                        </button>
+                        
+                        <button class="auth-back-btn" onclick="showPhoneLogin()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Loading Screen -->
+                <div id="authLoadingScreen" class="auth-screen" style="display: none;">
+                    <div class="auth-loading">
+                        <div class="loading-spinner-large"></div>
+                        <h3>Setting up your account...</h3>
+                        <p>Please wait while we create your shopping profile</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Drawer -->
+    <div id="profileDrawer" class="profile-drawer">
+        <div class="profile-drawer-content">
+            <!-- Header -->
+            <div class="profile-header">
+                <button class="profile-back-btn" onclick="closeProfileDrawer()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="profile-title">Profile</h2>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-body">
+                <!-- Your Account Section -->
+                <div class="profile-section">
+                    <h3 class="profile-section-title">Your account</h3>
+                    <div class="account-info">
+                        <i class="fas fa-phone profile-phone-icon"></i>
+                        <span class="account-phone" id="userPhoneNumber">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Birthday Section -->
+                <div class="birthday-section">
+                    <div class="birthday-content">
+                        <div class="birthday-text">
+                            <h4>Add your birthday</h4>
+                            <span class="birthday-subtitle">Enter details</span>
+                        </div>
+                        <div class="birthday-icon">🎂</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn">
+                        <i class="fas fa-wallet"></i>
+                        <span>EyeJack Money</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Payments</span>
+                    </button>
+                </div>
+
+                <!-- App Update Notification -->
+                <div class="update-notification">
+                    <div class="update-content">
+                        <i class="fas fa-sync-alt"></i>
+                        <div class="update-text">
+                            <span>App update available</span>
+                        </div>
+                        <div class="update-version">v1.0.0</div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Appearance Setting -->
+                <div class="appearance-setting" onclick="openAppearanceModal()" style="cursor: pointer;">
+                    <div class="appearance-content">
+                        <i class="fas fa-palette"></i>
+                        <span>Appearance</span>
+                        <div class="appearance-toggle">
+                            <span class="toggle-label" id="currentThemeLabel">LIGHT</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Information Section -->
+                <div class="profile-section">
+                    <h4 class="section-subtitle">YOUR INFORMATION</h4>
+                    
+                    <div class="info-menu">
+                        <div class="info-item" onclick="showUserOrders()">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Your orders</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="info-item" onclick="showUserWishlist()">
+                            <i class="fas fa-heart"></i>
+                            <span>Your wishlist</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="info-item" onclick="showBookmarkedRecipes()">
+                            <i class="fas fa-bookmark"></i>
+                            <span>Bookmarked recipes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="info-item" onclick="showAddressBook()">
+                            <i class="fas fa-address-book"></i>
+                            <span>Address book</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="info-item" onclick="showGSTDetails()">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>GST details</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="info-item" onclick="showGiftCards()">
+                            <i class="fas fa-gift"></i>
+                            <span>E-Gift Cards</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sign Out Button -->
+                <div class="profile-actions">
+                    <button class="sign-out-btn" onclick="signOutUser()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- reCAPTCHA container for phone auth -->
+    <div id="recaptcha-container"></div>
+
+    <!-- Your Orders Modal -->
+    <div id="ordersModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeOrdersModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeOrdersModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">Your Orders</h2>
+            </div>
+            <div class="modal-body">
+                <div id="ordersContent" class="orders-content">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading your orders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your Wishlist Modal -->
+    <div id="wishlistModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeWishlistModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeWishlistModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">Your Wishlist</h2>
+                <button class="modal-action-btn" onclick="clearWishlist()">Clear All</button>
+            </div>
+            <div class="modal-body">
+                <div id="wishlistContent" class="wishlist-content">
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <h3>Your wishlist is empty</h3>
+                        <p>Browse our products and add items to your wishlist</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookmarked Recipes Modal -->
+    <div id="recipesModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeRecipesModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeRecipesModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">Bookmarked Recipes</h2>
+                <button class="modal-action-btn" onclick="addNewRecipe()">+ Add Recipe</button>
+            </div>
+            <div class="modal-body">
+                <div id="recipesContent" class="recipes-content">
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark"></i>
+                        <h3>No bookmarked recipes</h3>
+                        <p>Save your favorite beauty and skincare recipes here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Book Modal -->
+    <div id="addressModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeAddressModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeAddressModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">Address Book</h2>
+                <button class="modal-action-btn" onclick="addNewAddress()">+ Add Address</button>
+            </div>
+            <div class="modal-body">
+                <div id="addressContent" class="address-content">
+                    <div class="empty-state">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>No saved addresses</h3>
+                        <p>Add your delivery addresses for faster checkout</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GST Details Modal -->
+    <div id="gstModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeGSTModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeGSTModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">GST Details</h2>
+                <button class="modal-action-btn" onclick="saveGSTDetails()">Save</button>
+            </div>
+            <div class="modal-body">
+                <div id="gstContent" class="gst-content">
+                    <form id="gstForm" class="gst-form">
+                        <div class="form-group">
+                            <label for="gstNumber">GST Number</label>
+                            <input type="text" id="gstNumber" placeholder="Enter GST Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessName">Business Name</label>
+                            <input type="text" id="businessName" placeholder="Enter Business Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessAddress">Business Address</label>
+                            <textarea id="businessAddress" placeholder="Enter Complete Business Address"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- E-Gift Cards Modal -->
+    <div id="giftCardsModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeGiftCardsModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeGiftCardsModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">E-Gift Cards</h2>
+                <button class="modal-action-btn" onclick="buyGiftCard()">Buy Gift Card</button>
+            </div>
+            <div class="modal-body">
+                <div id="giftCardsContent" class="gift-cards-content">
+                    <div class="empty-state">
+                        <i class="fas fa-gift"></i>
+                        <h3>No gift cards</h3>
+                        <p>Purchase gift cards for yourself or loved ones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance Settings Modal -->
+    <div id="appearanceModal" class="feature-modal">
+        <div class="modal-backdrop" onclick="closeAppearanceModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="closeAppearanceModal()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2 class="modal-title">Appearance</h2>
+            </div>
+            <div class="modal-body">
+                <div class="appearance-options">
+                    <div class="theme-option" onclick="setTheme('light')">
+                        <div class="theme-preview light-preview">
+                            <div class="preview-header"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Light Mode</h3>
+                            <p>Clean and bright interface</p>
+                        </div>
+                        <div class="theme-radio">
+                            <input type="radio" name="theme" value="light" id="lightTheme" checked>
+                            <label for="lightTheme"></label>
+                        </div>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('dark')">
+                        <div class="theme-preview dark-preview">
+                            <div class="preview-header"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Dark Mode</h3>
+                            <p>Easy on the eyes in low light</p>
+                        </div>
+                        <div class="theme-radio">
+                            <input type="radio" name="theme" value="dark" id="darkTheme">
+                            <label for="darkTheme"></label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4797,6 +6729,1706 @@
                 showNotification(`Navigated to ${page.charAt(0).toUpperCase() + page.slice(1)} page`);
             }
         }
+
+        // ===== FIREBASE AUTHENTICATION SYSTEM =====
+        
+        // Firebase Configuration ✅ CONFIGURED
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd9O3gJOoD7HvoMzgIKTOi1nPIi-z_Cds",
+            authDomain: "eyejack-mobileapp.firebaseapp.com",
+            projectId: "eyejack-mobileapp",
+            storageBucket: "eyejack-mobileapp.firebasestorage.app",
+            messagingSenderId: "43495560741",
+            appId: "1:43495560741:web:6101cca71fd1c8e6e451cc",
+            measurementId: "G-W7E03MV4TD"
+        };
+
+        // Initialize Firebase (with error handling)
+        let auth = null;
+        let firebaseInitialized = false;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            firebaseInitialized = true;
+            console.log('✅ Firebase initialized successfully');
+        } catch (error) {
+            console.log('⚠️ Firebase not configured properly:', error.message);
+            console.log('📝 Please follow FIREBASE_QUICK_SETUP.md to configure Firebase');
+            firebaseInitialized = false;
+        }
+
+        // Global authentication variables
+        let currentConfirmationResult = null;
+        let currentUser = null;
+        let recaptchaVerifier = null;
+
+        // Authentication state management
+        if (firebaseInitialized && auth) {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    console.log('🔐 User signed in:', user.uid);
+                    currentUser = user;
+                    handleAuthSuccess(user);
+                } else {
+                    console.log('👋 User signed out');
+                    currentUser = null;
+                    updateHeaderForLoggedOutUser();
+                }
+            });
+
+            // Handle redirect results
+            auth.getRedirectResult().then((result) => {
+                if (result && result.user) {
+                    console.log('✅ Authentication successful (redirect)');
+                    processFirebaseUser(result.user);
+                }
+            }).catch((error) => {
+                console.error('❌ Redirect authentication error:', error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showErrorMessage('Sign in cancelled', 'info');
+                } else if (!error.code || error.code === 'auth/network-request-failed') {
+                    // Don't show error for network issues that might resolve
+                    console.log('ℹ️ Network issue during redirect, will retry on next user action');
+                } else {
+                    showErrorMessage('Authentication failed. Please try again.');
+                }
+            });
+
+            // Log helpful info about CORS warnings
+            console.log('ℹ️ Note: CORS popup warnings are normal and don\'t affect functionality');
+            console.log('ℹ️ If popups are blocked, the system will automatically use redirect method');
+        } else {
+            console.log('⚠️ Firebase authentication not available - please configure Firebase');
+        }
+
+        // Authentication Modal Functions
+        function openAuthModal() {
+            if (!firebaseInitialized) {
+                showErrorMessage('Firebase is loading, please try again in a moment.', 'warning');
+                return;
+            }
+            
+            const modal = document.getElementById('authModal');
+            modal.classList.add('active');
+            showAuthOptions();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            resetAuthModal();
+        }
+
+        function resetAuthModal() {
+            showAuthOptions();
+            resetPhoneForm();
+            resetOTPForm();
+        }
+
+        function showAuthOptions() {
+            hideAllAuthScreens();
+            document.getElementById('authOptions').style.display = 'block';
+        }
+
+        function showPhoneLogin() {
+            hideAllAuthScreens();
+            document.getElementById('phoneLoginScreen').style.display = 'block';
+            document.getElementById('phoneNumber').focus();
+        }
+
+        function showOTPVerification() {
+            hideAllAuthScreens();
+            document.getElementById('otpVerificationScreen').style.display = 'block';
+            document.querySelector('.otp-digit').focus();
+        }
+
+        function showAuthLoading() {
+            hideAllAuthScreens();
+            document.getElementById('authLoadingScreen').style.display = 'block';
+        }
+
+        function hideAllAuthScreens() {
+            const screens = document.querySelectorAll('.auth-screen');
+            screens.forEach(screen => screen.style.display = 'none');
+        }
+
+        // Social Login Functions
+        async function signInWithGoogle() {
+            try {
+                console.log('🔐 Google Sign In initiated');
+                showAuthLoading();
+                
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('email');
+                provider.addScope('profile');
+                
+                // Try popup first, fallback to redirect
+                try {
+                    const result = await auth.signInWithPopup(provider);
+                    console.log('✅ Google authentication successful (popup)');
+                    await processFirebaseUser(result.user);
+                } catch (popupError) {
+                    console.log('📱 Popup blocked, trying redirect method');
+                    await auth.signInWithRedirect(provider);
+                }
+                
+            } catch (error) {
+                console.error('❌ Google Sign In error:', error);
+                showAuthOptions();
+                
+                if (error.code === 'auth/popup-blocked') {
+                    showErrorMessage('Popup blocked. Please allow popups or try again.', 'warning');
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    showErrorMessage('Sign in cancelled', 'info');
+                } else {
+                    showErrorMessage('Google sign in failed. Please try again.');
+                }
+            }
+        }
+
+        async function signInWithFacebook() {
+            try {
+                console.log('🔐 Facebook Sign In initiated');
+                showAuthLoading();
+                
+                const provider = new firebase.auth.FacebookAuthProvider();
+                provider.addScope('email');
+                
+                // Try popup first, fallback to redirect
+                try {
+                    const result = await auth.signInWithPopup(provider);
+                    console.log('✅ Facebook authentication successful (popup)');
+                    await processFirebaseUser(result.user);
+                } catch (popupError) {
+                    console.log('📱 Popup blocked, trying redirect method');
+                    await auth.signInWithRedirect(provider);
+                }
+                
+            } catch (error) {
+                console.error('❌ Facebook Sign In error:', error);
+                showAuthOptions();
+                
+                if (error.code === 'auth/popup-blocked') {
+                    showErrorMessage('Popup blocked. Please allow popups or try again.', 'warning');
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    showErrorMessage('Sign in cancelled', 'info');
+                } else {
+                    showErrorMessage('Facebook sign in failed. Please try again.');
+                }
+            }
+        }
+
+        async function signInWithApple() {
+            try {
+                console.log('🔐 Apple Sign In initiated');
+                showAuthLoading();
+                
+                const provider = new firebase.auth.OAuthProvider('apple.com');
+                provider.addScope('email');
+                provider.addScope('name');
+                
+                // Try popup first, fallback to redirect
+                try {
+                    const result = await auth.signInWithPopup(provider);
+                    console.log('✅ Apple authentication successful (popup)');
+                    await processFirebaseUser(result.user);
+                } catch (popupError) {
+                    console.log('📱 Popup blocked, trying redirect method');
+                    await auth.signInWithRedirect(provider);
+                }
+                
+            } catch (error) {
+                console.error('❌ Apple Sign In error:', error);
+                showAuthOptions();
+                
+                if (error.code === 'auth/popup-blocked') {
+                    showErrorMessage('Popup blocked. Please allow popups or try again.', 'warning');
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    showErrorMessage('Sign in cancelled', 'info');
+                } else {
+                    showErrorMessage('Apple sign in failed. Please try again.');
+                }
+            }
+        }
+
+        // Phone Authentication Functions
+        function initRecaptcha() {
+            if (!recaptchaVerifier) {
+                recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                    size: 'invisible',
+                    callback: (response) => {
+                        console.log('reCAPTCHA solved');
+                    },
+                    'expired-callback': () => {
+                        console.log('reCAPTCHA expired');
+                        recaptchaVerifier = null;
+                    }
+                });
+            }
+            return recaptchaVerifier;
+        }
+
+        async function sendOTP() {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const countryCode = document.getElementById('countryCode').value;
+            
+            if (!phoneNumber) {
+                showErrorMessage('Please enter your phone number');
+                return;
+            }
+
+            const fullPhoneNumber = countryCode + phoneNumber;
+            console.log('📱 Sending OTP to:', fullPhoneNumber);
+
+            // Show loading state
+            const btn = document.querySelector('#phoneLoginScreen .auth-submit-btn');
+            const btnText = document.getElementById('otpBtnText');
+            const btnLoader = document.getElementById('otpBtnLoader');
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'block';
+
+            try {
+                const appVerifier = initRecaptcha();
+                currentConfirmationResult = await auth.signInWithPhoneNumber(fullPhoneNumber, appVerifier);
+                
+                console.log('✅ OTP sent successfully');
+                
+                // Update UI for OTP verification
+                document.getElementById('otpSentMessage').textContent = `Code sent to ${fullPhoneNumber}`;
+                showOTPVerification();
+                
+            } catch (error) {
+                console.error('❌ Error sending OTP:', error);
+                
+                // Reset reCAPTCHA on error
+                if (recaptchaVerifier) {
+                    recaptchaVerifier.clear();
+                    recaptchaVerifier = null;
+                }
+                
+                showErrorMessage('Failed to send OTP. Please try again.');
+            } finally {
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'block';
+                btnLoader.style.display = 'none';
+            }
+        }
+
+        async function verifyOTP() {
+            const otpInputs = document.querySelectorAll('.otp-digit');
+            const otp = Array.from(otpInputs).map(input => input.value).join('');
+            
+            if (otp.length !== 6) {
+                showErrorMessage('Please enter the complete 6-digit code');
+                return;
+            }
+
+            console.log('🔐 Verifying OTP:', otp);
+
+            // Show loading state
+            const btn = document.querySelector('#otpVerificationScreen .auth-submit-btn');
+            const btnText = document.getElementById('verifyBtnText');
+            const btnLoader = document.getElementById('verifyBtnLoader');
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'block';
+
+            try {
+                const result = await currentConfirmationResult.confirm(otp);
+                console.log('✅ Phone authentication successful');
+                
+                showAuthLoading();
+                await processFirebaseUser(result.user);
+                
+            } catch (error) {
+                console.error('❌ Error verifying OTP:', error);
+                showErrorMessage('Invalid code. Please try again.');
+                
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'block';
+                btnLoader.style.display = 'none';
+            }
+        }
+
+        async function resendOTP() {
+            await sendOTP();
+            showErrorMessage('New code sent!', 'success');
+        }
+
+        // Process Firebase user and create/login Shopify customer
+        async function processFirebaseUser(firebaseUser) {
+            try {
+                console.log('🔄 Processing Firebase user for Shopify integration');
+                
+                const userData = {
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    displayName: firebaseUser.displayName,
+                    phoneNumber: firebaseUser.phoneNumber,
+                    photoURL: firebaseUser.photoURL
+                };
+
+                // Call your API to create/login Shopify customer
+                const response = await fetch('/api/auth/firebase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firebaseUser: userData,
+                        action: 'createOrLoginCustomer'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ Shopify customer integration successful');
+                    
+                    // Store customer data
+                    localStorage.setItem('shopifyCustomer', JSON.stringify(result.customer));
+                    localStorage.setItem('customerAccessToken', JSON.stringify(result.customerAccessToken));
+                    localStorage.setItem('firebaseUser', JSON.stringify(userData));
+                    
+                    await handleAuthSuccess(firebaseUser, result);
+                } else {
+                    throw new Error(result.error || 'Failed to create Shopify customer');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error processing Firebase user:', error);
+                
+                // Show specific error messages
+                if (error.message.includes('Email has already been taken')) {
+                    showErrorMessage('Account already exists. Signing you in...', 'info');
+                    // Try to continue with Firebase user anyway
+                    try {
+                        await handleAuthSuccess(firebaseUser, { isNewCustomer: false });
+                        return;
+                    } catch (fallbackError) {
+                        console.error('Fallback failed:', fallbackError);
+                    }
+                } else if (error.message.includes('Network')) {
+                    showErrorMessage('Network error. Please check your connection and try again.', 'warning');
+                } else if (error.message.includes('Failed to fetch')) {
+                    showErrorMessage('Connection error. Please try again.', 'warning');
+                } else {
+                    showErrorMessage('Account setup failed. Please try again.', 'error');
+                }
+                
+                showAuthOptions();
+            }
+        }
+
+        // Handle successful authentication
+        async function handleAuthSuccess(firebaseUser, shopifyResult = null) {
+            console.log('🎉 Authentication successful!');
+            
+            // Update header to show logged in state
+            updateHeaderForLoggedInUser(firebaseUser);
+            
+            // Close modal
+            closeAuthModal();
+            
+            // Update profile info if drawer is open
+            const drawer = document.getElementById('profileDrawer');
+            if (drawer && drawer.classList.contains('active')) {
+                updateProfileInfo();
+            }
+            
+            // Show success message
+            if (shopifyResult?.isNewCustomer) {
+                showErrorMessage('Welcome to EyeJack! Your account has been created.', 'success');
+            } else {
+                showErrorMessage('Welcome back!', 'success');
+            }
+        }
+
+        // Update header icons for logged in user
+        function updateHeaderForLoggedInUser(user) {
+            const profileIcon = document.querySelector('.header-icon[onclick="showProfile()"]');
+            if (profileIcon && user) {
+                // Change profile icon to show user avatar or initials
+                if (user.photoURL) {
+                    profileIcon.innerHTML = `<img src="${user.photoURL}" alt="Profile" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">`;
+                } else {
+                    const initials = (user.displayName || user.email || 'U').substring(0, 1).toUpperCase();
+                    profileIcon.innerHTML = `<div style="width: 24px; height: 24px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">${initials}</div>`;
+                }
+                
+                // Update onclick to show profile instead of auth modal
+                profileIcon.setAttribute('onclick', 'showUserProfile()');
+            }
+        }
+
+        // Update header for logged out user
+        function updateHeaderForLoggedOutUser() {
+            const profileIcon = document.querySelector('.header-icon[onclick*="Profile"]');
+            if (profileIcon) {
+                profileIcon.innerHTML = '<i class="fas fa-user"></i>';
+                profileIcon.setAttribute('onclick', 'openAuthModal()');
+            }
+        }
+
+        // Profile Drawer Functions
+        function showUserProfile() {
+            openProfileDrawer();
+        }
+
+        function openProfileDrawer() {
+            const drawer = document.getElementById('profileDrawer');
+            drawer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Update user info
+            updateProfileInfo();
+            
+            // Add click outside to close
+            setTimeout(() => {
+                drawer.addEventListener('click', (e) => {
+                    if (e.target === drawer) {
+                        closeProfileDrawer();
+                    }
+                });
+            }, 100);
+        }
+
+        function closeProfileDrawer() {
+            const drawer = document.getElementById('profileDrawer');
+            const drawerContent = drawer?.querySelector('.profile-drawer-content');
+            
+            drawer.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Reset transform for next opening
+            if (drawerContent) {
+                drawerContent.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    drawerContent.style.transform = '';
+                }, 300);
+            }
+        }
+
+        // Add keyboard support for profile drawer
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('profileDrawer');
+                if (drawer && drawer.classList.contains('active')) {
+                    closeProfileDrawer();
+                }
+            }
+        });
+
+        // Add swipe gesture support for profile drawer
+        let profileStartX = 0;
+        let profileCurrentX = 0;
+        let isProfileDragging = false;
+
+        document.addEventListener('touchstart', (e) => {
+            const drawer = document.getElementById('profileDrawer');
+            const drawerContent = drawer?.querySelector('.profile-drawer-content');
+            
+            if (drawer?.classList.contains('active') && drawerContent?.contains(e.target)) {
+                profileStartX = e.touches[0].clientX;
+                isProfileDragging = true;
+            }
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isProfileDragging) return;
+            
+            profileCurrentX = e.touches[0].clientX;
+            const diffX = profileCurrentX - profileStartX;
+            
+            // Only allow right swipe (to close)
+            if (diffX > 0) {
+                const drawer = document.getElementById('profileDrawer');
+                const drawerContent = drawer?.querySelector('.profile-drawer-content');
+                if (drawerContent) {
+                    drawerContent.style.transform = `translateX(${Math.min(diffX, 300)}px)`;
+                }
+            }
+        });
+
+        document.addEventListener('touchend', (e) => {
+            if (!isProfileDragging) return;
+            isProfileDragging = false;
+            
+            const diffX = profileCurrentX - profileStartX;
+            const drawer = document.getElementById('profileDrawer');
+            const drawerContent = drawer?.querySelector('.profile-drawer-content');
+            
+            if (drawerContent) {
+                if (diffX > 100) { // Swipe threshold
+                    closeProfileDrawer();
+                } else {
+                    // Snap back
+                    drawerContent.style.transform = 'translateX(0)';
+                }
+            }
+        });
+
+        function updateProfileInfo() {
+            const phoneElement = document.getElementById('userPhoneNumber');
+            
+            if (currentUser) {
+                // Show user's phone number or email
+                if (currentUser.phoneNumber) {
+                    phoneElement.textContent = currentUser.phoneNumber;
+                } else if (currentUser.email) {
+                    phoneElement.textContent = currentUser.email;
+                } else {
+                    phoneElement.textContent = 'User Account';
+                }
+            } else {
+                phoneElement.textContent = 'Not signed in';
+            }
+        }
+
+        // Profile Menu Functions
+        function showUserOrders() {
+            closeProfileDrawer();
+            openOrdersModal();
+            console.log('📦 Showing user orders');
+        }
+
+        function showUserWishlist() {
+            closeProfileDrawer();
+            openWishlistModal();
+            console.log('❤️ Showing user wishlist');
+        }
+
+        function showBookmarkedRecipes() {
+            closeProfileDrawer();
+            openRecipesModal();
+            console.log('📖 Showing bookmarked recipes');
+        }
+
+        function showAddressBook() {
+            closeProfileDrawer();
+            openAddressModal();
+            console.log('📍 Showing address book');
+        }
+
+        function showGSTDetails() {
+            closeProfileDrawer();
+            openGSTModal();
+            console.log('📄 Showing GST details');
+        }
+
+        function showGiftCards() {
+            closeProfileDrawer();
+            openGiftCardsModal();
+            console.log('🎁 Showing gift cards');
+        }
+
+        async function signOutUser() {
+            try {
+                console.log('👋 Signing out user');
+                
+                // Close profile drawer first
+                closeProfileDrawer();
+                
+                // Sign out from Firebase
+                await auth.signOut();
+                
+                // Clear stored data
+                localStorage.removeItem('shopifyCustomer');
+                localStorage.removeItem('customerAccessToken');
+                localStorage.removeItem('firebaseUser');
+                
+                // Clear current user
+                currentUser = null;
+                
+                // Update UI
+                updateHeaderForLoggedOutUser();
+                
+                showErrorMessage('Signed out successfully', 'success');
+                
+            } catch (error) {
+                console.error('❌ Sign out error:', error);
+                showErrorMessage('Error signing out. Please try again.');
+            }
+        }
+
+        // Modal Functions
+        
+        // Orders Modal
+        function openOrdersModal() {
+            const modal = document.getElementById('ordersModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadUserOrders();
+        }
+
+        function closeOrdersModal() {
+            const modal = document.getElementById('ordersModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function loadUserOrders() {
+            const content = document.getElementById('ordersContent');
+            const customerAccessToken = JSON.parse(localStorage.getItem('customerAccessToken') || 'null');
+            
+            if (!customerAccessToken || !customerAccessToken.accessToken) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>No orders found</h3>
+                        <p>You need to be logged in to view your orders</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Show loading state
+                content.innerHTML = `
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading your orders...</p>
+                    </div>
+                `;
+                
+                // Fetch real orders from Shopify
+                const response = await fetch(`${CONFIG.apiUrl}/customer-orders?customerAccessToken=${customerAccessToken.accessToken}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load orders');
+                }
+                
+                const orders = data.orders;
+                
+                if (orders.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-shopping-bag"></i>
+                            <h3>No orders yet</h3>
+                            <p>Your order history will appear here</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Render real orders
+                const ordersHTML = orders.map(order => {
+                    const orderDate = new Date(order.processedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                    
+                    const statusClass = getOrderStatusClass(order.fulfillmentStatus, order.financialStatus);
+                    const statusText = getOrderStatusText(order.fulfillmentStatus, order.financialStatus);
+                    
+                    // Get first line item for display
+                    const firstItem = order.lineItems.edges[0]?.node;
+                    const itemImage = firstItem?.variant?.image?.url || 'https://via.placeholder.com/60x60?text=No+Image';
+                    const itemTitle = firstItem?.title || 'Order Items';
+                    
+                    const totalAmount = parseFloat(order.totalPriceV2.amount);
+                    const currency = order.totalPriceV2.currencyCode;
+                    
+                    return `
+                        <div class="order-item">
+                            <div class="order-header">
+                                <div class="order-number">#${order.orderNumber}</div>
+                                <div class="order-status ${statusClass}">${statusText}</div>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-image" style="background-image: url('${itemImage}')"></div>
+                                <div class="order-info">
+                                    <div class="order-product-name">${itemTitle}</div>
+                                    <div class="order-date">Ordered on ${orderDate}</div>
+                                    <div class="order-total">${currency === 'INR' ? '₹' : currency} ${totalAmount.toFixed(2)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                content.innerHTML = ordersHTML;
+                
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Failed to load orders</h3>
+                        <p>${error.message || 'Please try again later'}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function getOrderStatusClass(fulfillmentStatus, financialStatus) {
+            if (fulfillmentStatus === 'FULFILLED') return 'delivered';
+            if (fulfillmentStatus === 'PARTIAL') return 'shipped';
+            if (financialStatus === 'PAID' || financialStatus === 'AUTHORIZED') return 'processing';
+            return 'processing';
+        }
+        
+        function getOrderStatusText(fulfillmentStatus, financialStatus) {
+            if (fulfillmentStatus === 'FULFILLED') return 'Delivered';
+            if (fulfillmentStatus === 'PARTIAL') return 'Shipped';
+            if (fulfillmentStatus === 'UNFULFILLED' && financialStatus === 'PAID') return 'Processing';
+            if (financialStatus === 'PENDING') return 'Payment Pending';
+            return 'Processing';
+        }
+
+        // Wishlist Modal
+        function openWishlistModal() {
+            const modal = document.getElementById('wishlistModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadWishlistItems();
+        }
+
+        function closeWishlistModal() {
+            const modal = document.getElementById('wishlistModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function loadWishlistItems() {
+            const content = document.getElementById('wishlistContent');
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            
+            if (wishlist.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <h3>Your wishlist is empty</h3>
+                        <p>Browse our products and add items to your wishlist</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const wishlistHTML = wishlist.map(item => `
+                <div class="wishlist-item">
+                    <div class="wishlist-image" style="background-image: url('${item.image}')"></div>
+                    <div class="wishlist-info">
+                        <div class="wishlist-product-name">${item.name}</div>
+                        <div class="wishlist-price">₹${item.price}</div>
+                        <div class="wishlist-actions">
+                            <button class="wishlist-btn primary" onclick="addToCart('${item.id}')">Add to Cart</button>
+                            <button class="wishlist-btn secondary" onclick="removeFromWishlist('${item.id}')">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            content.innerHTML = wishlistHTML;
+        }
+
+        function clearWishlist() {
+            if (confirm('Are you sure you want to clear your entire wishlist?')) {
+                localStorage.removeItem('userWishlist');
+                loadWishlistItems();
+                showErrorMessage('Wishlist cleared', 'info');
+            }
+        }
+
+        function addToWishlist(productId, productName, productPrice, productImage) {
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            const existingItem = wishlist.find(item => item.id === productId);
+            
+            if (!existingItem) {
+                wishlist.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    addedAt: new Date().toISOString()
+                });
+                localStorage.setItem('userWishlist', JSON.stringify(wishlist));
+                showErrorMessage('Added to wishlist!', 'success');
+            } else {
+                showErrorMessage('Already in wishlist', 'info');
+            }
+        }
+
+        function removeFromWishlist(productId) {
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            const updatedWishlist = wishlist.filter(item => item.id !== productId);
+            localStorage.setItem('userWishlist', JSON.stringify(updatedWishlist));
+            loadWishlistItems();
+            showErrorMessage('Removed from wishlist', 'info');
+        }
+
+        // Recipes Modal
+        function openRecipesModal() {
+            const modal = document.getElementById('recipesModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadBookmarkedRecipes();
+        }
+
+        function closeRecipesModal() {
+            const modal = document.getElementById('recipesModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function loadBookmarkedRecipes() {
+            const content = document.getElementById('recipesContent');
+            const recipes = JSON.parse(localStorage.getItem('bookmarkedRecipes') || '[]');
+            
+            if (recipes.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark"></i>
+                        <h3>No bookmarked recipes</h3>
+                        <p>Save your favorite beauty and skincare recipes here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const recipesHTML = recipes.map(recipe => `
+                <div class="recipe-item">
+                    <div class="recipe-image">
+                        <i class="fas fa-${recipe.icon || 'heart'}"></i>
+                    </div>
+                    <div class="recipe-content">
+                        <div class="recipe-title">${recipe.title}</div>
+                        <div class="recipe-description">${recipe.description}</div>
+                        <div class="recipe-tags">
+                            ${recipe.tags.map(tag => `<span class="recipe-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            content.innerHTML = recipesHTML;
+        }
+
+        function addNewRecipe() {
+            const title = prompt('Recipe Title:');
+            if (!title) return;
+            
+            const description = prompt('Recipe Description:');
+            if (!description) return;
+            
+            const tags = prompt('Tags (comma separated):');
+            const tagsArray = tags ? tags.split(',').map(tag => tag.trim()) : [];
+            
+            const recipes = JSON.parse(localStorage.getItem('bookmarkedRecipes') || '[]');
+            recipes.push({
+                id: Date.now().toString(),
+                title,
+                description,
+                tags: tagsArray,
+                icon: 'leaf',
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('bookmarkedRecipes', JSON.stringify(recipes));
+            loadBookmarkedRecipes();
+            showErrorMessage('Recipe added!', 'success');
+        }
+
+        // Address Modal
+        function openAddressModal() {
+            const modal = document.getElementById('addressModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadSavedAddresses();
+        }
+
+        function closeAddressModal() {
+            const modal = document.getElementById('addressModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function loadSavedAddresses() {
+            const content = document.getElementById('addressContent');
+            const customerAccessToken = JSON.parse(localStorage.getItem('customerAccessToken') || 'null');
+            
+            if (!customerAccessToken || !customerAccessToken.accessToken) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>No saved addresses</h3>
+                        <p>You need to be logged in to manage addresses</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Show loading state
+                content.innerHTML = `
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading your addresses...</p>
+                    </div>
+                `;
+                
+                // Fetch real addresses from Shopify
+                const response = await fetch(`${CONFIG.apiUrl}/customer-addresses?customerAccessToken=${customerAccessToken.accessToken}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load addresses');
+                }
+                
+                const addresses = data.addresses;
+                
+                if (addresses.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h3>No saved addresses</h3>
+                            <p>Add your delivery addresses for faster checkout</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const addressesHTML = addresses.map(address => {
+                    const addressType = getAddressType(address.company, address.firstName, address.lastName);
+                    const fullName = `${address.firstName} ${address.lastName}`.trim();
+                    const addressLine = [address.address1, address.address2].filter(Boolean).join(', ');
+                    const locationLine = [address.city, address.province, address.zip, address.country].filter(Boolean).join(', ');
+                    
+                    return `
+                        <div class="address-item ${address.isDefault ? 'selected' : ''}" onclick="selectAddress('${address.id}')">
+                            <div class="address-header">
+                                <div class="address-type">${addressType}</div>
+                                <div class="address-actions">
+                                    <button class="address-action-btn" onclick="editAddress('${address.id}'); event.stopPropagation();">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="address-action-btn" onclick="deleteAddress('${address.id}'); event.stopPropagation();">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="address-name">${fullName}</div>
+                            <div class="address-details">${addressLine}<br/>${locationLine}</div>
+                            ${address.phone ? `<div class="address-phone">📞 ${address.phone}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                content.innerHTML = addressesHTML;
+                
+            } catch (error) {
+                console.error('Error loading addresses:', error);
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Failed to load addresses</h3>
+                        <p>${error.message || 'Please try again later'}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function getAddressType(company, firstName, lastName) {
+            if (company && company.trim()) return 'OFFICE';
+            if (firstName && lastName) return 'HOME';
+            return 'OTHER';
+        }
+
+        function addNewAddress() {
+            showAddressForm();
+        }
+        
+        function showAddressForm(editAddress = null) {
+            const isEdit = editAddress !== null;
+            const title = isEdit ? 'Edit Address' : 'Add New Address';
+            
+            const modal = document.createElement('div');
+            modal.className = 'feature-modal active';
+            modal.innerHTML = `
+                <div class="modal-backdrop" onclick="closeAddressForm()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="modal-back-btn" onclick="closeAddressForm()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h2 class="modal-title">${title}</h2>
+                        <button class="modal-action-btn" onclick="saveAddressForm()">Save</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addressForm" class="gst-form">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" value="${editAddress?.firstName || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" value="${editAddress?.lastName || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="company">Company (Optional)</label>
+                                <input type="text" id="company" value="${editAddress?.company || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="address1">Address Line 1 *</label>
+                                <input type="text" id="address1" value="${editAddress?.address1 || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address2">Address Line 2 (Optional)</label>
+                                <input type="text" id="address2" value="${editAddress?.address2 || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" value="${editAddress?.city || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="province">State/Province *</label>
+                                <input type="text" id="province" value="${editAddress?.province || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">ZIP/Postal Code *</label>
+                                <input type="text" id="zip" value="${editAddress?.zip || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country *</label>
+                                <input type="text" id="country" value="${editAddress?.country || 'India'}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number (Optional)</label>
+                                <input type="tel" id="phone" value="${editAddress?.phone || ''}">
+                            </div>
+                            <input type="hidden" id="editAddressId" value="${editAddress?.id || ''}">
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+            window.currentAddressModal = modal;
+        }
+        
+        function closeAddressForm() {
+            if (window.currentAddressModal) {
+                document.body.removeChild(window.currentAddressModal);
+                document.body.style.overflow = '';
+                window.currentAddressModal = null;
+            }
+        }
+        
+        async function saveAddressForm() {
+            const customerAccessToken = JSON.parse(localStorage.getItem('customerAccessToken') || 'null');
+            
+            if (!customerAccessToken || !customerAccessToken.accessToken) {
+                showErrorMessage('Please log in to save address', 'warning');
+                return;
+            }
+            
+            const form = document.getElementById('addressForm');
+            const formData = new FormData();
+            
+            // Get all form values
+            const addressData = {
+                firstName: form.firstName.value.trim(),
+                lastName: form.lastName.value.trim(),
+                company: form.company.value.trim(),
+                address1: form.address1.value.trim(),
+                address2: form.address2.value.trim(),
+                city: form.city.value.trim(),
+                province: form.province.value.trim(),
+                zip: form.zip.value.trim(),
+                country: form.country.value.trim(),
+                phone: form.phone.value.trim()
+            };
+            
+            // Validate required fields
+            if (!addressData.firstName || !addressData.lastName || !addressData.address1 || !addressData.city || !addressData.province || !addressData.zip || !addressData.country) {
+                showErrorMessage('Please fill in all required fields', 'warning');
+                return;
+            }
+            
+            try {
+                formData.append('customerAccessToken', customerAccessToken.accessToken);
+                
+                // Check if editing or creating
+                const editAddressId = form.editAddressId.value;
+                if (editAddressId) {
+                    formData.append('action', 'update');
+                    formData.append('addressId', editAddressId);
+                } else {
+                    formData.append('action', 'create');
+                }
+                
+                // Append address data
+                Object.keys(addressData).forEach(key => {
+                    formData.append(key, addressData[key]);
+                });
+                
+                const response = await fetch(`${CONFIG.apiUrl}/customer-addresses`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to save address');
+                }
+                
+                closeAddressForm();
+                loadSavedAddresses();
+                showErrorMessage(editAddressId ? 'Address updated successfully!' : 'Address added successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error saving address:', error);
+                showErrorMessage(error.message || 'Failed to save address', 'error');
+            }
+        }
+        
+        function editAddress(addressId) {
+            // Get the address data from the current loaded addresses
+            const addressElement = document.querySelector(`.address-item[onclick="selectAddress('${addressId}')"]`);
+            if (!addressElement) {
+                showErrorMessage('Address not found', 'error');
+                return;
+            }
+            
+            // For now, show a simple edit interface
+            // In a real implementation, you'd fetch the full address details from Shopify
+            showErrorMessage('Edit functionality coming soon! Delete and re-add for now.', 'info');
+        }
+
+        async function selectAddress(addressId) {
+            const customerAccessToken = JSON.parse(localStorage.getItem('customerAccessToken') || 'null');
+            
+            if (!customerAccessToken || !customerAccessToken.accessToken) {
+                showErrorMessage('Please log in to select default address', 'warning');
+                return;
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'setDefault');
+                formData.append('customerAccessToken', customerAccessToken.accessToken);
+                formData.append('addressId', addressId);
+                
+                const response = await fetch(`${CONFIG.apiUrl}/customer-addresses`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to update default address');
+                }
+                
+                loadSavedAddresses();
+                showErrorMessage('Default address updated', 'success');
+                
+            } catch (error) {
+                console.error('Error setting default address:', error);
+                showErrorMessage(error.message || 'Failed to update default address', 'error');
+            }
+        }
+
+        async function deleteAddress(addressId) {
+            if (!confirm('Are you sure you want to delete this address?')) {
+                return;
+            }
+            
+            const customerAccessToken = JSON.parse(localStorage.getItem('customerAccessToken') || 'null');
+            
+            if (!customerAccessToken || !customerAccessToken.accessToken) {
+                showErrorMessage('Please log in to delete address', 'warning');
+                return;
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'delete');
+                formData.append('customerAccessToken', customerAccessToken.accessToken);
+                formData.append('addressId', addressId);
+                
+                const response = await fetch(`${CONFIG.apiUrl}/customer-addresses`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to delete address');
+                }
+                
+                loadSavedAddresses();
+                showErrorMessage('Address deleted', 'info');
+                
+            } catch (error) {
+                console.error('Error deleting address:', error);
+                showErrorMessage(error.message || 'Failed to delete address', 'error');
+            }
+        }
+
+        // GST Modal
+        function openGSTModal() {
+            const modal = document.getElementById('gstModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadGSTDetails();
+        }
+
+        function closeGSTModal() {
+            const modal = document.getElementById('gstModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function loadGSTDetails() {
+            const gstData = JSON.parse(localStorage.getItem('gstDetails') || '{}');
+            
+            document.getElementById('gstNumber').value = gstData.gstNumber || '';
+            document.getElementById('businessName').value = gstData.businessName || '';
+            document.getElementById('businessAddress').value = gstData.businessAddress || '';
+        }
+
+        function saveGSTDetails() {
+            const gstDetails = {
+                gstNumber: document.getElementById('gstNumber').value,
+                businessName: document.getElementById('businessName').value,
+                businessAddress: document.getElementById('businessAddress').value,
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (!gstDetails.gstNumber.trim()) {
+                showErrorMessage('Please enter GST Number', 'warning');
+                return;
+            }
+            
+            localStorage.setItem('gstDetails', JSON.stringify(gstDetails));
+            closeGSTModal();
+            showErrorMessage('GST details saved successfully!', 'success');
+        }
+
+        // Gift Cards Modal
+        function openGiftCardsModal() {
+            const modal = document.getElementById('giftCardsModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadGiftCards();
+        }
+
+        function closeGiftCardsModal() {
+            const modal = document.getElementById('giftCardsModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function loadGiftCards() {
+            const content = document.getElementById('giftCardsContent');
+            const giftCards = JSON.parse(localStorage.getItem('userGiftCards') || '[]');
+            
+            if (giftCards.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-gift"></i>
+                        <h3>No gift cards</h3>
+                        <p>Purchase gift cards for yourself or loved ones</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const giftCardsHTML = giftCards.map(card => `
+                <div class="gift-card">
+                    <div class="gift-card-header">
+                        <div class="gift-card-logo">EYEJACK</div>
+                        <div class="gift-card-type">GIFT CARD</div>
+                    </div>
+                    <div class="gift-card-amount">₹${card.amount}</div>
+                    <div class="gift-card-code">${card.code}</div>
+                </div>
+            `).join('');
+
+            content.innerHTML = giftCardsHTML;
+        }
+
+        function buyGiftCard() {
+            const amount = prompt('Gift Card Amount (₹):');
+            if (!amount || isNaN(amount)) {
+                showErrorMessage('Please enter a valid amount', 'warning');
+                return;
+            }
+            
+            const giftCards = JSON.parse(localStorage.getItem('userGiftCards') || '[]');
+            const newCard = {
+                id: Date.now().toString(),
+                amount: parseInt(amount),
+                code: 'EJ' + Math.random().toString(36).substr(2, 8).toUpperCase(),
+                purchasedAt: new Date().toISOString(),
+                isActive: true
+            };
+            
+            giftCards.push(newCard);
+            localStorage.setItem('userGiftCards', JSON.stringify(giftCards));
+            loadGiftCards();
+            showErrorMessage(`Gift card purchased! Code: ${newCard.code}`, 'success');
+        }
+
+        // Appearance Modal
+        function openAppearanceModal() {
+            const modal = document.getElementById('appearanceModal');
+            if (!modal) {
+                console.error('Appearance modal not found');
+                return;
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Update current theme selection
+            try {
+                const currentTheme = localStorage.getItem('selectedTheme') || 'light';
+                const themeInput = document.querySelector(`input[value="${currentTheme}"]`);
+                
+                if (themeInput) {
+                    themeInput.checked = true;
+                    
+                    // Remove all selected classes first
+                    document.querySelectorAll('.theme-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to current theme
+                    const themeOption = themeInput.closest('.theme-option');
+                    if (themeOption) {
+                        themeOption.classList.add('selected');
+                    }
+                } else {
+                    console.warn('Theme input not found for:', currentTheme);
+                }
+            } catch (error) {
+                console.error('Error updating theme selection:', error);
+            }
+        }
+
+        function closeAppearanceModal() {
+            const modal = document.getElementById('appearanceModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function setTheme(theme) {
+            console.log('🎨 Setting theme to:', theme);
+            
+            try {
+                // Update radio button
+                const themeInput = document.querySelector(`input[value="${theme}"]`);
+                if (themeInput) {
+                    themeInput.checked = true;
+                }
+                
+                // Update selected state
+                document.querySelectorAll('.theme-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                const selectedOption = document.querySelector(`input[value="${theme}"]`)?.closest('.theme-option');
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+                
+                // Apply theme
+                localStorage.setItem('selectedTheme', theme);
+                applyTheme(theme);
+                
+                // Update profile drawer label
+                const themeLabel = document.getElementById('currentThemeLabel');
+                if (themeLabel) {
+                    themeLabel.textContent = theme.toUpperCase();
+                }
+                
+                showErrorMessage(`${theme.charAt(0).toUpperCase() + theme.slice(1)} mode enabled`, 'success');
+                
+                console.log('✅ Theme switching completed');
+                
+                // Close modal after a brief delay
+                setTimeout(() => {
+                    closeAppearanceModal();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Error setting theme:', error);
+                showErrorMessage('Failed to change theme', 'error');
+            }
+        }
+
+        function applyTheme(theme) {
+            console.log('🎨 Applying theme:', theme);
+            
+            const root = document.documentElement;
+            const body = document.body;
+            const mobileContainer = document.querySelector('.mobile-container');
+            
+            // Remove existing theme classes
+            body.classList.remove('dark-theme', 'light-theme');
+            
+            if (theme === 'dark') {
+                // Apply dark theme
+                body.classList.add('dark-theme');
+                if (mobileContainer) {
+                    mobileContainer.style.background = '#1f2937';
+                    mobileContainer.style.color = '#f9fafb';
+                }
+                
+                // Update CSS variables
+                root.style.setProperty('--bg-color', '#1f2937');
+                root.style.setProperty('--text-color', '#f9fafb');
+                root.style.setProperty('--card-bg', '#374151');
+                root.style.setProperty('--border-color', '#4b5563');
+                root.style.setProperty('--header-bg', '#111827');
+                root.style.setProperty('--modal-bg', '#374151');
+                
+                // Apply dark theme to specific elements
+                const profileDrawer = document.querySelector('.profile-drawer-content');
+                if (profileDrawer) {
+                    profileDrawer.style.background = '#374151';
+                    profileDrawer.style.color = '#f9fafb';
+                }
+                
+                const modals = document.querySelectorAll('.modal-content');
+                modals.forEach(modal => {
+                    modal.style.background = '#374151';
+                    modal.style.color = '#f9fafb';
+                });
+                
+                console.log('✅ Dark theme applied');
+            } else {
+                // Apply light theme  
+                body.classList.add('light-theme');
+                if (mobileContainer) {
+                    mobileContainer.style.background = '#ffffff';
+                    mobileContainer.style.color = '#1f2937';
+                }
+                
+                // Update CSS variables
+                root.style.setProperty('--bg-color', '#ffffff');
+                root.style.setProperty('--text-color', '#1f2937');
+                root.style.setProperty('--card-bg', '#ffffff');
+                root.style.setProperty('--border-color', '#e5e7eb');
+                root.style.setProperty('--header-bg', '#ffffff');
+                root.style.setProperty('--modal-bg', '#f8f9fa');
+                
+                // Apply light theme to specific elements
+                const profileDrawer = document.querySelector('.profile-drawer-content');
+                if (profileDrawer) {
+                    profileDrawer.style.background = '#f8f9fa';
+                    profileDrawer.style.color = '#1f2937';
+                }
+                
+                const modals = document.querySelectorAll('.modal-content');
+                modals.forEach(modal => {
+                    modal.style.background = '#f8f9fa';
+                    modal.style.color = '#1f2937';
+                });
+                
+                console.log('✅ Light theme applied');
+            }
+            
+            // Update the profile drawer theme label
+            const themeLabel = document.getElementById('currentThemeLabel');
+            if (themeLabel) {
+                themeLabel.textContent = theme.toUpperCase();
+            }
+        }
+
+        // Test appearance functionality (for debugging)
+        function testAppearance() {
+            console.log('🔧 Testing appearance functionality...');
+            console.log('Current theme:', localStorage.getItem('selectedTheme') || 'light');
+            
+            // Test modal opening
+            try {
+                openAppearanceModal();
+                console.log('✅ Appearance modal opened successfully');
+            } catch (error) {
+                console.error('❌ Error opening appearance modal:', error);
+            }
+            
+            // Test theme switching
+            setTimeout(() => {
+                try {
+                    setTheme('dark');
+                    console.log('✅ Dark theme applied successfully');
+                } catch (error) {
+                    console.error('❌ Error applying dark theme:', error);
+                }
+            }, 2000);
+        }
+
+        // Make test function available globally for debugging
+        window.testAppearance = testAppearance;
+        window.setTheme = setTheme;
+        window.openAppearanceModal = openAppearanceModal;
+
+        // Add click event listener to appearance setting as backup
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const appearanceSetting = document.querySelector('.appearance-setting');
+                if (appearanceSetting) {
+                    // Remove any existing click handlers and add a new one
+                    appearanceSetting.removeAttribute('onclick');
+                    appearanceSetting.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('🎨 Appearance setting clicked');
+                        openAppearanceModal();
+                    });
+                    console.log('✅ Appearance setting click handler added');
+                } else {
+                    console.warn('⚠️ Appearance setting element not found');
+                }
+            }, 200);
+        });
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize theme after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                const savedTheme = localStorage.getItem('selectedTheme') || 'light';
+                console.log('🎨 Initializing theme:', savedTheme);
+                applyTheme(savedTheme);
+                if (document.getElementById('currentThemeLabel')) {
+                    document.getElementById('currentThemeLabel').textContent = savedTheme.toUpperCase();
+                }
+                console.log('✅ Theme initialization complete');
+            }, 100);
+        });
+
+        // Utility Functions
+        function resetPhoneForm() {
+            document.getElementById('phoneNumber').value = '';
+            document.getElementById('countryCode').value = '+1';
+        }
+
+        function resetOTPForm() {
+            const otpInputs = document.querySelectorAll('.otp-digit');
+            otpInputs.forEach(input => input.value = '');
+        }
+
+        function moveToNext(current, index) {
+            if (current.value.length === 1 && index < 5) {
+                const nextInput = document.querySelectorAll('.otp-digit')[index + 1];
+                if (nextInput) nextInput.focus();
+            }
+            
+            // Auto verify if all digits entered
+            const otpInputs = document.querySelectorAll('.otp-digit');
+            const otp = Array.from(otpInputs).map(input => input.value).join('');
+            if (otp.length === 6) {
+                setTimeout(() => verifyOTP(), 500);
+            }
+        }
+
+        function showErrorMessage(message, type = 'error') {
+            // Create toast notification
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            let backgroundColor;
+            switch(type) {
+                case 'success': backgroundColor = '#10b981'; break;
+                case 'info': backgroundColor = '#3b82f6'; break;
+                case 'warning': backgroundColor = '#f59e0b'; break;
+                default: backgroundColor = '#ef4444'; // error
+            }
+            
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${backgroundColor};
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 500;
+                z-index: 25000;
+                animation: slideDown 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease-out forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Check if user is already logged in on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('firebaseUser');
+            if (savedUser && auth.currentUser) {
+                updateHeaderForLoggedInUser(auth.currentUser);
+            }
+        });
+
+        // Update existing showProfile function to open auth modal
+        function showProfile() {
+            if (currentUser) {
+                showUserProfile();
+            } else {
+                openAuthModal();
+            }
+        }
+        
+        // Check authentication status on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (firebaseInitialized) {
+                console.log('🔥 Firebase authentication system ready!');
+                console.log('✅ Available sign-in methods: Phone OTP, Google, Facebook, Apple');
+                
+                // Check for any saved user data
+                const savedUser = localStorage.getItem('firebaseUser');
+                if (savedUser && auth.currentUser) {
+                    updateHeaderForLoggedInUser(auth.currentUser);
+                    console.log('👤 User already logged in');
+                } else {
+                    // Show success notification for new users
+                    setTimeout(() => {
+                        showErrorMessage('Authentication system ready! Click profile icon to sign in.', 'success');
+                    }, 2000);
+                }
+            } else {
+                console.log('⚠️ Firebase authentication setup incomplete');
+                console.log('📖 Please enable authentication methods in Firebase Console');
+            }
+        });
+
+        // Add CSS for toast animations
+        const toastStyles = document.createElement('style');
+        toastStyles.textContent = `
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            @keyframes slideUp {
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(toastStyles);
+
     </script>
 </body>
 </html> 
