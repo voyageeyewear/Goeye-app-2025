@@ -157,7 +157,7 @@ export async function loader() {
     console.error('Error fetching Shopify data:', error);
   }
   
-  return json({
+  return json({ 
     config: getDefaultConfiguration(),
     shopifyCollections,
     shopifyProducts,
@@ -168,32 +168,32 @@ export async function loader() {
 export async function action({ request }) {
   const formData = await request.formData();
   const configData = formData.get("config");
-  
+
   try {
     const config = JSON.parse(configData);
     
     // Save configuration via API
-    const response = await fetch('http://localhost:3000/api/app-config', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const response = await fetch('http://localhost:3000/api/app-config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       body: JSON.stringify(config),
-    });
-    
-    if (response.ok) {
-      return json({
-        success: true,
-        message: "✅ Configuration saved and broadcast successfully!"
       });
-    } else {
-      throw new Error('Failed to save configuration');
-    }
+      
+      if (response.ok) {
+        return json({ 
+          success: true, 
+        message: "✅ Configuration saved and broadcast successfully!"
+        });
+      } else {
+        throw new Error('Failed to save configuration');
+      }
   } catch (error) {
     console.error("Error saving config:", error);
     
-    return json({
-      success: false,
+    return json({ 
+      success: false, 
       message: "❌ Failed to save configuration: " + error.message
     });
   }
@@ -203,7 +203,7 @@ export default function AdminLiveRenderingDev() {
   const { config: initialConfig, shopifyCollections, shopifyProducts, message } = useLoaderData();
   const actionData = useActionData();
   const submit = useSubmit();
-  
+
   const [config, setConfig] = useState(initialConfig || getDefaultConfiguration());
   const [selectedTab, setSelectedTab] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
@@ -247,8 +247,8 @@ export default function AdminLiveRenderingDev() {
   ];
 
   return (
-    <div style={{
-      maxWidth: '1200px',
+    <div style={{ 
+      maxWidth: '1200px', 
       margin: '0 auto',
       padding: '20px',
       fontFamily: 'Inter, sans-serif'
@@ -269,7 +269,7 @@ export default function AdminLiveRenderingDev() {
           Configure your mobile app in real-time and see changes instantly!
         </p>
         
-        <div style={{ 
+          <div style={{
           display: 'grid', 
           gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
           gap: '20px',
@@ -293,19 +293,19 @@ export default function AdminLiveRenderingDev() {
       </div>
 
       {/* Action Messages */}
-      {actionData?.message && (
-        <div style={{
+        {actionData?.message && (
+          <div style={{
           background: actionData.success ? '#10B981' : '#EF4444',
           color: 'white',
           padding: '15px 20px',
           borderRadius: '12px',
-          marginBottom: '20px',
+            marginBottom: '20px',
           fontWeight: '600',
           boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-        }}>
+          }}>
           {actionData.message}
-        </div>
-      )}
+          </div>
+        )}
 
       {/* Controls */}
       <div style={{
@@ -319,7 +319,7 @@ export default function AdminLiveRenderingDev() {
         boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
       }}>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <button 
+          <button
             onClick={handleSave}
             disabled={isSaving}
             style={{
@@ -336,7 +336,7 @@ export default function AdminLiveRenderingDev() {
             {isSaving ? '⏳ Saving...' : '💾 Save & Broadcast'}
           </button>
           
-          <button 
+          <button
             onClick={handleAutoSave}
             style={{
               background: '#3B82F6',
@@ -410,22 +410,22 @@ export default function AdminLiveRenderingDev() {
         padding: '8px',
         marginBottom: '20px',
         boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        overflowX: 'auto'
-      }}>
-        {tabs.map((tab, index) => (
-          <button
-            key={tab.id}
-            onClick={() => setSelectedTab(index)}
-            style={{
+          overflowX: 'auto'
+        }}>
+          {tabs.map((tab, index) => (
+            <button
+              key={tab.id}
+              onClick={() => setSelectedTab(index)}
+              style={{
               flex: '1',
               minWidth: '140px',
               padding: '12px 16px',
-              border: 'none',
+                border: 'none',
               borderRadius: '8px',
               background: selectedTab === index ? '#3B82F6' : 'transparent',
               color: selectedTab === index ? 'white' : '#6B7280',
               fontWeight: selectedTab === index ? '600' : '500',
-              cursor: 'pointer',
+                cursor: 'pointer',
               transition: 'all 0.2s',
               borderBottom: selectedTab === index ? '3px solid #1D4ED8' : '3px solid transparent',
               transform: selectedTab === index ? 'translateY(-2px)' : 'translateY(0)',
@@ -445,11 +445,11 @@ export default function AdminLiveRenderingDev() {
             }}
           >
             {tab.label}
-          </button>
-        ))}
-      </div>
+            </button>
+          ))}
+        </div>
 
-      {/* Tab Content */}
+        {/* Tab Content */}
       <div style={{
         background: 'white',
         borderRadius: '12px',
@@ -457,13 +457,13 @@ export default function AdminLiveRenderingDev() {
         boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
       }}>
         {selectedTab === 0 && <AnnouncementConfig config={config.announcementBar} updateConfig={updateConfig} />}
-        {selectedTab === 1 && <HeaderConfig config={config.header} updateConfig={updateConfig} />}
+          {selectedTab === 1 && <HeaderConfig config={config.header} updateConfig={updateConfig} />}
         {selectedTab === 2 && <SearchConfig config={config.search} updateConfig={updateConfig} />}
         {selectedTab === 3 && <SliderConfig config={config.slider} updateConfig={updateConfig} />}
         {selectedTab === 4 && <div>📂 Categories Configuration coming soon...</div>}
         {selectedTab === 5 && <div>🛍️ Products Configuration coming soon...</div>}
         {selectedTab === 6 && <div>📄 Footer Configuration coming soon...</div>}
-      </div>
+        </div>
 
       {/* Live Preview Modal */}
       {showPreviewModal && (
@@ -507,7 +507,7 @@ export default function AdminLiveRenderingDev() {
                 <p style={{ opacity: '0.9', fontSize: '14px' }}>
                   Real-time preview of your EyeJack mobile app with current configuration
                 </p>
-              </div>
+      </div>
               <button
                 onClick={() => setShowPreviewModal(false)}
                 style={{
@@ -665,22 +665,22 @@ function AnnouncementConfig({ config, updateConfig }) {
       }}>
         <h3 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '10px' }}>
           📢 Announcement Bar Configuration
-        </h3>
+      </h3>
         <p style={{ opacity: '0.9', fontSize: '1.1rem' }}>
           Configure scrolling announcements with auto-slide functionality and custom styling.
         </p>
       </div>
-
+      
       <div>
         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <input
-            type="checkbox"
-            checked={config.enabled}
-            onChange={(e) => updateConfig('announcementBar', { enabled: e.target.checked })}
-            style={{ width: '18px', height: '18px' }}
-          />
+        <input
+          type="checkbox"
+          checked={config.enabled}
+          onChange={(e) => updateConfig('announcementBar', { enabled: e.target.checked })}
+          style={{ width: '18px', height: '18px' }}
+        />
           <span style={{ fontWeight: '600' }}>Enable announcement bar</span>
-        </label>
+      </label>
       </div>
 
       {config.enabled && (
@@ -699,18 +699,18 @@ function AnnouncementConfig({ config, updateConfig }) {
             <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
                 Add New Announcement
-              </label>
+        </label>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <input
                   type="text"
                   value={newAnnouncementText}
                   onChange={(e) => setNewAnnouncementText(e.target.value)}
                   placeholder="Enter announcement text..."
-                  style={{
+          style={{
                     flex: 1,
-                    padding: '12px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '8px',
+            padding: '12px',
+            border: '1px solid #d1d5db',
+            borderRadius: '8px',
                     fontSize: '14px'
                   }}
                   onKeyPress={(e) => {
@@ -736,7 +736,7 @@ function AnnouncementConfig({ config, updateConfig }) {
                   Add
                 </button>
               </div>
-            </div>
+      </div>
 
             <div>
               <label style={{ display: 'block', fontWeight: '600', marginBottom: '12px' }}>
@@ -845,29 +845,29 @@ function AnnouncementConfig({ config, updateConfig }) {
 
           {/* Styling Options */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
-            <div>
-              <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
-                Background color
-              </label>
-              <input
-                type="color"
-                value={config.backgroundColor}
-                onChange={(e) => updateConfig('announcementBar', { backgroundColor: e.target.value })}
-                style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
-              />
-            </div>
-            
-            <div>
-              <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
-                Text color
-              </label>
-              <input
-                type="color"
-                value={config.textColor}
-                onChange={(e) => updateConfig('announcementBar', { textColor: e.target.value })}
-                style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
-              />
-            </div>
+        <div>
+          <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+            Background color
+          </label>
+          <input
+            type="color"
+            value={config.backgroundColor}
+            onChange={(e) => updateConfig('announcementBar', { backgroundColor: e.target.value })}
+            style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
+          />
+        </div>
+        
+        <div>
+          <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+            Text color
+          </label>
+          <input
+            type="color"
+            value={config.textColor}
+            onChange={(e) => updateConfig('announcementBar', { textColor: e.target.value })}
+            style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
+          />
+        </div>
             
             <div>
               <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
@@ -880,28 +880,28 @@ function AnnouncementConfig({ config, updateConfig }) {
                 value={config.fontSize || 16}
                 onChange={(e) => updateConfig('announcementBar', { fontSize: parseInt(e.target.value) })}
                 style={{ width: '100%' }}
-              />
-            </div>
-          </div>
+          />
+        </div>
+      </div>
 
-          {/* Live Preview */}
-          <div style={{ marginTop: '20px' }}>
-            <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
-              Live Preview
-            </label>
-            <div
-              style={{
-                background: config.backgroundColor,
-                color: config.textColor,
+      {/* Live Preview */}
+      <div style={{ marginTop: '20px' }}>
+        <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+          Live Preview
+        </label>
+        <div
+          style={{
+            background: config.backgroundColor,
+            color: config.textColor,
                 padding: '15px 20px',
-                borderRadius: '8px',
-                textAlign: 'center',
+            borderRadius: '8px',
+            textAlign: 'center',
                 fontSize: (config.fontSize || 16) + 'px',
                 fontWeight: '500',
                 position: 'relative',
                 border: '1px solid #e5e7eb'
-              }}
-            >
+          }}
+        >
               {config.showNavigation !== false && announcements.length > 1 && (
                 <>
                   <div style={{
@@ -919,7 +919,7 @@ function AnnouncementConfig({ config, updateConfig }) {
                     fontSize: '14px'
                   }}>
                     ←
-                  </div>
+        </div>
                   <div style={{
                     position: 'absolute',
                     right: '10px',
@@ -935,7 +935,7 @@ function AnnouncementConfig({ config, updateConfig }) {
                     fontSize: '14px'
                   }}>
                     →
-                  </div>
+      </div>
                 </>
               )}
               {announcements[0] || 'Your announcement text will appear here'}
@@ -1039,7 +1039,7 @@ function HeaderConfig({ config, updateConfig }) {
       }}>
         <h3 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '10px' }}>
           🏠 EyeJack Header Configuration
-        </h3>
+      </h3>
         <p style={{ opacity: '0.9', fontSize: '1.1rem' }}>
           Configure the main header with logo, navigation, and functional icons.
         </p>
@@ -1076,7 +1076,7 @@ function HeaderConfig({ config, updateConfig }) {
               📁 Option 1: Upload Logo File
             </h5>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', alignItems: 'start' }}>
-              <div>
+      <div>
                 <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
                   Choose File
                 </label>
@@ -1374,7 +1374,7 @@ function HeaderConfig({ config, updateConfig }) {
             style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
           />
         </div>
-        
+
         <div>
           <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
             Menu Type
@@ -1418,7 +1418,7 @@ function HeaderConfig({ config, updateConfig }) {
           />
           <span style={{ fontWeight: '500' }}>Profile</span>
         </label>
-
+        
         <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <input
             type="checkbox"
@@ -1535,12 +1535,12 @@ function SearchConfig({ config, updateConfig }) {
       }}>
         <h3 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '10px' }}>
           🔍 Smart Search Configuration
-        </h3>
+      </h3>
         <p style={{ opacity: '0.9', fontSize: '1.1rem' }}>
           Configure intelligent search with real-time Shopify product search, suggestions, and filters.
-        </p>
-      </div>
-
+      </p>
+    </div>
+      
       <div style={{ 
         background: '#f0f9ff', 
         padding: '20px', 
@@ -1553,12 +1553,12 @@ function SearchConfig({ config, updateConfig }) {
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <input
-              type="checkbox"
+                  <input
+                    type="checkbox"
               checked={config?.enabled !== false}
               onChange={(e) => updateConfig('search', { enabled: e.target.checked })}
-              style={{ width: '18px', height: '18px' }}
-            />
+                    style={{ width: '18px', height: '18px' }}
+                  />
             <span style={{ fontWeight: '500' }}>Enable search functionality</span>
           </label>
 
@@ -1571,7 +1571,7 @@ function SearchConfig({ config, updateConfig }) {
             />
             <span style={{ fontWeight: '500' }}>Show search suggestions</span>
           </label>
-
+                
           <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <input
               type="checkbox"
@@ -1591,7 +1591,7 @@ function SearchConfig({ config, updateConfig }) {
             />
             <span style={{ fontWeight: '500' }}>Show search filters</span>
           </label>
-        </div>
+                </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -1651,12 +1651,12 @@ function SearchConfig({ config, updateConfig }) {
             <option value="title">A-Z</option>
             <option value="created">Newest First</option>
           </select>
-        </div>
+      </div>
 
         <div>
           <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
             Search scope
-          </label>
+      </label>
           <select
             value={config?.searchScope || 'all'}
             onChange={(e) => updateConfig('search', { searchScope: e.target.value })}
@@ -1677,39 +1677,39 @@ function SearchConfig({ config, updateConfig }) {
       </div>
 
       {/* Search Preview */}
-      <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '20px' }}>
         <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
           🔍 Search Bar Preview
-        </label>
-        <div style={{
+          </label>
+          <div style={{
           background: '#2563EB',
           padding: '15px 20px',
-          borderRadius: '8px',
-          color: 'white'
-        }}>
-          <div style={{
-            background: 'rgba(255,255,255,0.9)',
             borderRadius: '8px',
+          color: 'white'
+          }}>
+            <div style={{ 
+            background: 'rgba(255,255,255,0.9)',
+                  borderRadius: '8px',
             padding: '12px 15px',
             color: '#1f2937',
             display: 'flex',
             alignItems: 'center',
             gap: '10px'
-          }}>
+                }}>
             <span style={{ fontSize: '16px' }}>🔍</span>
             <span style={{ flex: 1, color: '#6b7280' }}>
               {config?.placeholder || 'Search products...'}
             </span>
             <span style={{ fontSize: '14px', color: '#9ca3af' }}>×</span>
-          </div>
-        </div>
+                  </div>
+                  </div>
         
         <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px' }}>
           ✅ Search connects to your Shopify store for real product results
           {config?.instantSearch !== false && ' • Real-time search enabled'}
           {config?.showSuggestions !== false && ' • Search suggestions enabled'}
-        </div>
-      </div>
+                </div>
+            </div>
     </div>
   );
 }
@@ -1771,7 +1771,7 @@ function SliderConfig({ config, updateConfig }) {
 
   return (
     <div style={{ display: 'grid', gap: '25px' }}>
-      <div style={{
+      <div style={{ 
         background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
         borderRadius: '12px',
         padding: '25px',
@@ -1786,7 +1786,7 @@ function SliderConfig({ config, updateConfig }) {
       </div>
 
       {/* Slider Settings */}
-      <div style={{
+          <div style={{ 
         background: '#f8fafc',
         padding: '20px',
         borderRadius: '12px',
@@ -1836,7 +1836,7 @@ function SliderConfig({ config, updateConfig }) {
             />
             <span style={{ fontWeight: '600' }}>Show arrow navigation</span>
           </label>
-        </div>
+                  </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '20px' }}>
           <div>
@@ -1852,7 +1852,7 @@ function SliderConfig({ config, updateConfig }) {
               onChange={(e) => updateConfig('slider', { interval: parseFloat(e.target.value) * 1000 })}
               style={{ width: '100%' }}
             />
-          </div>
+                  </div>
 
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
@@ -1865,7 +1865,7 @@ function SliderConfig({ config, updateConfig }) {
                 width: '100%',
                 padding: '12px',
                 border: '1px solid #d1d5db',
-                borderRadius: '8px',
+            borderRadius: '8px',
                 fontSize: '14px'
               }}
             >
@@ -1879,9 +1879,9 @@ function SliderConfig({ config, updateConfig }) {
       </div>
 
       {/* Add New Slide */}
-      <div style={{
+      <div style={{ 
         background: '#f0f9ff',
-        padding: '20px',
+        padding: '20px', 
         borderRadius: '12px',
         border: '1px solid #0ea5e9'
       }}>
@@ -1908,7 +1908,7 @@ function SliderConfig({ config, updateConfig }) {
               }}
             />
           </div>
-
+          
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
               Subtitle
@@ -1934,7 +1934,7 @@ function SliderConfig({ config, updateConfig }) {
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
               Background Image URL *
             </label>
-            <input
+          <input
               type="url"
               value={newSlide.backgroundImage}
               onChange={(e) => setNewSlide({...newSlide, backgroundImage: e.target.value})}
@@ -1947,7 +1947,7 @@ function SliderConfig({ config, updateConfig }) {
                 fontSize: '14px'
               }}
             />
-          </div>
+      </div>
 
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
@@ -1967,8 +1967,8 @@ function SliderConfig({ config, updateConfig }) {
               }}
             />
           </div>
-        </div>
-
+          </div>
+          
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
@@ -1991,24 +1991,24 @@ function SliderConfig({ config, updateConfig }) {
               <option value="deals">Deals & Offers</option>
               <option value="custom">Custom Action</option>
             </select>
-          </div>
+        </div>
 
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
               Text Color
             </label>
-            <input
+          <input
               type="color"
               value={newSlide.textColor}
               onChange={(e) => setNewSlide({...newSlide, textColor: e.target.value})}
               style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
-            />
+          />
           </div>
 
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
               Overlay Opacity: {(newSlide.overlayOpacity * 100).toFixed(0)}%
-            </label>
+        </label>
             <input
               type="range"
               min="0"
@@ -2019,7 +2019,7 @@ function SliderConfig({ config, updateConfig }) {
               style={{ width: '100%' }}
             />
           </div>
-        </div>
+      </div>
 
         <button
           onClick={addSlide}
@@ -2046,7 +2046,7 @@ function SliderConfig({ config, updateConfig }) {
         </h4>
         
         {config?.slides?.length === 0 ? (
-          <div style={{
+      <div style={{ 
             textAlign: 'center',
             padding: '40px',
             background: '#f9fafb',
@@ -2081,7 +2081,7 @@ function SliderConfig({ config, updateConfig }) {
                   <div style={{
                     width: '200px',
                     height: '100px',
-                    borderRadius: '8px',
+        borderRadius: '8px',
                     backgroundImage: `linear-gradient(rgba(0,0,0,${slide.overlayOpacity}), rgba(0,0,0,${slide.overlayOpacity})), url('${slide.backgroundImage}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -2095,10 +2095,10 @@ function SliderConfig({ config, updateConfig }) {
                   }}>
                     <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '4px' }}>
                       {slide.title}
-                    </div>
+          </div>
                     <div style={{ fontSize: '11px', opacity: '0.9' }}>
                       {slide.subtitle}
-                    </div>
+          </div>
                     {slide.buttonText && (
                       <div style={{
                         position: 'absolute',
@@ -2111,9 +2111,9 @@ function SliderConfig({ config, updateConfig }) {
                         fontWeight: '600'
                       }}>
                         {slide.buttonText}
-                      </div>
+        </div>
                     )}
-                  </div>
+      </div>
 
                   {/* Slide Info */}
                   <div>
@@ -2138,7 +2138,7 @@ function SliderConfig({ config, updateConfig }) {
                       }}>
                         {slide.enabled ? 'Active' : 'Disabled'}
                       </span>
-                    </div>
+    </div>
                     <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '4px' }}>
                       {slide.title}
                     </div>
@@ -2197,7 +2197,7 @@ function SliderConfig({ config, updateConfig }) {
                     >
                       Delete
                     </button>
-                  </div>
+    </div>
                 </div>
               </div>
             ))}

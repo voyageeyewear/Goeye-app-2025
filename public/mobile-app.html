@@ -162,17 +162,21 @@
 
         /* Header */
         .header {
-            background: white;
+            background: rgba(128, 128, 128, 0.15);
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 12px 16px;
+            background-color:  rgb(255 255 255 / 0%) !important;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
             z-index: 100;
-
         }
 
         .header-left {
@@ -211,12 +215,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
         }
 
         .hamburger-menu:hover {
             background-color: #f3f4f6;
             transform: scale(1.05);
         }
+
+
 
         .hamburger-menu svg {
             width: 24px;
@@ -233,11 +240,14 @@
             border-radius: 6px;
             transition: background-color 0.2s ease;
             display: inline-block;
+            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
         }
 
         .search-icon:hover {
             background-color: #f3f4f6;
         }
+
+
 
         .search-icon svg {
             width: 22px;
@@ -254,7 +264,7 @@
         }
 
         .logo img {
-            height: 32px;
+            height: 48px;
             width: auto;
             max-width: 120px;
             object-fit: contain;
@@ -265,6 +275,7 @@
             font-weight: 600;
             color: #1f2937;
             letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
         }
 
         .profile-icon {
@@ -274,11 +285,14 @@
             border-radius: 6px;
             transition: background-color 0.2s ease;
             display: inline-block;
+            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
         }
 
         .profile-icon:hover {
             background-color: #f3f4f6;
         }
+
+
 
         .profile-icon svg {
             width: 24px;
@@ -294,6 +308,7 @@
             padding: 4px;
             border-radius: 6px;
             transition: background-color 0.2s ease;
+            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
         }
 
         .cart-container:hover {
@@ -332,12 +347,15 @@
             opacity: 1;
         }
 
-        /* Hero Slider */
+
+
+        /* Modern Banner */
         .hero-slider {
-            height: 250px;
+            height: 400px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
             overflow: hidden;
+            margin-top: 0;
         }
 
         .hero-slide {
@@ -363,6 +381,7 @@
             text-align: center;
             color: white;
             z-index: 2;
+            padding-top: 50px;
         }
 
         .hero-title {
@@ -418,6 +437,8 @@
         /* Section Headers */
         .section {
             padding: 20px;
+            /* Ensure no overflow clipping for category hover effects */
+            overflow: visible;
         }
 
         .section-header {
@@ -444,9 +465,11 @@
             align-items: center;
             gap: 25px;
             margin-bottom: 30px;
-            padding: 0 20px;
+            padding: 15px 20px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            /* Ensure circles don't get cut off during hover */
+            overflow-y: visible;
         }
 
         .category-card {
@@ -456,6 +479,8 @@
             min-width: 100px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            /* Add margin to prevent clipping during hover */
+            margin: 10px 0;
         }
 
         .category-card:hover {
@@ -1456,7 +1481,7 @@
 
         <!-- Announcement Bar -->
         <div class="announcement-bar" id="announcementBar">
-            <button class="announcement-nav prev" onclick="previousAnnouncement()">
+            <button class="announcement-nav prev" onclick="event.stopPropagation(); event.preventDefault(); previousAnnouncement();">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.5">
                     <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
                 </svg>
@@ -1464,7 +1489,7 @@
             <div class="announcement-text">
                 <div class="announcement-text-content">Free shipping on orders $50+</div>
             </div>
-            <button class="announcement-nav next" onclick="nextAnnouncement()">
+            <button class="announcement-nav next" onclick="event.stopPropagation(); event.preventDefault(); nextAnnouncement();">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                 </svg>
@@ -1553,13 +1578,13 @@
                 <div class="category-card" onclick="showCategory('beauty')">
                     <div class="category-circle rose">
                         <div class="category-icon">🌹</div>
-                    </div>
+                </div>
                     <div class="category-name">Beauty</div>
                 </div>
                 <div class="category-card" onclick="showCategory('wellness')">
                     <div class="category-circle citrus">
                         <div class="category-icon">🍋</div>
-                    </div>
+                </div>
                     <div class="category-name">Wellness</div>
                 </div>
                 <div class="category-card" onclick="showCategory('lifestyle')">
@@ -1956,14 +1981,14 @@
                     header.style.backgroundColor = appConfig.header.backgroundColor || 'white';
                 }
                 
-                            // Update menu visibility
-            updateHeaderMenu();
-        }
+                // Update menu visibility
+                updateHeaderMenu();
+            }
 
         // Update slider
         if (appConfig.slider) {
             updateSliderFromConfig();
-        }
+            }
             
             showNotification('✨ App updated with new configuration!');
         }
@@ -2165,7 +2190,7 @@
                 console.log(`⏰ Starting auto-slider with ${interval}ms interval for ${slideCount} slides`);
                 window.sliderInterval = setInterval(() => {
                     currentSlide = (currentSlide + 1) % slideCount;
-                    updateSlider();
+                updateSlider();
                 }, interval);
             } else {
                 console.log('🔒 Auto-slider disabled in configuration');
@@ -2798,7 +2823,7 @@
                 if (deltaX > 100 && touchStartX < 50 && !isMenuOpen) {
                     openMenu();
                     e.preventDefault();
-                }
+            }
                 
                 // Swipe left to close menu when menu is open
                 if (deltaX < -100 && isMenuOpen) {
@@ -2966,8 +2991,8 @@
             if (!announcementTextContent || !announcementText || !announcementBar) {
                 console.log('Text elements not found');
                 return;
-            }
-            
+        }
+
             // Remove any existing multiline class and reset styles
             announcementTextContent.classList.remove('multiline');
             announcementTextContent.style.whiteSpace = 'nowrap';
@@ -3121,36 +3146,45 @@
             container.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 20px;">Failed to load products</div>';
         }
 
-        // Touch gestures for mobile
+        // Touch gestures for mobile - specific to hero slider only
         let startX = 0;
         let currentX = 0;
         let isScrolling = false;
 
-        document.addEventListener('touchstart', function(e) {
-            startX = e.touches[0].clientX;
-        });
+        // Get the hero slider element and only attach swipe handlers to it
+        const heroSliderElement = document.getElementById('heroSlider');
+        
+        if (heroSliderElement) {
+            heroSliderElement.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            });
 
-        document.addEventListener('touchmove', function(e) {
-            if (!isScrolling) {
-                currentX = e.touches[0].clientX;
-            }
-        });
-
-        document.addEventListener('touchend', function(e) {
-            if (!isScrolling) {
-                const diffX = startX - currentX;
-                if (Math.abs(diffX) > 50) { // Minimum swipe distance
-                    if (diffX > 0) {
-                        // Swipe left - next slide
-                        currentSlide = (currentSlide + 1) % 3;
-                    } else {
-                        // Swipe right - previous slide
-                        currentSlide = (currentSlide - 1 + 3) % 3;
-                    }
-                    updateSlider();
+            heroSliderElement.addEventListener('touchmove', function(e) {
+                if (!isScrolling) {
+                    currentX = e.touches[0].clientX;
                 }
-            }
-        });
+            });
+
+            heroSliderElement.addEventListener('touchend', function(e) {
+                if (!isScrolling) {
+                    const diffX = startX - currentX;
+                    if (Math.abs(diffX) > 50) { // Minimum swipe distance
+                        const slides = document.querySelectorAll('.hero-slide');
+                        const slideCount = slides.length;
+                        if (slideCount > 0) {
+                            if (diffX > 0) {
+                                // Swipe left - next slide
+                                currentSlide = (currentSlide + 1) % slideCount;
+                            } else {
+                                // Swipe right - previous slide
+                                currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+                            }
+                            updateSlider();
+                        }
+                    }
+                }
+            });
+        }
 
         // Add scroll detection for horizontal product lists
         document.querySelectorAll('.products-horizontal').forEach(container => {
