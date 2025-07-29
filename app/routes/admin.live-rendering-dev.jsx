@@ -461,7 +461,7 @@ export default function AdminLiveRenderingDev() {
         {selectedTab === 2 && <SearchConfig config={config.search} updateConfig={updateConfig} />}
         {selectedTab === 3 && <SliderConfig config={config.slider} updateConfig={updateConfig} />}
         {selectedTab === 4 && <div>📂 Categories Configuration coming soon...</div>}
-        {selectedTab === 5 && <div>🛍️ Products Configuration coming soon...</div>}
+        {selectedTab === 5 && <ProductsConfig config={config} updateConfig={updateConfig} />}
         {selectedTab === 6 && <div>📄 Footer Configuration coming soon...</div>}
         </div>
 
@@ -2297,6 +2297,445 @@ function SliderConfig({ config, updateConfig }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ProductsConfig({ config, updateConfig }) {
+  const newArrivalsConfig = config.newArrivals || {};
+  const bestSellerConfig = config.bestSeller || {};
+
+  return (
+    <div style={{ display: 'grid', gap: '25px' }}>
+      <div style={{
+        background: 'linear-gradient(135deg, #1f2937 0%, #4b5563 100%)',
+        borderRadius: '12px',
+        padding: '25px',
+        color: 'white'
+      }}>
+        <h3 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '10px' }}>
+          🛍️ EyeJack Products Configuration
+        </h3>
+        <p style={{ opacity: '0.9', fontSize: '1.1rem' }}>
+          Configure your New Arrivals and Best Sellers sections with enhanced product cards.
+        </p>
+      </div>
+
+      {/* New Arrivals Section */}
+      <div style={{
+        background: '#f0f9ff',
+        padding: '20px',
+        borderRadius: '12px',
+        border: '1px solid #0ea5e9'
+      }}>
+        <div style={{ marginBottom: '20px' }}>
+          <h4 style={{ fontSize: '1.3rem', fontWeight: '600', color: '#0c4a6e', marginBottom: '8px' }}>
+            ✨ New Arrivals Section
+          </h4>
+          <p style={{ color: '#075985', fontSize: '14px', margin: 0 }}>
+            Configure your New Arrivals section with enhanced product cards, star ratings, and premium design.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {/* Enable/Disable */}
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+              <input
+                type="checkbox"
+                checked={newArrivalsConfig.enabled !== false}
+                onChange={(e) => updateConfig('newArrivals', { enabled: e.target.checked })}
+                style={{ width: '18px', height: '18px' }}
+              />
+              <span style={{ fontWeight: '600' }}>Enable New Arrivals Section</span>
+            </label>
+          </div>
+
+          {newArrivalsConfig.enabled !== false && (
+            <>
+              {/* Title and Subtitle */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Section Title
+                  </label>
+                  <input
+                    type="text"
+                    value={newArrivalsConfig.title || 'New Arrivals'}
+                    onChange={(e) => updateConfig('newArrivals', { title: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Section Subtitle
+                  </label>
+                  <input
+                    type="text"
+                    value={newArrivalsConfig.subtitle || 'Check out our latest products'}
+                    onChange={(e) => updateConfig('newArrivals', { subtitle: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Layout and Items */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Layout Style
+                  </label>
+                  <select
+                    value={newArrivalsConfig.layout || 'horizontal'}
+                    onChange={(e) => updateConfig('newArrivals', { layout: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <option value="horizontal">Horizontal Scroll</option>
+                    <option value="grid">Grid Layout</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Items to Show: {newArrivalsConfig.itemsToShow || 10}
+                  </label>
+                  <input
+                    type="range"
+                    min="4"
+                    max="20"
+                    value={newArrivalsConfig.itemsToShow || 10}
+                    onChange={(e) => updateConfig('newArrivals', { itemsToShow: parseInt(e.target.value) })}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <input
+                      type="checkbox"
+                      checked={newArrivalsConfig.showViewAll !== false}
+                      onChange={(e) => updateConfig('newArrivals', { showViewAll: e.target.checked })}
+                      style={{ width: '18px', height: '18px' }}
+                    />
+                    <span style={{ fontWeight: '500' }}>Show "View All" Button</span>
+                  </label>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Best Sellers Section */}
+      <div style={{
+        background: '#fef3c7',
+        padding: '20px',
+        borderRadius: '12px',
+        border: '1px solid #f59e0b'
+      }}>
+        <div style={{ marginBottom: '20px' }}>
+          <h4 style={{ fontSize: '1.3rem', fontWeight: '600', color: '#92400e', marginBottom: '8px' }}>
+            ⭐ Best Sellers Section
+          </h4>
+          <p style={{ color: '#a16207', fontSize: '14px', margin: 0 }}>
+            Configure your Best Sellers section with traditional product cards and quick add-to-cart functionality.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {/* Enable/Disable */}
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+              <input
+                type="checkbox"
+                checked={bestSellerConfig.enabled !== false}
+                onChange={(e) => updateConfig('bestSeller', { enabled: e.target.checked })}
+                style={{ width: '18px', height: '18px' }}
+              />
+              <span style={{ fontWeight: '600' }}>Enable Best Sellers Section</span>
+            </label>
+          </div>
+
+          {bestSellerConfig.enabled !== false && (
+            <>
+              {/* Title and Subtitle */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Section Title
+                  </label>
+                  <input
+                    type="text"
+                    value={bestSellerConfig.title || 'Best Sellers'}
+                    onChange={(e) => updateConfig('bestSeller', { title: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Section Subtitle
+                  </label>
+                  <input
+                    type="text"
+                    value={bestSellerConfig.subtitle || 'Our most popular products'}
+                    onChange={(e) => updateConfig('bestSeller', { subtitle: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Layout and Items */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Layout Style
+                  </label>
+                  <select
+                    value={bestSellerConfig.layout || 'horizontal'}
+                    onChange={(e) => updateConfig('bestSeller', { layout: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <option value="horizontal">Horizontal Scroll</option>
+                    <option value="grid">Grid Layout</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                    Items to Show: {bestSellerConfig.itemsToShow || 10}
+                  </label>
+                  <input
+                    type="range"
+                    min="4"
+                    max="20"
+                    value={bestSellerConfig.itemsToShow || 10}
+                    onChange={(e) => updateConfig('bestSeller', { itemsToShow: parseInt(e.target.value) })}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <input
+                      type="checkbox"
+                      checked={bestSellerConfig.showViewAll !== false}
+                      onChange={(e) => updateConfig('bestSeller', { showViewAll: e.target.checked })}
+                      style={{ width: '18px', height: '18px' }}
+                    />
+                    <span style={{ fontWeight: '500' }}>Show "View All" Button</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Additional Options */}
+              <div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <input
+                    type="checkbox"
+                    checked={bestSellerConfig.showAddToCart !== false}
+                    onChange={(e) => updateConfig('bestSeller', { showAddToCart: e.target.checked })}
+                    style={{ width: '18px', height: '18px' }}
+                  />
+                  <span style={{ fontWeight: '500' }}>Show Add to Cart Buttons</span>
+                </label>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Live Preview */}
+      <div style={{
+        background: '#f8fafc',
+        padding: '20px',
+        borderRadius: '12px',
+        border: '1px solid #e2e8f0'
+      }}>
+        <div style={{ marginBottom: '15px' }}>
+          <h4 style={{ fontSize: '1.3rem', fontWeight: '600', color: '#1e293b', marginBottom: '8px' }}>
+            📱 Live Preview
+          </h4>
+          <p style={{ color: '#475569', fontSize: '14px', margin: 0 }}>
+            Preview how your products sections will appear on the mobile app.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {/* New Arrivals Preview */}
+          {newArrivalsConfig.enabled !== false && (
+            <div style={{
+              background: 'white',
+              padding: '16px',
+              borderRadius: '8px',
+              border: '1px solid #e2e8f0'
+            }}>
+              <div style={{ marginBottom: '12px' }}>
+                <h5 style={{ fontSize: '18px', fontWeight: '600', color: '#1e293b', margin: '0 0 4px 0' }}>
+                  {newArrivalsConfig.title || 'New Arrivals'}
+                </h5>
+                <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
+                  {newArrivalsConfig.subtitle || 'Check out our latest products'}
+                </p>
+              </div>
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                overflowX: 'auto',
+                padding: '8px 0'
+              }}>
+                {[1, 2, 3].slice(0, Math.min(3, newArrivalsConfig.itemsToShow || 10)).map(i => (
+                  <div key={i} style={{
+                    flex: '0 0 120px',
+                    background: '#f8fafc',
+                    borderRadius: '8px',
+                    padding: '12px',
+                    border: '1px solid #e2e8f0'
+                  }}>
+                    <div style={{
+                      width: '100%',
+                      height: '80px',
+                      background: '#e2e8f0',
+                      borderRadius: '6px',
+                      marginBottom: '8px'
+                    }} />
+                    <div style={{ fontSize: '12px', fontWeight: '500', marginBottom: '4px' }}>Enhanced Product {i}</div>
+                    <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '6px' }}>⭐⭐⭐⭐⭐ (4.5)</div>
+                    <div style={{ fontSize: '12px', fontWeight: '600', color: '#1e293b' }}>$29.99</div>
+                  </div>
+                ))}
+              </div>
+              {newArrivalsConfig.showViewAll !== false && (
+                <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                  <button style={{
+                    background: 'transparent',
+                    color: '#2563eb',
+                    border: '2px solid #2563eb',
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: '600'
+                  }}>
+                    View All New Arrivals
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Best Sellers Preview */}
+          {bestSellerConfig.enabled !== false && (
+            <div style={{
+              background: 'white',
+              padding: '16px',
+              borderRadius: '8px',
+              border: '1px solid #e2e8f0'
+            }}>
+              <div style={{ marginBottom: '12px' }}>
+                <h5 style={{ fontSize: '18px', fontWeight: '600', color: '#1e293b', margin: '0 0 4px 0' }}>
+                  {bestSellerConfig.title || 'Best Sellers'}
+                </h5>
+                <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
+                  {bestSellerConfig.subtitle || 'Our most popular products'}
+                </p>
+              </div>
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                overflowX: 'auto',
+                padding: '8px 0'
+              }}>
+                {[1, 2, 3].slice(0, Math.min(3, bestSellerConfig.itemsToShow || 10)).map(i => (
+                  <div key={i} style={{
+                    flex: '0 0 100px',
+                    background: '#f8fafc',
+                    borderRadius: '8px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0'
+                  }}>
+                    <div style={{
+                      width: '100%',
+                      height: '60px',
+                      background: '#e2e8f0',
+                      borderRadius: '4px',
+                      marginBottom: '6px'
+                    }} />
+                    <div style={{ fontSize: '10px', fontWeight: '500', marginBottom: '2px' }}>Product {i}</div>
+                    <div style={{ fontSize: '8px', color: '#64748b', marginBottom: '4px' }}>Brand Name</div>
+                    <div style={{ fontSize: '10px', fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>$19.99</div>
+                    {bestSellerConfig.showAddToCart !== false && (
+                      <button style={{
+                        width: '100%',
+                        background: '#2563eb',
+                        color: 'white',
+                        border: 'none',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        fontSize: '8px',
+                        fontWeight: '600'
+                      }}>
+                        Add to Cart
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {bestSellerConfig.showViewAll !== false && (
+                <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                  <button style={{
+                    background: 'transparent',
+                    color: '#2563eb',
+                    border: '2px solid #2563eb',
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: '600'
+                  }}>
+                    View All Best Sellers
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 } 

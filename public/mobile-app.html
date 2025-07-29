@@ -927,7 +927,7 @@
         .footer {
             background: #1f2937;
             color: white;
-            padding: 30px 20px;
+            padding: 30px 20px 100px 20px;
             margin-top: 40px;
         }
 
@@ -1852,7 +1852,7 @@
                 <h2 class="section-title">⭐ Best Sellers</h2>
                 <p class="section-subtitle">Our most popular products</p>
             </div>
-            <div class="products-horizontal" id="bestSellers">
+            <div class="products-horizontal enhanced" id="bestSellers">
                 <div class="loading" id="bestSellersLoading"></div>
             </div>
             <button class="view-all-btn" onclick="showAllBestSellers()">View All Best Sellers</button>
@@ -2684,8 +2684,8 @@
             container.innerHTML = '';
             
             productsData.forEach(product => {
-                // Use enhanced cards for new arrivals, regular cards for other sections
-                const productCard = containerId === 'newArrivals' 
+                // Use enhanced cards for new arrivals and best sellers, regular cards for other sections
+                const productCard = (containerId === 'newArrivals' || containerId === 'bestSellers') 
                     ? createEnhancedProductCard(product)
                     : createProductCard(product);
                 container.appendChild(productCard);
