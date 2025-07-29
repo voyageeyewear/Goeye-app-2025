@@ -437,38 +437,113 @@
             font-size: 14px;
         }
 
-        /* Categories Grid */
+        /* Categories Grid - Elegant Circular Design */
         .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .category-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
         .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+        }
+
+        .category-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover .category-circle {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Elegant pastel backgrounds for different categories */
+        .category-circle.rose {
+            background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 100%);
+        }
+
+        .category-circle.citrus {
+            background: linear-gradient(135deg, #fefce8 0%, #ecfdf5 100%);
+        }
+
+        .category-circle.floral {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .category-circle.ocean {
+            background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+        }
+
+        .category-circle.earth {
+            background: linear-gradient(135deg, #fef7ed 0%, #fdf4ff 100%);
+        }
+
+        .category-circle.sunset {
+            background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
         }
 
         .category-icon {
             font-size: 32px;
-            color: #2563EB;
-            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1);
         }
 
         .category-name {
             font-weight: 600;
-            color: #1f2937;
+            color: #374151;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: 0.025em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 375px) {
+            .categories-grid {
+                gap: 20px;
+                padding: 0 15px;
+            }
+            
+            .category-circle {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .category-icon {
+                font-size: 28px;
+            }
+            
+            .category-name {
+                font-size: 13px;
+            }
         }
 
         /* Product Cards */
@@ -1475,21 +1550,29 @@
                 <p class="section-subtitle">Explore our collection</p>
             </div>
             <div class="categories-grid" id="categoriesGrid">
-                <div class="category-card" onclick="showCategory('electronics')">
-                    <div class="category-icon">📱</div>
-                    <div class="category-name">Electronics</div>
+                <div class="category-card" onclick="showCategory('beauty')">
+                    <div class="category-circle rose">
+                        <div class="category-icon">🌹</div>
+                    </div>
+                    <div class="category-name">Beauty</div>
                 </div>
-                <div class="category-card" onclick="showCategory('fashion')">
-                    <div class="category-icon">👗</div>
-                    <div class="category-name">Fashion</div>
+                <div class="category-card" onclick="showCategory('wellness')">
+                    <div class="category-circle citrus">
+                        <div class="category-icon">🍋</div>
+                    </div>
+                    <div class="category-name">Wellness</div>
                 </div>
-                <div class="category-card" onclick="showCategory('home')">
-                    <div class="category-icon">🏠</div>
-                    <div class="category-name">Home & Garden</div>
+                <div class="category-card" onclick="showCategory('lifestyle')">
+                    <div class="category-circle floral">
+                        <div class="category-icon">🌸</div>
+                    </div>
+                    <div class="category-name">Lifestyle</div>
                 </div>
-                <div class="category-card" onclick="showCategory('sports')">
-                    <div class="category-icon">⚽</div>
-                    <div class="category-name">Sports</div>
+                <div class="category-card" onclick="showCategory('skincare')">
+                    <div class="category-circle ocean">
+                        <div class="category-icon">💧</div>
+                    </div>
+                    <div class="category-name">Skincare</div>
                 </div>
             </div>
             <button class="view-all-btn" onclick="showAllCategories()">View All Categories</button>
@@ -1714,6 +1797,11 @@
             initializeApp();
             setupSlider();
             initializeAnnouncementSlider();
+            
+            // Initialize slider from config if available
+            if (appConfig && appConfig.slider) {
+                updateSliderFromConfig();
+            }
             
             // Load real data from Shopify
             console.log('📊 Loading real data from Shopify store...');
@@ -2054,10 +2142,34 @@
 
         // Slider functionality
         function setupSlider() {
-            setInterval(() => {
-                currentSlide = (currentSlide + 1) % 3;
-                updateSlider();
-            }, 5000);
+            // Clear any existing interval
+            if (window.sliderInterval) {
+                clearInterval(window.sliderInterval);
+                window.sliderInterval = null;
+            }
+
+            // Get slide count from current DOM
+            const slides = document.querySelectorAll('.hero-slide');
+            const slideCount = slides.length;
+            
+            if (slideCount <= 1) {
+                console.log('🔒 Auto-slider disabled: Only one slide available');
+                return;
+            }
+
+            // Use configuration if available, otherwise use defaults
+            const autoplay = appConfig?.slider?.autoplay !== false;
+            const interval = appConfig?.slider?.interval || 5000;
+            
+            if (autoplay) {
+                console.log(`⏰ Starting auto-slider with ${interval}ms interval for ${slideCount} slides`);
+                window.sliderInterval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % slideCount;
+                    updateSlider();
+                }, interval);
+            } else {
+                console.log('🔒 Auto-slider disabled in configuration');
+            }
         }
 
         function changeSlide(index) {
@@ -2069,6 +2181,11 @@
             const slides = document.querySelectorAll('.hero-slide');
             const indicators = document.querySelectorAll('.indicator');
             
+            // Ensure currentSlide is within bounds
+            if (slides.length > 0) {
+                currentSlide = Math.max(0, Math.min(currentSlide, slides.length - 1));
+            }
+            
             slides.forEach((slide, index) => {
                 slide.classList.toggle('active', index === currentSlide);
             });
@@ -2076,6 +2193,155 @@
             indicators.forEach((indicator, index) => {
                 indicator.classList.toggle('active', index === currentSlide);
             });
+        }
+
+        // Update slider from live configuration
+        function updateSliderFromConfig() {
+            console.log('🎨 Updating hero slider from configuration...', appConfig.slider);
+            
+            if (!appConfig.slider) {
+                console.log('⚠️ No slider configuration found');
+                return;
+            }
+
+            const sliderContainer = document.getElementById('heroSlider');
+            if (!sliderContainer) {
+                console.log('⚠️ Hero slider container not found');
+                return;
+            }
+
+            // Hide slider if disabled
+            if (appConfig.slider.enabled === false) {
+                sliderContainer.style.display = 'none';
+                console.log('🔒 Hero slider disabled');
+                return;
+            } else {
+                sliderContainer.style.display = 'block';
+                console.log('✅ Hero slider enabled');
+            }
+
+            // Clear existing slides
+            sliderContainer.innerHTML = '';
+
+            // Get only enabled slides
+            const enabledSlides = appConfig.slider.slides ? appConfig.slider.slides.filter(slide => slide.enabled !== false) : [];
+            
+            if (enabledSlides.length === 0) {
+                console.log('⚠️ No enabled slides found');
+                sliderContainer.innerHTML = '<div class="hero-slide active" style="display: flex; align-items: center; justify-content: center; background: #f3f4f6; color: #6b7280; height: 250px;">No slides configured</div>';
+                return;
+            }
+
+            console.log(`🎯 Creating ${enabledSlides.length} slides`);
+
+            // Create slides from configuration
+            enabledSlides.forEach((slideConfig, index) => {
+                const slide = document.createElement('div');
+                slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
+                
+                // Apply background image with overlay
+                const overlayOpacity = slideConfig.overlayOpacity || 0.4;
+                slide.style.backgroundImage = `linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${slideConfig.backgroundImage}')`;
+                
+                // Create slide content
+                const content = document.createElement('div');
+                content.className = 'hero-content';
+                
+                // Title
+                if (slideConfig.title) {
+                    const title = document.createElement('h2');
+                    title.className = 'hero-title';
+                    title.textContent = slideConfig.title;
+                    title.style.color = slideConfig.textColor || '#FFFFFF';
+                    content.appendChild(title);
+                }
+                
+                // Subtitle
+                if (slideConfig.subtitle) {
+                    const subtitle = document.createElement('p');
+                    subtitle.className = 'hero-subtitle';
+                    subtitle.textContent = slideConfig.subtitle;
+                    subtitle.style.color = slideConfig.textColor || '#FFFFFF';
+                    content.appendChild(subtitle);
+                }
+                
+                // Button
+                if (slideConfig.buttonText) {
+                    const button = document.createElement('button');
+                    button.className = 'hero-btn';
+                    button.textContent = slideConfig.buttonText;
+                    button.onclick = () => handleSlideAction(slideConfig.buttonAction, slideConfig.title);
+                    content.appendChild(button);
+                }
+                
+                slide.appendChild(content);
+                sliderContainer.appendChild(slide);
+            });
+
+            // Create indicators if enabled and multiple slides
+            if (appConfig.slider.showIndicators !== false && enabledSlides.length > 1) {
+                const indicatorsContainer = document.createElement('div');
+                indicatorsContainer.className = 'slider-indicators';
+                
+                enabledSlides.forEach((_, index) => {
+                    const indicator = document.createElement('div');
+                    indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+                    indicator.onclick = () => changeSlide(index);
+                    indicatorsContainer.appendChild(indicator);
+                });
+                
+                sliderContainer.appendChild(indicatorsContainer);
+            }
+
+            // Reset current slide
+            currentSlide = 0;
+            
+            // Clear any existing interval
+            if (window.sliderInterval) {
+                clearInterval(window.sliderInterval);
+                window.sliderInterval = null;
+            }
+
+            // Setup auto-play if enabled and multiple slides
+            if (appConfig.slider.autoplay !== false && enabledSlides.length > 1) {
+                const interval = appConfig.slider.interval || 5000;
+                console.log(`⏰ Setting up auto-play with ${interval}ms interval`);
+                
+                window.sliderInterval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % enabledSlides.length;
+                    updateSlider();
+                }, interval);
+            }
+
+            console.log('✅ Hero slider updated successfully');
+        }
+
+        // Handle slide button actions
+        function handleSlideAction(action, slideTitle) {
+            console.log(`🎬 Slide action: ${action} from "${slideTitle}"`);
+            
+            switch (action) {
+                case 'explore':
+                    showNotification(`🔍 Exploring products from "${slideTitle}"`);
+                    scrollToSection('newArrivals');
+                    break;
+                case 'collections':
+                    showNotification(`📂 Viewing collections from "${slideTitle}"`);
+                    showCollections();
+                    break;
+                case 'bestsellers':
+                    showNotification(`⭐ Viewing best sellers from "${slideTitle}"`);
+                    scrollToSection('bestSellers');
+                    break;
+                case 'deals':
+                    showNotification(`💰 Viewing deals from "${slideTitle}"`);
+                    showNotification('🎉 Flash Sale - 50% OFF selected items!');
+                    break;
+                case 'custom':
+                default:
+                    showNotification(`🎯 Action triggered from "${slideTitle}"`);
+                    break;
+            }
         }
 
         // Product loading with real Shopify API
@@ -2243,7 +2509,41 @@
             // Clear existing categories
             categoriesGrid.innerHTML = '';
             
-            // Add real collections as categories (limit to 4 for grid layout)
+            // Elegant category configuration with beautiful icons and colors
+            const categoryStyles = [
+                { 
+                    icon: '🌹', 
+                    circleClass: 'rose',
+                    keywords: ['beauty', 'cosmetic', 'makeup', 'skincare', 'face']
+                },
+                { 
+                    icon: '🍋', 
+                    circleClass: 'citrus',
+                    keywords: ['wellness', 'health', 'vitamin', 'natural', 'organic']
+                },
+                { 
+                    icon: '🌸', 
+                    circleClass: 'floral',
+                    keywords: ['lifestyle', 'home', 'decor', 'living', 'style']
+                },
+                { 
+                    icon: '💧', 
+                    circleClass: 'ocean',
+                    keywords: ['water', 'hydration', 'blue', 'fresh', 'clean']
+                },
+                { 
+                    icon: '✨', 
+                    circleClass: 'earth',
+                    keywords: ['luxury', 'premium', 'gold', 'special', 'exclusive']
+                },
+                { 
+                    icon: '🌿', 
+                    circleClass: 'sunset',
+                    keywords: ['green', 'eco', 'nature', 'plant', 'sustainable']
+                }
+            ];
+            
+            // Add real collections as categories (limit to 4 for optimal layout)
             const displayCollections = collections.slice(0, 4);
             
             displayCollections.forEach((collection, index) => {
@@ -2251,19 +2551,29 @@
                 categoryCard.className = 'category-card';
                 categoryCard.onclick = () => showCategory(collection.handle);
                 
-                // Use different icons for variety
-                const icons = ['👓', '👗', '🏠', '⚽', '📱', '💄', '👜', '🎧'];
-                const icon = icons[index % icons.length];
+                // Smart icon selection based on collection title/handle
+                let selectedStyle = categoryStyles[index % categoryStyles.length];
+                
+                // Try to match collection name with appropriate style
+                const collectionText = (collection.title + ' ' + collection.handle).toLowerCase();
+                for (const style of categoryStyles) {
+                    if (style.keywords.some(keyword => collectionText.includes(keyword))) {
+                        selectedStyle = style;
+                        break;
+                    }
+                }
                 
                 categoryCard.innerHTML = `
-                    <div class="category-icon">${icon}</div>
+                    <div class="category-circle ${selectedStyle.circleClass}">
+                        <div class="category-icon">${selectedStyle.icon}</div>
+                    </div>
                     <div class="category-name">${collection.title}</div>
                 `;
                 
                 categoriesGrid.appendChild(categoryCard);
             });
             
-            console.log('✅ Updated categories with real Shopify collections');
+            console.log('✅ Updated categories with beautiful circular design from Shopify collections');
         }
 
         // WebSocket connection for live updates
