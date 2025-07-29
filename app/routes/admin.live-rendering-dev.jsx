@@ -1350,7 +1350,7 @@ function HeaderConfig({ config, updateConfig }) {
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px' }}>
         <div>
           <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
             Background color
@@ -1371,6 +1371,18 @@ function HeaderConfig({ config, updateConfig }) {
             type="color"
             value={config.textColor}
             onChange={(e) => updateConfig('header', { textColor: e.target.value })}
+            style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+            Icon color
+          </label>
+          <input
+            type="color"
+            value={config.iconColor || '#ffffff'}
+            onChange={(e) => updateConfig('header', { iconColor: e.target.value })}
             style={{ width: '100%', height: '50px', border: 'none', borderRadius: '8px' }}
           />
         </div>
@@ -1718,7 +1730,7 @@ function SliderConfig({ config, updateConfig }) {
   const [newSlide, setNewSlide] = useState({
     title: '',
     subtitle: '',
-    buttonText: 'Learn More',
+    buttonText: '',
     buttonAction: 'custom',
     backgroundImage: '',
     overlayOpacity: 0.4,
@@ -1728,7 +1740,7 @@ function SliderConfig({ config, updateConfig }) {
   const [editingSlide, setEditingSlide] = useState(null);
 
   const addSlide = () => {
-    if (newSlide.title && newSlide.backgroundImage) {
+    if (newSlide.backgroundImage) {
       const slides = config.slides || [];
       const newSlideWithId = {
         ...newSlide,
@@ -1738,7 +1750,7 @@ function SliderConfig({ config, updateConfig }) {
       setNewSlide({
         title: '',
         subtitle: '',
-        buttonText: 'Learn More',
+        buttonText: '',
         buttonAction: 'custom',
         backgroundImage: '',
         overlayOpacity: 0.4,
@@ -1764,7 +1776,7 @@ function SliderConfig({ config, updateConfig }) {
     const newSlideData = {
       ...slide,
       id: Date.now(),
-      title: slide.title + ' (Copy)'
+      title: slide.title ? slide.title + ' (Copy)' : ''
     };
     updateConfig('slider', { slides: [...config.slides, newSlideData] });
   };
@@ -1781,7 +1793,7 @@ function SliderConfig({ config, updateConfig }) {
           🎨 Hero Slider Configuration
         </h3>
         <p style={{ opacity: '0.9', fontSize: '1.1rem' }}>
-          Create stunning hero slides with custom images, text, and call-to-action buttons.
+          Create stunning hero slides with custom images, text, and call-to-action buttons. Control visibility of text content and buttons globally for all slides.
         </p>
       </div>
 
@@ -1836,6 +1848,26 @@ function SliderConfig({ config, updateConfig }) {
             />
             <span style={{ fontWeight: '600' }}>Show arrow navigation</span>
           </label>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <input
+              type="checkbox"
+              checked={config?.showText !== false}
+              onChange={(e) => updateConfig('slider', { showText: e.target.checked })}
+              style={{ width: '18px', height: '18px' }}
+            />
+            <span style={{ fontWeight: '600' }}>Show text content</span>
+          </label>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <input
+              type="checkbox"
+              checked={config?.showButton !== false}
+              onChange={(e) => updateConfig('slider', { showButton: e.target.checked })}
+              style={{ width: '18px', height: '18px' }}
+            />
+            <span style={{ fontWeight: '600' }}>Show action buttons</span>
+          </label>
                   </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '20px' }}>
@@ -1885,20 +1917,23 @@ function SliderConfig({ config, updateConfig }) {
         borderRadius: '12px',
         border: '1px solid #0ea5e9'
       }}>
-        <h4 style={{ fontSize: '1.3rem', fontWeight: '600', color: '#0c4a6e', marginBottom: '15px' }}>
+        <h4 style={{ fontSize: '1.3rem', fontWeight: '600', color: '#0c4a6e', marginBottom: '8px' }}>
           ➕ Add New Slide
         </h4>
+        <p style={{ color: '#075985', fontSize: '14px', marginBottom: '15px', margin: '0 0 15px 0' }}>
+          Create slides with just background images, or add optional text and buttons. Only the background image is required.
+        </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
-              Slide Title *
+              Slide Title (optional)
             </label>
             <input
               type="text"
               value={newSlide.title}
               onChange={(e) => setNewSlide({...newSlide, title: e.target.value})}
-              placeholder="Enter slide title..."
+              placeholder="Enter slide title (optional)..."
               style={{
                 width: '100%',
                 padding: '12px',
@@ -1911,13 +1946,13 @@ function SliderConfig({ config, updateConfig }) {
           
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
-              Subtitle
+              Subtitle (optional)
             </label>
             <input
               type="text"
               value={newSlide.subtitle}
               onChange={(e) => setNewSlide({...newSlide, subtitle: e.target.value})}
-              placeholder="Enter subtitle..."
+              placeholder="Enter subtitle (optional)..."
               style={{
                 width: '100%',
                 padding: '12px',
@@ -1951,13 +1986,13 @@ function SliderConfig({ config, updateConfig }) {
 
           <div>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px' }}>
-              Button Text
+              Button Text (optional)
             </label>
             <input
               type="text"
               value={newSlide.buttonText}
               onChange={(e) => setNewSlide({...newSlide, buttonText: e.target.value})}
-              placeholder="Learn More"
+              placeholder="Leave empty for image-only slide"
               style={{
                 width: '100%',
                 padding: '12px',
@@ -2023,15 +2058,15 @@ function SliderConfig({ config, updateConfig }) {
 
         <button
           onClick={addSlide}
-          disabled={!newSlide.title || !newSlide.backgroundImage}
+          disabled={!newSlide.backgroundImage}
           style={{
-            background: !newSlide.title || !newSlide.backgroundImage ? '#9ca3af' : '#10b981',
+            background: !newSlide.backgroundImage ? '#9ca3af' : '#10b981',
             color: 'white',
             border: 'none',
             padding: '12px 24px',
             borderRadius: '8px',
             fontWeight: '600',
-            cursor: !newSlide.title || !newSlide.backgroundImage ? 'not-allowed' : 'pointer',
+            cursor: !newSlide.backgroundImage ? 'not-allowed' : 'pointer',
             fontSize: '14px'
           }}
         >

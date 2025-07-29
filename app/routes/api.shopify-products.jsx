@@ -121,7 +121,7 @@ async function fetchCollections(limit) {
               url
               altText
             }
-            products(first: 1) {
+            products(first: 250) {
               edges {
                 node {
                   id

@@ -20,6 +20,102 @@
             overflow-x: hidden;
         }
 
+        body.splash-active {
+            overflow: hidden;
+        }
+
+        /* Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .splash-logo {
+            margin-bottom: 40px;
+        }
+
+        .splash-logo-img {
+            width: 120px;
+            height: auto;
+            filter: brightness(0) invert(1);
+            animation: logoGlow 2s infinite alternate;
+        }
+
+        .splash-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin: 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoGlow {
+            from {
+                filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            }
+            to {
+                filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+        }
+
         .mobile-container {
             max-width: 375px;
             margin: 0 auto;
@@ -203,7 +299,7 @@
         }
 
         .hamburger-menu {
-            color: #1f2937;
+            color: white;
             cursor: pointer;
             padding: 4px;
             border-radius: 6px;
@@ -215,12 +311,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
         }
 
         .hamburger-menu:hover {
-            background-color: #f3f4f6;
             transform: scale(1.05);
+        }
+
+        .hamburger-menu:active,
+        .hamburger-menu:focus {
+            background: none !important;
+            outline: none;
         }
 
 
@@ -234,17 +337,24 @@
         }
 
         .search-icon {
-            color: #1f2937;
+            color: white;
             cursor: pointer;
             padding: 4px;
             border-radius: 6px;
             transition: background-color 0.2s ease;
             display: inline-block;
-            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
         }
 
         .search-icon:hover {
-            background-color: #f3f4f6;
+        }
+
+        .search-icon:active,
+        .search-icon:focus {
+            background: none !important;
+            outline: none;
         }
 
 
@@ -264,7 +374,7 @@
         }
 
         .logo img {
-            height: 48px;
+            height: 30px;
             width: auto;
             max-width: 120px;
             object-fit: contain;
@@ -273,23 +383,30 @@
         .logo-text {
             font-size: 18px;
             font-weight: 600;
-            color: #1f2937;
+            color: white;
             letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .profile-icon {
-            color: #1f2937;
+            color: white;
             cursor: pointer;
             padding: 4px;
             border-radius: 6px;
             transition: background-color 0.2s ease;
             display: inline-block;
-            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
         }
 
         .profile-icon:hover {
-            background-color: #f3f4f6;
+        }
+
+        .profile-icon:active,
+        .profile-icon:focus {
+            background: none !important;
+            outline: none;
         }
 
 
@@ -308,17 +425,24 @@
             padding: 4px;
             border-radius: 6px;
             transition: background-color 0.2s ease;
-            filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+            -webkit-tap-highlight-color: transparent;
+            tap-highlight-color: transparent;
         }
 
         .cart-container:hover {
-            background-color: #f3f4f6;
+        }
+
+        .cart-container:active,
+        .cart-container:focus {
+            background: none !important;
+            outline: none;
         }
 
         .cart-icon {
             width: 24px;
             height: 24px;
-            color: #1f2937;
+            color: white;
             display: block;
             stroke: currentColor;
             fill: none;
@@ -351,8 +475,8 @@
 
         /* Modern Banner */
         .hero-slider {
-            height: 400px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 500px;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
             position: relative;
             overflow: hidden;
             margin-top: 0;
@@ -447,15 +571,17 @@
         }
 
         .section-title {
-            font-size: 24px;
+            font-size: 19px;
             font-weight: 700;
             margin-bottom: 8px;
             color: #1f2937;
+            text-align: left;
         }
 
         .section-subtitle {
             color: #6b7280;
-            font-size: 14px;
+            font-size: 12px;
+            text-align: left;
         }
 
         /* Categories Grid - Elegant Circular Design */
@@ -585,7 +711,7 @@
         }
 
         .product-card {
-            flex: 0 0 200px;
+            flex: 0 0 115px;
             background: white;
             border-radius: 12px;
             overflow: hidden;
@@ -594,13 +720,32 @@
             cursor: pointer;
         }
 
+        /* Responsive product cards - show more on larger screens */
+        @media (min-width: 480px) {
+            .product-card {
+                flex: 0 0 140px;
+            }
+            .product-image {
+                height: 120px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-card {
+                flex: 0 0 160px;
+            }
+            .product-image {
+                height: 140px;
+            }
+        }
+
         .product-card:hover {
             transform: translateY(-5px);
         }
 
         .product-image {
             width: 100%;
-            height: 150px;
+            height: 100px;
             background: #f3f4f6;
             background-size: cover;
             background-position: center;
@@ -620,7 +765,7 @@
         }
 
         .product-info {
-            padding: 15px;
+            padding: 12px;
         }
 
         .product-title {
@@ -629,6 +774,10 @@
             color: #1f2937;
             font-size: 14px;
             line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 105px;
         }
 
         .product-vendor {
@@ -793,6 +942,10 @@
             color: #1f2937;
             font-size: 16px;
             line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
         }
 
         .enhanced-product-description {
@@ -923,6 +1076,83 @@
             color: white;
         }
 
+        /* Best Sellers Grid Styles */
+        .see-all-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .see-all-btn:hover {
+            color: #333;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .grid-product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .grid-product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .grid-product-image {
+            width: 100%;
+            height: 120px;
+            background: #f3f4f6;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .grid-product-info {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .grid-product-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin: 0;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 105px;
+        }
+
+        .grid-product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin: 4px 0 0 0;
+        }
+
         /* Footer */
         .footer {
             background: #1f2937;
@@ -936,10 +1166,14 @@
         }
 
         .footer-logo {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #2563EB;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
         }
 
         .footer-description {
@@ -991,6 +1225,7 @@
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
+            z-index: 9999;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
@@ -1316,10 +1551,10 @@
             margin-bottom: 5px;
             font-size: 14px;
             line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 105px;
         }
 
         .search-product-vendor {
@@ -1707,6 +1942,19 @@
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/logo_eyejack-min_c2486715-1e14-494b-b255-e3e66d994c5d.png?v=1704799849" alt="EyeJack" class="splash-logo-img" onerror="this.style.display='none'; this.parentElement.innerHTML='&lt;div style=&quot;color:white;font-size:24px;font-weight:700;&quot;&gt;EyeJack&lt;/div&gt;';">
+            </div>
+            <div class="splash-loading">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Loading your shopping experience...</p>
+            </div>
+        </div>
+    </div>
+
     <div class="mobile-container">
 
 
@@ -1747,7 +1995,7 @@
             
             <div class="header-center">
                 <div class="logo">
-                    <img src="https://via.placeholder.com/120x32/2563EB/FFFFFF?text=EyeJack" alt="EyeJack" id="logoImage" onerror="handleLogoError(this)">
+                    <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/logo_eyejack-min_c2486715-1e14-494b-b255-e3e66d994c5d.png?v=1704799849" alt="EyeJack" id="logoImage" onerror="this.style.display='none'; this.parentElement.innerHTML='&lt;span class=&quot;logo-text&quot;&gt;EyeJack&lt;/span&gt;';">
                 </div>
             </div>
             
@@ -1771,21 +2019,21 @@
 
         <!-- Hero Slider -->
         <div class="hero-slider" id="heroSlider">
-            <div class="hero-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop')">
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop')">
                 <div class="hero-content">
                     <h2 class="hero-title">Live Rendering</h2>
                     <p class="hero-subtitle">Experience real-time app updates!</p>
                     <button class="hero-btn" onclick="exploreProducts()">Explore Now</button>
                 </div>
             </div>
-            <div class="hero-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop')">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop')">
                 <div class="hero-content">
                     <h2 class="hero-title">Shop Collections</h2>
                     <p class="hero-subtitle">Discover our curated selections</p>
                     <button class="hero-btn" onclick="showCollections()">Shop Now</button>
                 </div>
             </div>
-            <div class="hero-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop')">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop')">
                 <div class="hero-content">
                     <h2 class="hero-title">Best Sellers</h2>
                     <p class="hero-subtitle">Top-rated by customers</p>
@@ -1796,6 +2044,17 @@
                 <div class="indicator active" onclick="changeSlide(0)"></div>
                 <div class="indicator" onclick="changeSlide(1)"></div>
                 <div class="indicator" onclick="changeSlide(2)"></div>
+            </div>
+        </div>
+
+        <!-- Best Sellers Horizontal -->
+        <div class="section fade-in" id="bestSellersSection">
+            <div class="section-header">
+                <h2 class="section-title" id="bestSellersTitle">Best Sellers</h2>
+                <button class="see-all-btn" id="bestSellersSeeAll" onclick="showAllBestSellers()">See all</button>
+            </div>
+            <div class="products-horizontal" id="bestSellersHorizontal">
+                <div class="loading" id="bestSellersHorizontalLoading">Loading best sellers...</div>
             </div>
         </div>
 
@@ -1846,22 +2105,14 @@
             <button class="view-all-btn" onclick="showAllNewArrivals()">View All New Arrivals</button>
         </div>
 
-        <!-- Best Sellers -->
-        <div class="section fade-in">
-            <div class="section-header">
-                <h2 class="section-title">⭐ Best Sellers</h2>
-                <p class="section-subtitle">Our most popular products</p>
-            </div>
-            <div class="products-horizontal enhanced" id="bestSellers">
-                <div class="loading" id="bestSellersLoading"></div>
-            </div>
-            <button class="view-all-btn" onclick="showAllBestSellers()">View All Best Sellers</button>
-        </div>
+
 
         <!-- Footer -->
         <div class="footer">
             <div class="footer-content">
-                <div class="footer-logo">Eyejack</div>
+                <div class="footer-logo">
+                    <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/logo_eyejack-min_c2486715-1e14-494b-b255-e3e66d994c5d.png?v=1704799849" alt="EyeJack Logo" />
+                </div>
                 <p class="footer-description">
                     Your premier mobile shopping experience with live rendering technology. 
                     Shop the latest trends with real-time app updates.
@@ -2027,8 +2278,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initializing Eyejack Mobile App...');
             
-            // Initialize cart badge
-            updateCartBadge(0);
+            // Show splash screen for a moment, then start app initialization
+            setTimeout(() => {
+                // Hide splash screen after app initialization
+                hideSplashScreen();
+                
+                // Initialize cart badge
+                updateCartBadge(0);
             
             // Ensure text content is visible immediately
             setTimeout(() => {
@@ -2063,10 +2319,20 @@
             console.log('📊 Loading real data from Shopify store...');
             loadProducts();
             loadCollections();
+            
+            // Initialize Best Sellers (with delay to ensure DOM is ready)
+            setTimeout(() => {
+                if (appConfig && appConfig.bestSeller && appConfig.bestSeller.enabled !== false) {
+                    loadBestSellersProducts();
+                }
+            }, 100);
+            
             connectWebSocket();
             
             // Show loading status
             showNotification('🔄 Loading real products from your Shopify store...');
+            
+            }, 100); // Close the setTimeout for splash screen delay
         });
 
         // Handle responsive font size adjustments on window resize
@@ -2106,7 +2372,25 @@
                         title: 'EyeJack',
                         logoUrl: '',
                         backgroundColor: '#FFFFFF',
-                        textColor: '#1F2937'
+                        textColor: '#1F2937',
+                        iconColor: '#FFFFFF'
+                    },
+                    slider: {
+                        enabled: true,
+                        autoplay: true,
+                        showIndicators: true,
+                        showNavigation: false,
+                        showText: true,
+                        showButton: true,
+                        interval: 5000,
+                        slides: []
+                    },
+                    bestSeller: {
+                        enabled: true,
+                        title: 'Best Sellers',
+                        showViewAll: true,
+                        itemsToShow: 10,
+                        layout: 'horizontal'
                     }
                 };
                 updateUIFromConfig();
@@ -2212,6 +2496,11 @@
                     header.style.backgroundColor = appConfig.header.backgroundColor || 'white';
                 }
                 
+                // Update icon colors
+                if (appConfig.header.iconColor) {
+                    updateIconColors(appConfig.header.iconColor);
+                }
+                
                 // Update menu visibility
                 updateHeaderMenu();
             }
@@ -2219,9 +2508,115 @@
         // Update slider
         if (appConfig.slider) {
             updateSliderFromConfig();
+        }
+        
+        // Update Best Sellers
+        if (appConfig.bestSeller) {
+            updateBestSellersFromConfig();
+        }
+            
+        showNotification('✨ App updated with new configuration!');
+        }
+        
+        function updateBestSellersFromConfig() {
+            console.log('🛍️ Updating Best Sellers from configuration...', appConfig.bestSeller);
+            
+            const bestSellersSection = document.getElementById('bestSellersSection');
+            const bestSellersTitle = document.getElementById('bestSellersTitle');
+            const bestSellersSeeAll = document.getElementById('bestSellersSeeAll');
+            
+            if (!bestSellersSection) return;
+            
+            // Show/hide section
+            if (appConfig.bestSeller.enabled === false) {
+                bestSellersSection.style.display = 'none';
+                return;
+            } else {
+                bestSellersSection.style.display = 'block';
             }
             
-            showNotification('✨ App updated with new configuration!');
+            // Update title
+            if (bestSellersTitle && appConfig.bestSeller.title) {
+                bestSellersTitle.textContent = appConfig.bestSeller.title;
+            }
+            
+            // Show/hide "See all" button
+            if (bestSellersSeeAll) {
+                bestSellersSeeAll.style.display = appConfig.bestSeller.showViewAll !== false ? 'block' : 'none';
+            }
+            
+            // Load and display products
+            loadBestSellersProducts();
+        }
+        
+        async function loadBestSellersProducts() {
+            try {
+                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=products&limit=${appConfig.bestSeller?.itemsToShow || 6}`);
+                const data = await response.json();
+                
+                if (data.success && data.products) {
+                    console.log('🛍️ Raw Best Sellers data:', data.products);
+                    
+                    // Transform Shopify products to our format (same as loadProducts)
+                    const transformedProducts = data.products.map(product => {
+                        const transformedProduct = {
+                            id: product.id,
+                            title: product.title,
+                            vendor: product.vendor || 'Shopify Store',
+                            price: product.variant ? `$${product.variant.price.amount}` : 'Price not available',
+                            compareAtPrice: product.variant?.compareAtPrice ? `$${product.variant.compareAtPrice.amount}` : null,
+                            image: product.image?.url || (product.images && product.images[0] ? product.images[0].url : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop'),
+                            onSale: product.variant?.onSale || false,
+                            handle: product.handle,
+                            description: product.description
+                        };
+                        
+                        console.log('🔄 Transformed product:', transformedProduct.title, 'Image:', transformedProduct.image);
+                        return transformedProduct;
+                    });
+                    
+                    console.log('✅ All transformed Best Sellers:', transformedProducts);
+                    renderProducts('bestSellersHorizontal', transformedProducts);
+                } else {
+                    console.error('Failed to load best sellers products:', data.error);
+                }
+            } catch (error) {
+                console.error('Error loading best sellers products:', error);
+            }
+        }
+        
+        function updateIconColors(iconColor) {
+            // Update hamburger menu icon
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            if (hamburgerMenu) {
+                hamburgerMenu.style.color = iconColor;
+            }
+            
+            // Update search icon
+            const searchIcon = document.querySelector('.search-icon');
+            if (searchIcon) {
+                searchIcon.style.color = iconColor;
+            }
+            
+            // Update profile icon
+            const profileIcon = document.querySelector('.profile-icon');
+            if (profileIcon) {
+                profileIcon.style.color = iconColor;
+            }
+            
+            // Update cart icon
+            const cartIcon = document.querySelector('.cart-icon');
+            if (cartIcon) {
+                cartIcon.style.color = iconColor;
+            }
+            
+            // Update logo text color (if no logo image is used)
+            const logoText = document.querySelector('.logo-text');
+            if (logoText) {
+                logoText.style.color = iconColor;
+            }
+            
+            console.log('🎨 Icon colors updated to:', iconColor);
         }
         
         function updateHeaderMenu() {
@@ -2234,47 +2629,424 @@
             
             // Add menu based on selection
             if (appConfig.header.selectedMenu === 'collections') {
-                addShopifyCollectionsMenu();
+                addShopifyDrawerMenu();
             } else if (appConfig.header.selectedMenu === 'main') {
                 addMainNavigationMenu();
             }
         }
         
-        function addShopifyCollectionsMenu() {
-            const header = document.querySelector('.header');
-            const existingDropdown = document.getElementById('collectionsDropdown');
-            if (existingDropdown) existingDropdown.remove();
+        function addShopifyDrawerMenu() {
+            const existingDrawer = document.getElementById('collectionsDrawer');
+            if (existingDrawer) existingDrawer.remove();
             
-            // Create collections dropdown
-            const dropdown = document.createElement('div');
-            dropdown.id = 'collectionsDropdown';
-            dropdown.style.cssText = `
-                position: absolute;
-                top: 100%;
+            // Create full drawer overlay
+            const drawerOverlay = document.createElement('div');
+            drawerOverlay.id = 'collectionsDrawer';
+            drawerOverlay.innerHTML = `
+                <!-- Backdrop -->
+                <div class="drawer-backdrop" style="
+                    position: fixed;
+                    top: 0;
                 left: 0;
-                right: 0;
-                background: white;
-                border-top: 1px solid #e5e7eb;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                z-index: 200;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 998;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
                 display: none;
+                " onclick="closeCollectionsDrawer()"></div>
+                
+                <!-- Drawer Content -->
+                <div class="drawer-content" style="
+                    position: fixed;
+                    top: 0;
+                    left: -100%;
+                    width: 90%;
+                    max-width: 420px;
+                    height: 100%;
+                    background: white;
+                    z-index: 999;
+                    transition: left 0.3s ease;
+                    overflow-y: auto;
+                    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+                ">
+                    <!-- Header with Close Button -->
+                    <div style="
+                        position: relative;
+                        padding: 15px 20px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 1px solid #f0f0f0;
+                    ">
+                        <img src="https://cdn.shopify.com/s/files/1/0583/8831/6208/files/logo_eyejack-min_c2486715-1e14-494b-b255-e3e66d994c5d.png?v=1704799849" 
+                             alt="EyeJack Logo" style="height: 35px; width: auto; object-fit: contain;" />
+                        <button onclick="closeCollectionsDrawer()" style="
+                            background: none;
+                            border: none;
+                            color: #666;
+                            width: 30px;
+                            height: 30px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 18px;
+                            -webkit-tap-highlight-color: transparent;
+                            tap-highlight-color: transparent;
+                        ">✕</button>
+                    </div>
+                    
+                    <!-- Login/Account Section -->
+                    <div style="
+                        padding: 20px;
+                        background: #f8f9fa;
+                        margin: 10px 15px;
+                        border-radius: 12px;
+                        border: 1px solid #e9ecef;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="
+                                width: 45px;
+                                height: 45px;
+                                border-radius: 50%;
+                                border: 2px solid #666;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: white;
+                            ">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; color: #666; margin-bottom: 2px;">
+                                    Use <span style="color: #ff6b35; font-weight: bold;">99%</span> of your <span style="font-weight: bold;">Cashback</span>
+                                </div>
+                                <div style="color: #333; font-size: 13px;">To Redeem</div>
+                            </div>
+                            <button onclick="showNotification('📱 App download coming soon!');" style="
+                                background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+                                color: white;
+                                border: none;
+                                padding: 8px 16px;
+                                border-radius: 20px;
+                                font-size: 12px;
+                                font-weight: 500;
+                                cursor: pointer;
+                                -webkit-tap-highlight-color: transparent;
+                            ">Download App</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div style="
+                        padding: 0 15px;
+                        margin-bottom: 20px;
+                    ">
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="showNotification('📦 My Orders coming soon!');" style="
+                                flex: 1;
+                                background: #f8f9fa;
+                                border: 1px solid #e9ecef;
+                                border-radius: 8px;
+                                padding: 12px;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                font-size: 14px;
+                                font-weight: 500;
+                                color: #333;
+                                cursor: pointer;
+                                -webkit-tap-highlight-color: transparent;
+                            ">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                                    <path d="m3.3 7 8.7 5 8.7-5"/>
+                                    <path d="M12 22V12"/>
+                                </svg>
+                                MY ORDERS
+                            </button>
+                            <button onclick="showNotification('🚚 Track Order coming soon!');" style="
+                                flex: 1;
+                                background: #f8f9fa;
+                                border: 1px solid #e9ecef;
+                                border-radius: 8px;
+                                padding: 12px;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                font-size: 14px;
+                                font-weight: 500;
+                                color: #333;
+                                cursor: pointer;
+                                -webkit-tap-highlight-color: transparent;
+                            ">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+                                    <path d="M15 18H9"/>
+                                    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+                                    <circle cx="17" cy="18" r="2"/>
+                                    <circle cx="7" cy="18" r="2"/>
+                                </svg>
+                                TRACK ORDER
+                            </button>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- Promotional Banner -->
+                    <div style="
+                        margin: 0 15px 20px;
+                        background: linear-gradient(135deg, #2c1810 0%, #8b4513 100%);
+                        border-radius: 12px;
+                        padding: 15px;
+                        color: white;
+                        position: relative;
+                        overflow: hidden;
+                        cursor: pointer;
+                        -webkit-tap-highlight-color: transparent;
+                    " onclick="showNotification('🌟 Zodiac Collection coming soon!');">
+                        <div style="position: relative; z-index: 2;">
+                            <div style="font-size: 20px; font-weight: 700; color: #d4af37; margin-bottom: 5px;">Zodiac Collection</div>
+                            <div style="font-size: 13px; opacity: 0.9;">Your Zodiac Fragrance Match Is Here</div>
+                        </div>
+                        <div style="
+                            position: absolute;
+                            right: 10px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            font-size: 24px;
+                        ">⟩</div>
+                        <div style="
+                            position: absolute;
+                            left: -20px;
+                            top: -20px;
+                            width: 60px;
+                            height: 60px;
+                            background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+                            border-radius: 50%;
+                        "></div>
+                    </div>
+                    
+                    <!-- Menu Items -->
+                    <div style="padding: 0 15px;">
+                        <!-- Crazy Deals -->
+                        <div onclick="showNotification('🔥 Crazy Deals coming soon!');" style="
+                            display: flex;
+                            align-items: center;
+                            padding: 15px 0;
+                            border-bottom: 1px solid #f0f0f0;
+                            cursor: pointer;
+                            -webkit-tap-highlight-color: transparent;
+                        ">
+                            <div style="
+                                width: 40px;
+                                height: 40px;
+                                background: #ff6b35;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 15px;
+                                font-size: 18px;
+                            ">%</div>
+                            <div style="flex: 1; font-size: 16px; font-weight: 500; color: #333;">CRAZY DEALS</div>
+                            <div style="font-size: 18px; color: #ff6b35;">🔥</div>
+                        </div>
+                        
+                        <!-- Shop All -->
+                        <div onclick="showNotification('🛍️ Shop All coming soon!');" style="
+                            display: flex;
+                            align-items: center;
+                            padding: 15px 0;
+                            border-bottom: 1px solid #f0f0f0;
+                            cursor: pointer;
+                            -webkit-tap-highlight-color: transparent;
+                        ">
+                            <div style="
+                                width: 40px;
+                                height: 40px;
+                                background: #6c757d;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 15px;
+                            ">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1; font-size: 16px; font-weight: 500; color: #333;">SHOP ALL</div>
+                        </div>
+                        
+                        <!-- Bestsellers -->
+                        <div onclick="showNotification('👑 Bestsellers coming soon!');" style="
+                            display: flex;
+                            align-items: center;
+                            padding: 15px 0;
+                            border-bottom: 1px solid #f0f0f0;
+                            cursor: pointer;
+                            -webkit-tap-highlight-color: transparent;
+                        ">
+                            <div style="
+                                width: 40px;
+                                height: 40px;
+                                background: #28a745;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 15px;
+                            ">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M14 9V5a3 3 0 0 0-6 0v4"/>
+                                    <path d="M3 9h18l-1 11H4L3 9z"/>
+                                    <path d="M16 14a4 4 0 0 1-8 0"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1; font-size: 16px; font-weight: 500; color: #333;">BESTSELLERS</div>
+                        </div>
+                        
+                        <!-- Collections with arrows -->
+                        <div id="menuCollections">
+                            <!-- This will be populated with real collections -->
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Padding -->
+                    <div style="height: 100px;"></div>
+                </div>
             `;
+            
+            // Add drawer to body
+            document.body.appendChild(drawerOverlay);
             
             // Add toggle button to hamburger menu
             const hamburgerMenu = document.querySelector('.hamburger-menu');
             if (hamburgerMenu) {
-                hamburgerMenu.onclick = () => toggleCollectionsMenu();
+                hamburgerMenu.onclick = () => toggleCollectionsDrawer();
             }
             
-            header.appendChild(dropdown);
             loadCollectionsMenu();
         }
         
-        function toggleCollectionsMenu() {
-            const dropdown = document.getElementById('collectionsDropdown');
-            if (dropdown) {
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        function toggleCollectionsDrawer() {
+            const drawer = document.getElementById('collectionsDrawer');
+            if (!drawer) return;
+            
+            const backdrop = drawer.querySelector('.drawer-backdrop');
+            const content = drawer.querySelector('.drawer-content');
+            
+            const isOpen = backdrop.style.display === 'block';
+            
+            if (isOpen) {
+                closeCollectionsDrawer();
+            } else {
+                openCollectionsDrawer();
             }
+        }
+        
+        function openCollectionsDrawer() {
+            const drawer = document.getElementById('collectionsDrawer');
+            if (!drawer) return;
+            
+            const backdrop = drawer.querySelector('.drawer-backdrop');
+            const content = drawer.querySelector('.drawer-content');
+            
+            // Show backdrop
+            backdrop.style.display = 'block';
+            setTimeout(() => backdrop.style.opacity = '1', 10);
+            
+            // Slide in drawer
+            content.style.left = '0';
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            
+            // Add keyboard support for ESC key
+            document.addEventListener('keydown', handleDrawerKeydown);
+            
+            // Add touch swipe support
+            addDrawerSwipeSupport(content);
+        }
+        
+        function addDrawerSwipeSupport(drawerElement) {
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+            
+            drawerElement.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+            
+            drawerElement.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const diffX = startX - currentX;
+                
+                // Only allow swiping left (closing)
+                if (diffX > 0) {
+                    const translateX = Math.min(diffX, drawerElement.offsetWidth);
+                    drawerElement.style.transform = `translateX(-${translateX}px)`;
+                }
+            });
+            
+            drawerElement.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                const diffX = startX - currentX;
+                const threshold = drawerElement.offsetWidth * 0.3; // 30% of drawer width
+                
+                if (diffX > threshold) {
+                    // Close drawer
+                    closeCollectionsDrawer();
+                } else {
+                    // Snap back to open position
+                    drawerElement.style.transform = 'translateX(0)';
+                }
+            });
+        }
+        
+        function handleDrawerKeydown(event) {
+            if (event.key === 'Escape') {
+                closeCollectionsDrawer();
+            }
+        }
+        
+        function closeCollectionsDrawer() {
+            const drawer = document.getElementById('collectionsDrawer');
+            if (!drawer) return;
+            
+            const backdrop = drawer.querySelector('.drawer-backdrop');
+            const content = drawer.querySelector('.drawer-content');
+            
+            // Hide backdrop
+            backdrop.style.opacity = '0';
+            
+            // Slide out drawer
+            content.style.left = '-100%';
+            content.style.transform = 'translateX(0)'; // Reset any transform from swipe
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+            
+            // Remove keyboard event listener
+            document.removeEventListener('keydown', handleDrawerKeydown);
+            
+            // Hide after animation
+            setTimeout(() => {
+                backdrop.style.display = 'none';
+            }, 300);
         }
 
         function toggleMainNavigationMenu() {
@@ -2328,53 +3100,103 @@
         }
         
         async function loadCollectionsMenu() {
-            const dropdown = document.getElementById('collectionsDropdown');
-            if (!dropdown) return;
-            
-            dropdown.innerHTML = `
-                <div style="padding: 16px;">
-                    <div style="font-weight: 600; margin-bottom: 12px; color: #1f2937;">Shop Collections</div>
-                    <div id="menuCollections" style="display: grid; gap: 8px;">
-                        <div style="text-align: center; color: #6b7280; padding: 20px;">Loading collections...</div>
-                    </div>
-                </div>
-            `;
+            const menuCollections = document.getElementById('menuCollections');
+            if (!menuCollections) return;
             
             try {
                 const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=collections&limit=10`);
                 const data = await response.json();
                 
                 if (data.success && data.collections) {
-                    const menuCollections = document.getElementById('menuCollections');
                     menuCollections.innerHTML = '';
                     
-                    data.collections.forEach(collection => {
-                        const item = document.createElement('div');
-                        item.style.cssText = `
-                            padding: 12px 16px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            transition: background 0.2s;
-                            display: flex;
-                            align-items: center;
-                            gap: 12px;
-                        `;
-                        item.onmouseover = () => item.style.backgroundColor = '#f3f4f6';
-                        item.onmouseout = () => item.style.backgroundColor = 'transparent';
-                        item.onclick = () => {
-                            showCollection(collection.handle);
-                            toggleCollectionsMenu();
+                    console.log('🖼️ Collections with images:', data.collections.map(c => ({
+                        title: c.title,
+                        handle: c.handle,
+                        hasImage: !!c.image?.url,
+                        imageUrl: c.image?.url
+                    })));
+                    
+                    // Filter out common collections that should appear as main menu items
+                    const filteredCollections = data.collections.filter(collection => 
+                        !['frontpage', 'home-page'].includes(collection.handle.toLowerCase())
+                    );
+                    
+                    filteredCollections.forEach((collection, index) => {
+                        // Get appropriate icon based on collection
+                        const getCollectionIcon = (handle, title) => {
+                            const lowerTitle = title.toLowerCase();
+                            const lowerHandle = handle.toLowerCase();
+                            
+                            if (lowerTitle.includes('perfume') || lowerHandle.includes('perfume')) {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M12 2L8 6v12l4 4 4-4V6l-4-4z"/>
+                                    <path d="M8 6h8"/>
+                                    <path d="M12 2v4"/>
+                                </svg>`;
+                            } else if (lowerTitle.includes('bath') || lowerTitle.includes('body') || lowerHandle.includes('bath')) {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M2 12h20l-2 8H4l-2-8z"/>
+                                    <path d="M7 12V6a3 3 0 0 1 6 0v6"/>
+                                    <path d="M10 3h4"/>
+                                </svg>`;
+                            } else if (lowerTitle.includes('cosmetic') || lowerHandle.includes('cosmetic')) {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M3 12h18l-2 8H5l-2-8z"/>
+                                    <path d="M12 1v3"/>
+                                    <path d="M9 4h6"/>
+                                </svg>`;
+                            } else if (lowerTitle.includes('skincare') || lowerTitle.includes('skin') || lowerHandle.includes('skincare')) {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"/>
+                                    <path d="M8 8V6a2 2 0 0 1 4 0v2"/>
+                                    <path d="M16 8V6a2 2 0 0 1-4 0v2"/>
+                                </svg>`;
+                            } else if (lowerTitle.includes('sunglass') || lowerHandle.includes('sunglass') || lowerTitle.includes('eyewear')) {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>`;
+                            } else {
+                                return `<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                                </svg>`;
+                            }
                         };
                         
-                        const icon = collection.handle === 'men' ? '👨' : 
-                                   collection.handle === 'women' ? '👩' : 
-                                   collection.handle === 'frontpage' ? '🏠' : '📂';
+                        const item = document.createElement('div');
+                        item.onclick = () => {
+                            showCollection(collection.handle);
+                            closeCollectionsDrawer();
+                        };
                         
                         item.innerHTML = `
-                            <span style="font-size: 18px;">${icon}</span>
-                            <div>
-                                <div style="font-weight: 500; color: #1f2937;">${collection.title}</div>
-                                <div style="font-size: 12px; color: #6b7280;">${collection.productCount} products</div>
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                padding: 15px 0;
+                                border-bottom: 1px solid #f0f0f0;
+                                cursor: pointer;
+                                -webkit-tap-highlight-color: transparent;
+                            ">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: #6366f1;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    margin-right: 15px;
+                                ">
+                                    ${getCollectionIcon(collection.handle, collection.title)}
+                                </div>
+                                <div style="flex: 1; font-size: 16px; font-weight: 500; color: #333; text-transform: uppercase;">
+                                    ${collection.title}
+                                </div>
+                                <div style="font-size: 18px; color: #666;">→</div>
                             </div>
                         `;
                         
@@ -2383,6 +3205,21 @@
                 }
             } catch (error) {
                 console.error('Failed to load collections menu:', error);
+                menuCollections.innerHTML = `
+                    <div style="text-align: center; color: #ef4444; padding: 40px 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">❌</div>
+                        <div>Failed to load collections</div>
+                        <button onclick="loadCollectionsMenu()" style="
+                            background: #ef4444;
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            margin-top: 10px;
+                            cursor: pointer;
+                        ">Retry</button>
+                    </div>
+                `;
             }
         }
         
@@ -2495,16 +3332,18 @@
                 const slide = document.createElement('div');
                 slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
                 
-                // Apply background image with overlay
-                const overlayOpacity = slideConfig.overlayOpacity || 0.4;
-                slide.style.backgroundImage = `linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${slideConfig.backgroundImage}')`;
+                // Apply background image
+                slide.style.backgroundImage = `url('${slideConfig.backgroundImage}')`;
                 
                 // Create slide content
                 const content = document.createElement('div');
                 content.className = 'hero-content';
                 
+                // Check if text should be shown (default: true)
+                const showText = appConfig.slider.showText !== false;
+                
                 // Title
-                if (slideConfig.title) {
+                if (slideConfig.title && showText) {
                     const title = document.createElement('h2');
                     title.className = 'hero-title';
                     title.textContent = slideConfig.title;
@@ -2513,7 +3352,7 @@
                 }
                 
                 // Subtitle
-                if (slideConfig.subtitle) {
+                if (slideConfig.subtitle && showText) {
                     const subtitle = document.createElement('p');
                     subtitle.className = 'hero-subtitle';
                     subtitle.textContent = slideConfig.subtitle;
@@ -2521,8 +3360,11 @@
                     content.appendChild(subtitle);
                 }
                 
+                // Check if button should be shown (default: true)
+                const showButton = appConfig.slider.showButton !== false;
+                
                 // Button
-                if (slideConfig.buttonText) {
+                if (slideConfig.buttonText && showButton) {
                     const button = document.createElement('button');
                     button.className = 'hero-btn';
                     button.textContent = slideConfig.buttonText;
@@ -2631,7 +3473,7 @@
                     }));
                     
                     renderProducts('newArrivals', products);
-                    renderProducts('bestSellers', products);
+                    renderProducts('bestSellersHorizontal', products);
                     
                     showNotification(`🎉 Loaded ${products.length} real products from your Shopify store!`);
                 } else {
@@ -2672,16 +3514,28 @@
             
             products = sampleProducts;
             renderProducts('newArrivals', products);
-            renderProducts('bestSellers', products);
+            renderProducts('bestSellersHorizontal', products);
         }
 
         function renderProducts(containerId, productsData) {
             const container = document.getElementById(containerId);
             const loading = document.getElementById(containerId + 'Loading');
             
+            // Guard against null container
+            if (!container) {
+                console.error(`❌ Container with ID '${containerId}' not found`);
+                return;
+            }
+            
             if (loading) loading.style.display = 'none';
             
             container.innerHTML = '';
+            
+            // Special handling for horizontal best sellers
+            if (containerId === 'bestSellersHorizontal') {
+                renderBestSellersHorizontal(containerId, productsData);
+                return;
+            }
             
             productsData.forEach(product => {
                 // Use enhanced cards for new arrivals and best sellers, regular cards for other sections
@@ -2691,6 +3545,71 @@
                 container.appendChild(productCard);
             });
         }
+
+        function renderBestSellersHorizontal(containerId, productsData) {
+            const container = document.getElementById(containerId);
+            const loading = document.getElementById(containerId + 'Loading');
+            
+            // Guard against null container
+            if (!container) {
+                console.error(`❌ Horizontal container with ID '${containerId}' not found`);
+                return;
+            }
+            
+            if (loading) loading.style.display = 'none';
+            
+            container.innerHTML = '';
+            
+            // Limit products based on configuration
+            const itemsToShow = appConfig.bestSeller?.itemsToShow || 10;
+            const limitedProducts = productsData.slice(0, itemsToShow);
+            
+            limitedProducts.forEach(product => {
+                const productCard = createBestSellerCard(product);
+                container.appendChild(productCard);
+            });
+        }
+
+        function createBestSellerCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.onclick = () => showProduct(product.id);
+            
+            // Better image fallback handling
+            let imageUrl = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop';
+            
+            if (product.image) {
+                imageUrl = product.image;
+            } else if (product.images && product.images.length > 0) {
+                imageUrl = product.images[0].url || product.images[0];
+            } else if (product.featuredImage) {
+                imageUrl = product.featuredImage.url || product.featuredImage;
+            }
+            
+            console.log('🖼️ Best Seller Image URL:', imageUrl, 'for product:', product.title);
+            
+            const price = product.variant?.price?.amount ? `$${product.variant.price.amount}` : product.price || 'Price not available';
+            
+            card.innerHTML = `
+                <div class="product-image" style="background-image: url('${imageUrl}')">
+                    <!-- No badges for best sellers -->
+                </div>
+                <div class="product-info">
+                    <div class="product-title">${product.title}</div>
+                    <div class="product-vendor">${product.vendor || 'EyeJack'}</div>
+                    <div class="product-price">
+                        <span class="current-price">${price}</span>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
+                        Add to Cart
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+
 
         function createProductCard(product) {
             const card = document.createElement('div');
@@ -3182,6 +4101,38 @@
             }
         }
 
+        // Splash Screen Functions
+        let splashScreenHidden = false;
+        function hideSplashScreen() {
+            if (splashScreenHidden) return; // Prevent multiple calls
+            
+            const splashScreen = document.getElementById('splashScreen');
+            if (splashScreen) {
+                splashScreenHidden = true;
+                console.log('🎨 Hiding splash screen...');
+                // Add fade-out class after a minimum delay to show the splash screen
+                setTimeout(() => {
+                    splashScreen.classList.add('fade-out');
+                    // Remove splash screen from DOM after animation completes
+                    setTimeout(() => {
+                        splashScreen.remove();
+                        document.body.classList.remove('splash-active');
+                        console.log('✅ Splash screen removed');
+                    }, 500);
+                }, 1500); // Show splash for at least 1.5 seconds
+            }
+        }
+
+        // Add splash-active class to body initially
+        document.body.classList.add('splash-active');
+
+        // Also hide splash screen when everything is fully loaded
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                hideSplashScreen();
+            }, 500);
+        });
+
         // Announcement bar navigation with auto-slider
         let announcements = [
             "Free shipping on orders $50+",
@@ -3508,34 +4459,34 @@
         
         if (heroSliderElement) {
             heroSliderElement.addEventListener('touchstart', function(e) {
-                startX = e.touches[0].clientX;
-            });
+            startX = e.touches[0].clientX;
+        });
 
             heroSliderElement.addEventListener('touchmove', function(e) {
-                if (!isScrolling) {
-                    currentX = e.touches[0].clientX;
-                }
-            });
+            if (!isScrolling) {
+                currentX = e.touches[0].clientX;
+            }
+        });
 
             heroSliderElement.addEventListener('touchend', function(e) {
-                if (!isScrolling) {
-                    const diffX = startX - currentX;
-                    if (Math.abs(diffX) > 50) { // Minimum swipe distance
+            if (!isScrolling) {
+                const diffX = startX - currentX;
+                if (Math.abs(diffX) > 50) { // Minimum swipe distance
                         const slides = document.querySelectorAll('.hero-slide');
                         const slideCount = slides.length;
                         if (slideCount > 0) {
-                            if (diffX > 0) {
-                                // Swipe left - next slide
+                    if (diffX > 0) {
+                        // Swipe left - next slide
                                 currentSlide = (currentSlide + 1) % slideCount;
-                            } else {
-                                // Swipe right - previous slide
+                    } else {
+                        // Swipe right - previous slide
                                 currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-                            }
-                            updateSlider();
-                        }
                     }
+                    updateSlider();
+                        }
                 }
-            });
+            }
+        });
         }
 
         // Add scroll detection for horizontal product lists
