@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 
-const SHOPIFY_STORE_DOMAIN = "eyejackapp.myshopify.com";
-const SHOPIFY_STOREFRONT_TOKEN = "200a3f9f94ebf9dccc9c0b28a982bccc";
+const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || "eyejackapp.myshopify.com";
+const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -43,7 +43,7 @@ async function fetchProducts(limit) {
                 }
               }
             }
-            variants(first: 1) {
+            variants(first: 250) {
               edges {
                 node {
                   id
@@ -57,6 +57,10 @@ async function fetchProducts(limit) {
                     currencyCode
                   }
                   availableForSale
+                  image {
+                    url
+                    altText
+                  }
                 }
               }
             }
@@ -88,6 +92,7 @@ async function fetchProducts(limit) {
         url: image.url,
         altText: image.altText
       } : null,
+      // Single variant for backward compatibility
       variant: variant ? {
         id: variant.id,
         title: variant.title,
@@ -96,7 +101,9 @@ async function fetchProducts(limit) {
         availableForSale: variant.availableForSale,
         onSale: variant.compareAtPrice && 
                 parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount)
-      } : null
+      } : null,
+      // Full variants array for cart functionality
+      variants: node.variants
     };
   });
 

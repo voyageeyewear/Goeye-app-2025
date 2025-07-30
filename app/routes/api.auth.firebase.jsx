@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 
 // Shopify Storefront API configuration
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.PUBLIC_STOREFRONT_ACCESS_TOKEN || '200a3f9f94ebf9dccc9c0b28a982bccc';
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || 'eyejackapp.myshopify.com';
 
 const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;

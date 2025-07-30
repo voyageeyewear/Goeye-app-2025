@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Integration Example</title>
+    
+    <!-- Include the header CSS -->
+    <link rel="stylesheet" href="header-styles.css">
+    
+    <!-- Your existing site styles -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Your banner/hero section */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Your content sections */
+        .content-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .content-section p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="has-fixed-header">
+
+    <!-- Modern Header -->
+    <header class="modern-header" id="modernHeader">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="#" class="header-logo">
+                <div class="logo-icon">🚀</div>
+                YourBrand
+            </a>
+
+            <!-- Navigation -->
+            <nav class="header-nav">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a href="#" class="header-cta">Get Started</a>
+                
+                <!-- Mobile Toggle -->
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Your existing content -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <h1>Welcome to Your Website</h1>
+            <p>Your beautiful banner content shows through the semi-transparent header</p>
+        </div>
+    </section>
+
+    <section class="content-section" id="about">
+        <h2>How to Integrate This Header</h2>
+        <p>Follow these simple steps to add this modern header to your existing website:</p>
+        
+        <h3>Step 1: Include the CSS</h3>
+        <p>Add the header-styles.css file to your project and link it in your HTML:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+&lt;link rel="stylesheet" href="header-styles.css"&gt;</pre>
+
+        <h3>Step 2: Add the HTML Structure</h3>
+        <p>Copy the header HTML structure and customize it with your logo and navigation links:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+&lt;header class="modern-header" id="modernHeader"&gt;
+    &lt;div class="header-container"&gt;
+        &lt;a href="#" class="header-logo"&gt;
+            &lt;div class="logo-icon"&gt;🚀&lt;/div&gt;
+            YourBrand
+        &lt;/a&gt;
+        &lt;nav class="header-nav"&gt;
+            &lt;ul class="nav-links" id="navLinks"&gt;
+                &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+                &lt;!-- Add more links --&gt;
+            &lt;/ul&gt;
+            &lt;a href="#" class="header-cta"&gt;Get Started&lt;/a&gt;
+            &lt;button class="mobile-toggle" id="mobileToggle"&gt;
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;
+            &lt;/button&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</pre>
+
+        <h3>Step 3: Add the JavaScript</h3>
+        <p>Include the JavaScript for mobile menu functionality and scroll effects:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+// See the script section below for the complete JavaScript code</pre>
+
+        <h3>Step 4: Adjust Body Padding</h3>
+        <p>Add the "has-fixed-header" class to your body tag to prevent content from hiding under the fixed header:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+&lt;body class="has-fixed-header"&gt;</pre>
+
+        <h3>Customization Options</h3>
+        <ul style="margin: 20px 0; padding-left: 20px; line-height: 1.8;">
+            <li><strong>Background Color:</strong> Change rgba(128, 128, 128, 0.7) in .modern-header</li>
+            <li><strong>Logo:</strong> Replace the rocket emoji with your logo image or icon</li>
+            <li><strong>Colors:</strong> Modify the gradient colors in .logo-icon and .header-cta</li>
+            <li><strong>Navigation:</strong> Add/remove navigation links as needed</li>
+            <li><strong>Height:</strong> Adjust header height by changing the height property</li>
+        </ul>
+    </section>
+
+    <!-- JavaScript for header functionality -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        const header = document.getElementById('modernHeader');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                mobileToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    
+                    // Update active link
+                    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.header-nav') && navLinks.classList.contains('active')) {
+                    mobileToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+
+        // Header scroll effect (makes background more opaque when scrolling)
+        if (header) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html> 
