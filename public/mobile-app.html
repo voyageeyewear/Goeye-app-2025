@@ -120,6 +120,390 @@
             50% { opacity: 0.6; }
         }
 
+        /* Product Detail Modal Styles */
+        .product-detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #FFFFFF;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .product-detail-overlay.active {
+            display: flex;
+            transform: translateY(0);
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .product-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+
+        .product-detail-back,
+        .product-detail-share {
+            background: none;
+            border: none;
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-detail-back:hover,
+        .product-detail-share:hover {
+            background: #f3f4f6;
+        }
+
+        .product-detail-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 120px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+        .product-detail-content::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .product-detail-image-container {
+            width: calc(100% - 40px);
+            height: 350px;
+            max-height: 350px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            margin: 20px;
+            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-detail-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+        }
+
+        .product-detail-placeholder {
+            font-size: 80px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-detail-info {
+            padding: 20px;
+        }
+
+        .product-detail-brand {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .product-detail-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 12px 0;
+            line-height: 1.2;
+        }
+
+        .product-detail-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .product-detail-rating {
+            margin-bottom: 24px;
+        }
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .rating-star {
+            font-size: 18px;
+            color: #d1d5db;
+        }
+
+        .rating-star.filled {
+            color: #fbbf24;
+        }
+
+        .rating-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-left: 8px;
+        }
+
+        .rating-details {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .product-detail-size {
+            margin-bottom: 24px;
+        }
+
+        .size-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 12px;
+        }
+
+        .size-option {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .size-option:hover {
+            border-color: #ef4444;
+        }
+
+        .size-option.selected {
+            border-color: #ef4444;
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Color selection styles */
+        .color-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #e5e7eb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #374151;
+        }
+
+        .color-option.selected {
+            border-color: #ef4444;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 2px #ef4444;
+        }
+
+        .color-option.selected::after {
+            content: '✓';
+            position: absolute;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .product-detail-description {
+            margin-bottom: 24px;
+            margin-top: 15px;
+        }
+
+        .product-detail-description h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 12px 0;
+        }
+
+        .description-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #6b7280;
+        }
+
+        .product-detail-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px 20px;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 1002;
+            max-width: 100vw;
+            margin: 0 auto;
+        }
+
+        .cart-icon-container {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .cart-icon-wrapper:hover {
+            background: #f5f5f5;
+            border-color: #111827;
+        }
+
+        .cart-icon {
+            width: 24px;
+            height: 24px;
+            color: #374151;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .buy-now-btn {
+            background: white;
+            color: #111827;
+            border-color: #e5e7eb;
+        }
+
+        .buy-now-btn:hover {
+            border-color: #111827;
+        }
+
+        .add-to-cart-btn {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        /* Hide bottom nav when product detail is open */
+        body:has(.product-detail-overlay.active) .bottom-nav {
+            display: none !important;
+        }
+
         /* Authentication Modal Styles */
         .auth-modal {
             position: fixed;
@@ -2807,7 +3191,7 @@
         .cart-icon {
             width: 24px;
             height: 24px;
-            color: white;
+            color: rgb(255, 255, 255);
             display: block;
             stroke: currentColor;
             fill: none;
@@ -2821,21 +3205,19 @@
             background: #ef4444;
             color: white;
             border-radius: 50%;
-            min-width: 20px;
-            height: 20px;
+            min-width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
             font-weight: 700;
             z-index: 10;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
             border: 2px solid white;
             line-height: 1;
             transition: all 0.3s ease;
             opacity: 1;
         }
-
 
 
         /* Modern Banner */
@@ -3178,7 +3560,7 @@
 
         .add-to-cart-btn {
             width: 100%;
-            background: #2563EB;
+            background: #ef4444;
             color: white;
             border: none;
             padding: 8px;
@@ -3964,6 +4346,45 @@
             font-weight: 600;
         }
 
+        /* Product Detail Page Price Styles */
+        .product-detail-price-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 16px 0;
+        }
+
+        .product-detail-current-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563EB;
+        }
+
+        .product-detail-original-price {
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .product-detail-sale-badge {
+            background: #ef4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        .product-detail-price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .search-product-add-cart {
             background: #2563EB;
             color: white;
@@ -4339,7 +4760,7 @@
                 </svg>
             </button>
             <div class="announcement-text">
-                <div class="announcement-text-content">Free shipping on orders $50+</div>
+                <div class="announcement-text-content">Free shipping on orders ₹50+</div>
             </div>
             <button class="announcement-nav next" onclick="event.stopPropagation(); event.preventDefault(); nextAnnouncement();">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -4381,9 +4802,8 @@
                 </div>
                 <div class="cart-container" onclick="showCart()">
                     <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        <path d="M6 2L3 6V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V6L18 2H6Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 6V10C9 11.1 9.9 12 11 12H13C14.1 12 15 11.1 15 10V6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     <div class="cart-badge" id="cartBadge">0</div>
                 </div>
@@ -5204,6 +5624,80 @@
         </div>
     </div>
 
+    <!-- Product Detail Modal -->
+    <div id="productDetailModal" class="product-detail-overlay">
+        <div class="product-detail-header">
+            <button class="product-detail-back" onclick="closeProductDetail()">←</button>
+            <button class="product-detail-share" onclick="shareProduct()">⊗</button>
+        </div>
+        
+        <div class="product-detail-content">
+            <div class="product-detail-image-container">
+                <div id="productDetailImage" class="product-detail-image"></div>
+                <div id="productDetailPlaceholder" class="product-detail-placeholder">📷</div>
+            </div>
+            
+            <div class="product-detail-info">
+                <div id="productDetailBrand" class="product-detail-brand">Olivesk</div>
+                <h1 id="productDetailTitle" class="product-detail-title">Beauty Flower Dress</h1>
+                <div id="productDetailPriceContainer" class="product-detail-price-container">
+                    <div class="product-detail-price-row">
+                        <div id="productDetailPrice" class="product-detail-current-price">₹299,00</div>
+                        <div id="productDetailOriginalPrice" class="product-detail-original-price" style="display: none;"></div>
+                    </div>
+                    <div id="productDetailSaleBadge" class="product-detail-sale-badge" style="display: none;">SALE</div>
+                </div>
+                
+                <div class="product-detail-rating">
+                    <div class="rating-stars">
+                        <span class="rating-star filled">★</span>
+                        <span class="rating-star filled">★</span>
+                        <span class="rating-star filled">★</span>
+                        <span class="rating-star filled">★</span>
+                        <span class="rating-star filled">★</span>
+                        <span class="rating-value">5.0</span>
+                    </div>
+                    <div class="rating-details">
+                        <span class="rating-count">3,2K Reviews</span>
+                        <span class="sold-count">5,3K Sold</span>
+                    </div>
+                </div>
+                
+                <div class="product-detail-color">
+                    <label class="color-label">Color</label>
+                    <div class="color-options" id="productDetailColors">
+                        <!-- Colors will be dynamically generated from product description -->
+                    </div>
+                </div>
+                
+                <div class="product-detail-description">
+                    <h3>Description</h3>
+                    <div id="productDetailDescription" class="description-text">
+                        Very beautiful Dress with flared cut Using textured chiffon material, There is frilling on the sleeves and around the bottom of the dress.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-detail-actions">
+            <div class="cart-icon-container" onclick="showCart()">
+                <div class="cart-icon-wrapper">
+                    <svg class="cart-icon" style="color: black;" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 2L3 6V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V6L18 2H6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 6V10C9 11.1 9.9 12 11 12H13C14.1 12 15 11.1 15 10V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="cart-badge" id="cartBadgeDetail">0</span>
+                </div>
+            </div>
+            <button class="action-btn buy-now-btn" onclick="buyNowFromDetail()">
+                Buy Now
+            </button>
+            <button class="action-btn add-to-cart-btn" onclick="addToCartFromDetail()">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+
     <script>
         // Configuration
         const CONFIG = {
@@ -5227,8 +5721,9 @@
                 // Hide splash screen after app initialization
                 hideSplashScreen();
             
-            // Initialize cart badge
+            // Initialize cart badge and load real cart data
             updateCartBadge(0);
+            loadCartContent();
             
             // Ensure text content is visible immediately
             setTimeout(() => {
@@ -5253,6 +5748,34 @@
             initializeApp();
             setupSlider();
             initializeAnnouncementSlider();
+            
+            // 🚨 FORCE REFRESH: Clear all cached data and load real Shopify prices
+            setTimeout(async () => {
+                console.log('🔄 FORCE CLEARING ALL CACHED DATA...');
+                
+                // Clear all cached data
+                window.cachedProducts = null;
+                products = [];
+                localStorage.removeItem('cachedProducts');
+                sessionStorage.clear();
+                
+                // Force reload from API
+                console.log('📡 FETCHING REAL SHOPIFY PRICES...');
+                await loadProducts();
+                
+                // Force re-render all product displays
+                updateNewArrivals();
+                updateBestSellers();
+                
+                console.log('✅ REAL SHOPIFY PRICES LOADED!');
+            }, 2000);
+            
+            // Force load real Shopify products and prices
+            setTimeout(async () => {
+                console.log('🛍️ Force loading real Shopify products...');
+                await window.forceRefreshProducts();
+                console.log('✅ Real Shopify products loaded!');
+            }, 1000);
             
             // Initialize slider from config if available
             if (appConfig && appConfig.slider) {
@@ -5510,8 +6033,8 @@
                             id: product.id,
                             title: product.title,
                             vendor: product.vendor || 'Shopify Store',
-                            price: product.variant ? `$${product.variant.price.amount}` : 'Price not available',
-                            compareAtPrice: product.variant?.compareAtPrice ? `$${product.variant.compareAtPrice.amount}` : null,
+                            price: product.variant ? `₹${product.variant.price.amount}` : 'Price not available',
+                            compareAtPrice: product.variant?.compareAtPrice ? `₹${product.variant.compareAtPrice.amount}` : null,
                             image: product.image?.url || (product.images && product.images[0] ? product.images[0].url : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop'),
                             onSale: product.variant?.onSale || false,
                             handle: product.handle,
@@ -6389,13 +6912,42 @@
             }
         }
 
+        // Force refresh all data (call this to get real Shopify prices)
+        window.forceRefreshProducts = async function() {
+            console.log('🔄 FORCE REFRESHING ALL PRODUCT DATA...');
+            
+            // Clear all cached data
+            window.cachedProducts = null;
+            products = [];
+            
+            // Clear displayed products
+            const containers = ['newArrivals', 'bestSellersHorizontal'];
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = '<div class="loading">Loading real Shopify prices...</div>';
+                }
+            });
+            
+            // Force reload from API
+            await loadProducts();
+            console.log('✅ FORCE REFRESH COMPLETE - You should now see real Shopify prices!');
+        };
+
         // Product loading with real Shopify API
         async function loadProducts() {
             try {
                 console.log('🛍️ Loading real products from Shopify...');
                 
-                // Fetch real products from your Shopify store
-                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=products&limit=10`);
+                // Fetch real products from your Shopify store (with aggressive cache busting)
+                const cacheBuster = Date.now();
+                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=products&limit=10&_=${cacheBuster}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch products: ${response.status}`);
@@ -6406,18 +6958,40 @@
                 if (data.success && data.products) {
                     console.log(`✅ Loaded ${data.products.length} real products from Shopify`);
                     
-                    // Transform Shopify products to our format
-                    products = data.products.map(product => ({
-                        id: product.id,
-                        title: product.title,
-                        vendor: product.vendor || 'Shopify Store',
-                        price: product.variant ? `$${product.variant.price.amount}` : 'Price not available',
-                        compareAtPrice: product.variant?.compareAtPrice ? `$${product.variant.compareAtPrice.amount}` : null,
-                        image: product.image?.url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop',
-                        onSale: product.variant?.onSale || false,
-                        handle: product.handle,
-                        description: product.description
-                    }));
+                    // Debug: Show each product and its image data
+                    data.products.forEach((product, index) => {
+                        console.log(`📦 Product ${index + 1}:`, {
+                            id: product.id,
+                            title: product.title,
+                            hasImages: !!product.images,
+                            imageEdgesCount: product.images?.edges?.length || 0,
+                            firstImageUrl: product.images?.edges?.[0]?.node?.url,
+                            allImageData: product.images
+                        });
+                    });
+                    
+                    // Clear any old cache and store fresh products data
+                    window.cachedProducts = null;
+                    window.cachedProducts = data.products;
+                    console.log('💾 Cached fresh product data with images:', window.cachedProducts.length, 'products');
+                    
+                    // Transform Shopify products to our display format with debugging
+                    console.log('🔍 Raw Shopify product data:', data.products[0]);
+                    products = data.products.map(product => {
+                        const transformedProduct = {
+                            id: product.id,
+                            title: product.title,
+                            vendor: product.vendor || 'Shopify Store',
+                            price: product.variant ? `₹${product.variant.price.amount}` : 'Price not available',
+                            compareAtPrice: product.variant?.compareAtPrice ? `₹${product.variant.compareAtPrice.amount}` : null,
+                            image: product.images?.edges?.[0]?.node?.url || product.image?.url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop',
+                            onSale: product.variant?.onSale || false,
+                            handle: product.handle,
+                            description: product.description
+                        };
+                        console.log('✅ Transformed product:', transformedProduct);
+                        return transformedProduct;
+                    });
                     
                     renderProducts('newArrivals', products);
                     renderProducts('bestSellersHorizontal', products);
@@ -6443,8 +7017,8 @@
                     id: 'sample-1',
                     title: 'Sample Product (API Error)',
                     vendor: 'Demo Store',
-                    price: '$99.99',
-                    compareAtPrice: '$129.99',
+                                            price: '₹99.99',
+                        compareAtPrice: '₹129.99',
                     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
                     onSale: true
                 },
@@ -6452,7 +7026,7 @@
                     id: 'sample-2',
                     title: 'Demo Item (Fallback)',
                     vendor: 'Sample Store',
-                    price: '$149.99',
+                                            price: '₹149.99',
                     compareAtPrice: null,
                     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
                     onSale: false
@@ -6535,7 +7109,7 @@
             
             console.log('🖼️ Best Seller Image URL:', imageUrl, 'for product:', product.title);
             
-            const price = product.variant?.price?.amount ? `$${product.variant.price.amount}` : product.price || 'Price not available';
+            const price = product.variant?.price?.amount ? `₹${product.variant.price.amount}` : product.price || 'Price not available';
             
             card.innerHTML = `
                 <div class="product-image" style="background-image: url('${imageUrl}')">
@@ -6547,7 +7121,7 @@
                     <div class="product-price">
                         <span class="current-price">${price}</span>
                     </div>
-                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCartAndUpdate('${product.id}')">
                         Add to Cart
                     </button>
                 </div>
@@ -6574,7 +7148,7 @@
                         <span class="current-price">${product.price}</span>
                         ${product.compareAtPrice ? `<span class="original-price">${product.compareAtPrice}</span>` : ''}
                     </div>
-                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCartAndUpdate('${product.id}')">
                         Add to Cart
                     </button>
                 </div>
@@ -6646,7 +7220,7 @@
                         ${product.compareAtPrice ? `<span class="enhanced-original-price">${product.compareAtPrice}</span>` : ''}
                     </div>
                     <div class="enhanced-product-actions">
-                        <button class="enhanced-add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
+                        <button class="enhanced-add-to-cart-btn" onclick="event.stopPropagation(); addToCartAndUpdate('${product.id}')">
                             Add to Cart
                         </button>
                         <button class="select-size-btn" onclick="event.stopPropagation(); selectSize('${product.id}')">
@@ -6780,7 +7354,7 @@
         // WebSocket connection for live updates
         function connectWebSocket() {
             try {
-                const ws = new WebSocket('ws://localhost:8080');
+                const ws = new WebSocket('ws://localhost:8081');
                 
                 ws.onopen = function() {
                     console.log('🔗 Connected to live rendering system');
@@ -7040,6 +7614,7 @@
                         <p>Add some products to get started!</p>
                     </div>
                 `;
+                updateCartBadge(0);
                 return;
             }
 
@@ -7096,10 +7671,15 @@
             `;
 
             cartContent.innerHTML = cartHTML;
+            
+            // Update cart badge with total quantity
+            const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+            updateCartBadge(totalQuantity);
         }
 
         // Update cart badge
         function updateCartBadge(count) {
+            // Update main cart badge
             const badge = document.getElementById('cartBadge');
             if (badge) {
                 badge.textContent = count;
@@ -7114,6 +7694,24 @@
                     badge.style.opacity = '0.8';
                     badge.style.transform = 'scale(0.9)';
                     badge.style.animation = 'none';
+                }
+            }
+            
+            // Update product detail cart badge
+            const detailBadge = document.getElementById('cartBadgeDetail');
+            if (detailBadge) {
+                detailBadge.textContent = count;
+                detailBadge.style.display = 'flex';
+                if (count > 0) {
+                    detailBadge.style.background = '#ef4444';
+                    detailBadge.style.opacity = '1';
+                    detailBadge.style.transform = 'scale(1)';
+                    detailBadge.style.animation = 'cartBadgePulse 0.3s ease-out';
+                } else {
+                    detailBadge.style.background = '#6b7280';
+                    detailBadge.style.opacity = '0.8';
+                    detailBadge.style.transform = 'scale(0.9)';
+                    detailBadge.style.animation = 'none';
                 }
             }
         }
@@ -7152,7 +7750,7 @@
 
         // Announcement bar navigation with auto-slider
         let announcements = [
-            "Free shipping on orders $50+",
+            "Free shipping on orders ₹50+",
             "🎉 Flash Sale - 50% OFF!",
             "✨ Get 20% off - WELCOME20",
             "🚚 Same-day delivery"
@@ -7408,9 +8006,7 @@
             console.log('⭐ All best sellers page coming soon!');
         }
 
-        function showProduct(productId) {
-            console.log(`🔍 Product ${productId} details coming soon!`);
-        }
+        // Removed duplicate showProduct function - using the async version below
 
         // Cart state management
         let currentDraftOrder = null;
@@ -7477,13 +8073,40 @@
                 // First try to get from cached products
                 if (window.cachedProducts && window.cachedProducts.length > 0) {
                     const product = window.cachedProducts.find(p => p.id === productId);
-                    if (product && product.variants?.edges?.length > 0) {
-                        return {
+                    console.log(`🔍 Searching for product ID "${productId}" in cache...`);
+                    console.log('🔍 Found cached product:', product ? 'YES' : 'NO');
+                    if (product) {
+                        console.log('📦 Cached product structure:', {
+                            id: product.id,
+                            title: product.title,
+                            hasVariants: !!product.variants,
+                            hasVariantEdges: !!product.variants?.edges,
+                            variantCount: product.variants?.edges?.length || 0,
+                            hasImages: !!product.images,
+                            imageStructure: product.images ? Object.keys(product.images) : 'no images',
+                            fullImageData: product.images
+                        });
+                        
+                        const returnProduct = {
                             id: product.id,
                             title: product.title,
                             handle: product.handle,
-                            variants: product.variants.edges.map(edge => edge.node)
+                            description: product.description,
+                            images: product.images,
+                            priceRangeV2: product.priceRangeV2,
+                            variants: product.variants?.edges?.map(edge => edge.node) || []
                         };
+                        
+                        console.log('✅ Returning product:', {
+                            id: returnProduct.id,
+                            title: returnProduct.title,
+                            hasReturnImages: !!returnProduct.images,
+                            returnImageStructure: returnProduct.images ? Object.keys(returnProduct.images) : 'no images'
+                        });
+                        
+                        return returnProduct;
+                    } else {
+                        console.log('❌ Product not found in cache. Available IDs:', window.cachedProducts.map(p => `"${p.id}"`));
                     }
                 }
 
@@ -7500,6 +8123,9 @@
                                 id: product.id,
                                 title: product.title,
                                 handle: product.handle,
+                                description: product.description,
+                                images: product.images,
+                                priceRangeV2: product.priceRangeV2,
                                 variants: product.variants.edges.map(edge => edge.node)
                             };
                         } else {
@@ -7994,8 +8620,8 @@
             };
             
             const imageUrl = product.image?.url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop';
-            const price = product.variant?.price ? `$${product.variant.price.amount}` : 'Price not available';
-            const compareAtPrice = product.variant?.compareAtPrice ? `$${product.variant.compareAtPrice.amount}` : null;
+            const price = product.variant?.price ? `₹${product.variant.price.amount}` : 'Price not available';
+            const compareAtPrice = product.variant?.compareAtPrice ? `₹${product.variant.compareAtPrice.amount}` : null;
             const onSale = product.variant?.onSale || false;
             
             card.innerHTML = `
@@ -8017,9 +8643,17 @@
             return card;
         }
 
-        function addToCartFromSearch(productId) {
+        async function addToCartFromSearch(productId) {
             // Use the same cart functionality
-            addToCart(productId, 1);
+            await addToCart(productId, 1);
+            // Update cart content and badge
+            loadCartContent();
+        }
+
+        // Wrapper function for general add to cart with badge update
+        async function addToCartAndUpdate(productId, quantity = 1) {
+            await addToCart(productId, quantity);
+            loadCartContent();
         }
 
         function sortSearchResults() {
@@ -8917,7 +9551,7 @@
                         <div class="wishlist-product-name">${item.name}</div>
                         <div class="wishlist-price">₹${item.price}</div>
                         <div class="wishlist-actions">
-                            <button class="wishlist-btn primary" onclick="addToCart('${item.id}')">Add to Cart</button>
+                            <button class="wishlist-btn primary" onclick="addToCartAndUpdate('${item.id}')">Add to Cart</button>
                             <button class="wishlist-btn secondary" onclick="removeFromWishlist('${item.id}')">Remove</button>
                         </div>
                     </div>
@@ -10086,6 +10720,393 @@
         });
 
 
+
+        // Global variables for product detail
+        let currentProductDetail = null;
+        let selectedColor = null;
+
+        // Product Detail Modal Functions
+        async function showProduct(productId) {
+            try {
+                console.log(`🔍 CLICKED PRODUCT ID: "${productId}" (type: ${typeof productId})`);
+                console.log('🔍 STACK TRACE:', new Error().stack);
+                
+                // Debug: Show all cached product IDs
+                if (window.cachedProducts && window.cachedProducts.length > 0) {
+                    console.log('📦 TOTAL CACHED PRODUCTS:', window.cachedProducts.length);
+                    console.log('📦 Available cached product IDs:', window.cachedProducts.map(p => ({
+                        id: p.id,
+                        title: p.title,
+                        handle: p.handle,
+                        hasImages: !!p.images,
+                        imageEdges: p.images?.edges?.length || 0
+                    })));
+                } else {
+                    console.log('🔄 No cached products, loading from API...');
+                    await loadProducts();
+                }
+                
+                // Get product details
+                const product = await getProductDetails(productId);
+                if (!product) {
+                    console.error('❌ Product not found for ID:', productId);
+                    console.error('❌ Available product IDs:', window.cachedProducts?.map(p => p.id));
+                    return;
+                }
+
+                currentProductDetail = product;
+                console.log('✅ FOUND PRODUCT FOR DETAIL VIEW:', {
+                    requestedId: productId,
+                    foundId: product.id,
+                    title: product.title,
+                    hasImages: !!product.images,
+                    imageStructure: product.images ? Object.keys(product.images) : 'no images',
+                    fullImageData: product.images,
+                    firstImageUrl: product.images?.edges?.[0]?.node?.url
+                });
+                populateProductDetail(product);
+                
+                // Show the modal with animation
+                const modal = document.getElementById('productDetailModal');
+                modal.classList.add('active');
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+                
+                console.log('✅ Product detail modal opened');
+            } catch (error) {
+                console.error('Error loading product details:', error);
+            }
+        }
+
+        function closeProductDetail() {
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.remove('active');
+            
+            // Allow body scroll
+            document.body.style.overflow = '';
+            
+            console.log('Product detail modal closed');
+        }
+
+        function populateProductDetail(product) {
+            // Update product information
+            document.getElementById('productDetailBrand').textContent = 'Olivesk';
+            document.getElementById('productDetailTitle').textContent = product.title || 'Beauty Flower Dress';
+            
+            // Format price and compare at price
+            const price = product.priceRangeV2?.minVariantPrice?.amount || 
+                         product.variants?.edges?.[0]?.node?.price?.amount || 
+                         product.variants?.edges?.[0]?.node?.price || '299.00';
+            const compareAtPrice = product.priceRangeV2?.maxVariantPrice?.amount || 
+                                 product.variants?.edges?.[0]?.node?.compareAtPrice?.amount ||
+                                 product.variants?.edges?.[0]?.node?.compareAtPrice;
+            
+            const currency = product.priceRangeV2?.minVariantPrice?.currencyCode || 'INR';
+            const formattedPrice = currency === 'INR' ? `₹${price}` : `₹${price}`;
+            
+            // Update current price
+            document.getElementById('productDetailPrice').textContent = formattedPrice;
+            
+            // Handle compare at price and sale badge
+            const originalPriceElement = document.getElementById('productDetailOriginalPrice');
+            const saleBadgeElement = document.getElementById('productDetailSaleBadge');
+            
+            if (compareAtPrice && parseFloat(compareAtPrice) > parseFloat(price)) {
+                // Product is on sale - use real Shopify compareAtPrice only
+                const formattedComparePrice = currency === 'INR' ? `₹${compareAtPrice}` : `₹${compareAtPrice}`;
+                originalPriceElement.textContent = formattedComparePrice;
+                originalPriceElement.style.display = 'block';
+                saleBadgeElement.style.display = 'block';
+                
+                // Calculate discount percentage
+                const discountPercent = Math.round(((parseFloat(compareAtPrice) - parseFloat(price)) / parseFloat(compareAtPrice)) * 100);
+                if (discountPercent > 0) {
+                    saleBadgeElement.textContent = `SALE ${discountPercent}% OFF`;
+                } else {
+                    saleBadgeElement.textContent = 'SALE';
+                }
+            } else {
+                // No sale price available - hide compared price elements
+                originalPriceElement.style.display = 'none';
+                saleBadgeElement.style.display = 'none';
+            }
+            
+            // Handle product image
+            const imageElement = document.getElementById('productDetailImage');
+            const placeholderElement = document.getElementById('productDetailPlaceholder');
+            
+            console.log('📸 FULL PRODUCT OBJECT:', product);
+            console.log('📸 Product images structure:', {
+                hasImages: !!product.images,
+                hasEdges: !!product.images?.edges,
+                edgeCount: product.images?.edges?.length || 0,
+                firstImageUrl: product.images?.edges?.[0]?.node?.url,
+                rawImages: product.images,
+                imageProperty: product.image,
+                featuredImageProperty: product.featuredImage
+            });
+            
+            let imageUrl = '';
+            
+            // Try different image data structures with detailed logging
+            console.log('🔍 Attempting to extract image URL...');
+            
+            if (product.images?.edges && product.images.edges.length > 0) {
+                imageUrl = product.images.edges[0].node.url;
+                console.log('✅ Found GraphQL image:', imageUrl);
+                console.log('🔍 GraphQL node structure:', product.images.edges[0].node);
+            } else if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+                imageUrl = product.images[0].url || product.images[0];
+                console.log('✅ Found array image:', imageUrl);
+                console.log('🔍 Array structure:', product.images[0]);
+            } else if (product.image) {
+                imageUrl = typeof product.image === 'string' ? product.image : product.image.url;
+                console.log('✅ Found simple image:', imageUrl);
+                console.log('🔍 Simple image structure:', product.image);
+            } else if (product.featuredImage) {
+                imageUrl = product.featuredImage.url || product.featuredImage;
+                console.log('✅ Found featured image:', imageUrl);
+                console.log('🔍 Featured image structure:', product.featuredImage);
+            } else {
+                console.log('❌ No image found in any format');
+            }
+            
+            // Add fallback test image if no real image found
+            if (!imageUrl || imageUrl.trim() === '') {
+                imageUrl = 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop';
+                console.log('🔄 Using fallback test image');
+            }
+            
+            console.log('🔄 Attempting to load image:', imageUrl);
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('✅ Image loaded successfully:', imageUrl);
+                imageElement.style.backgroundImage = `url('${imageUrl}')`;
+                imageElement.style.backgroundSize = 'cover';
+                imageElement.style.backgroundPosition = 'center';
+                imageElement.style.backgroundRepeat = 'no-repeat';
+                imageElement.style.display = 'block';
+                placeholderElement.style.display = 'none';
+            };
+            testImg.onerror = function() {
+                console.log('❌ Image failed to load:', imageUrl);
+                // Try with a different fallback
+                const fallbackUrl = 'https://via.placeholder.com/400x400/f5f5f5/999?text=Product+Image';
+                const fallbackImg = new Image();
+                fallbackImg.onload = function() {
+                    console.log('✅ Fallback image loaded');
+                    imageElement.style.backgroundImage = `url('${fallbackUrl}')`;
+                    imageElement.style.backgroundSize = 'cover';
+                    imageElement.style.backgroundPosition = 'center';
+                    imageElement.style.backgroundRepeat = 'no-repeat';
+                    imageElement.style.display = 'block';
+                    placeholderElement.style.display = 'none';
+                };
+                fallbackImg.onerror = function() {
+                    console.log('❌ Even fallback failed, showing placeholder');
+                    imageElement.style.display = 'none';
+                    placeholderElement.style.display = 'flex';
+                };
+                fallbackImg.src = fallbackUrl;
+            };
+            testImg.src = imageUrl;
+            
+            // Update description
+            const description = product.description || 'Very beautiful Dress with flared cut Using textured chiffon material, There is frilling on the sleeves and around the bottom of the dress.';
+            document.getElementById('productDetailDescription').textContent = description;
+            
+            // Parse colors from description and generate color options
+            parseAndDisplayColors(description);
+            
+            // Reset selected color
+            selectedColor = null;
+        }
+
+        function selectColor(color) {
+            selectedColor = color;
+            updateColorSelection();
+        }
+
+        function updateColorSelection() {
+            // Update UI
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.color === selectedColor) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        function parseAndDisplayColors(description) {
+            // Common color names and their hex values
+            const colorMap = {
+                'black': '#000000',
+                'white': '#ffffff',
+                'red': '#ef4444',
+                'blue': '#3b82f6',
+                'green': '#22c55e',
+                'yellow': '#eab308',
+                'orange': '#f97316',
+                'purple': '#a855f7',
+                'pink': '#ec4899',
+                'brown': '#a3a3a3',
+                'gray': '#6b7280',
+                'grey': '#6b7280',
+                'navy': '#1e3a8a',
+                'beige': '#f5f5dc',
+                'cream': '#fffdd0',
+                'gold': '#ffd700',
+                'silver': '#c0c0c0',
+                'maroon': '#800000',
+                'olive': '#808000',
+                'lime': '#00ff00',
+                'aqua': '#00ffff',
+                'teal': '#008080',
+                'fuchsia': '#ff00ff'
+            };
+
+            // Extract colors from description
+            const foundColors = [];
+            const descriptionLower = description.toLowerCase();
+            
+            Object.keys(colorMap).forEach(colorName => {
+                if (descriptionLower.includes(colorName)) {
+                    foundColors.push({
+                        name: colorName.charAt(0).toUpperCase() + colorName.slice(1),
+                        hex: colorMap[colorName]
+                    });
+                }
+            });
+
+            // If no colors found in description, add some default colors
+            if (foundColors.length === 0) {
+                foundColors.push(
+                    { name: 'Black', hex: '#000000' },
+                    { name: 'Brown', hex: '#8b4513' },
+                    { name: 'Blue', hex: '#3b82f6' }
+                );
+            }
+
+            // Generate color options HTML
+            const colorContainer = document.getElementById('productDetailColors');
+            colorContainer.innerHTML = '';
+            
+            foundColors.forEach((color, index) => {
+                const colorOption = document.createElement('div');
+                colorOption.className = 'color-option';
+                colorOption.style.backgroundColor = color.hex;
+                colorOption.dataset.color = color.name;
+                colorOption.title = color.name;
+                colorOption.onclick = () => selectColor(color.name);
+                
+                // Select first color by default
+                if (index === 0) {
+                    selectedColor = color.name;
+                    colorOption.classList.add('selected');
+                }
+                
+                colorContainer.appendChild(colorOption);
+            });
+
+            console.log('🎨 Parsed colors from description:', foundColors);
+        }
+
+        async function addToCartFromDetail() {
+            if (!currentProductDetail) return;
+            
+            try {
+                // Add product to cart
+                await addToCart(currentProductDetail.id, 1);
+                
+                // Update cart content and badge
+                loadCartContent();
+                
+                // Show success feedback
+                console.log('✅ Product added to cart');
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }
+        }
+
+        async function buyNowFromDetail() {
+            if (!currentProductDetail) return;
+            
+            try {
+                // Add to cart first
+                await addToCart(currentProductDetail.id, 1);
+                
+                // Close product detail
+                closeProductDetail();
+                
+                // Show cart
+                setTimeout(() => {
+                    showCart();
+                }, 300);
+                
+                console.log('✅ Buy now initiated');
+                
+            } catch (error) {
+                console.error('Error with buy now:', error);
+            }
+        }
+
+        function shareProduct() {
+            if (!currentProductDetail) return;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: currentProductDetail.title,
+                    text: `Check out this product: ${currentProductDetail.title}`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Product link copied to clipboard!');
+                });
+            }
+        }
+
+        // Update product cards to be clickable
+        function updateProductCardsClickable() {
+            // This will be called after products are loaded
+            setTimeout(() => {
+                const productCards = document.querySelectorAll('.product-card, .enhanced-product-card');
+                productCards.forEach(card => {
+                    if (!card.onclick) {
+                        const productData = card.getAttribute('data-product');
+                        if (productData) {
+                            try {
+                                const product = JSON.parse(productData);
+                                card.style.cursor = 'pointer';
+                                card.onclick = () => showProduct(product.id);
+                            } catch (e) {
+                                // Fallback: extract product ID from card
+                                const title = card.querySelector('.product-title')?.textContent;
+                                if (title && products.length > 0) {
+                                    const product = products.find(p => p.title === title);
+                                    if (product) {
+                                        card.style.cursor = 'pointer';
+                                        card.onclick = () => showProduct(product.id);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }, 1000);
+        }
+
+        // Call this after products are loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers to existing product cards
+            setTimeout(() => {
+                updateProductCardsClickable();
+            }, 2000);
+        });
 
     </script>
 </body>

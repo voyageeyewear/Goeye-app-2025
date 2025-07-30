@@ -80,7 +80,7 @@ function getDefaultConfiguration() {
   return {
     announcementBar: {
       enabled: true,
-      text: "🎉 Welcome to our store! Free shipping on orders over $50!",
+              text: "🎉 Welcome to our store! Free shipping on orders over ₹50!",
       backgroundColor: "#2563EB",
       textColor: "#FFFFFF",
       fontSize: 14,

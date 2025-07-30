@@ -258,7 +258,7 @@ async function getCustomerInfo(customerAccessToken) {
           edges {
             node {
               id
-              orderNumber
+              name
               totalPrice {
                 amount
                 currencyCode

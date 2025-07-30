@@ -30,14 +30,14 @@ async function fetchCustomerOrders(customerAccessToken) {
           edges {
             node {
               id
-              orderNumber
+              name
               processedAt
               totalPriceV2 {
                 amount
                 currencyCode
               }
-              fulfillmentStatus
-              financialStatus
+              displayFulfillmentStatus
+              displayFinancialStatus
               lineItems(first: 5) {
                 edges {
                   node {

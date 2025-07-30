@@ -6,9 +6,9 @@ function getDefaultConfiguration() {
   const defaultConfig = {
     announcementBar: {
       enabled: true,
-      text: "Free shipping on orders $50+",
-      announcements: [
-        "Free shipping on orders $50+",
+              text: "Free shipping on orders ₹50+",
+              announcements: [
+          "Free shipping on orders ₹50+",
         "🎉 Flash Sale - 50% OFF!",
         "✨ Get 20% off - WELCOME20",
         "🚚 Same-day delivery"
@@ -2673,7 +2673,7 @@ function ProductsConfig({ config, updateConfig }) {
                     }} />
                     <div style={{ fontSize: '12px', fontWeight: '500', marginBottom: '4px' }}>Enhanced Product {i}</div>
                     <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '6px' }}>⭐⭐⭐⭐⭐ (4.5)</div>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: '#1e293b' }}>$29.99</div>
+                    <div style={{ fontSize: '12px', fontWeight: '600', color: '#1e293b' }}>₹29.99</div>
                   </div>
                 ))}
               </div>
@@ -2734,7 +2734,7 @@ function ProductsConfig({ config, updateConfig }) {
                     }} />
                     <div style={{ fontSize: '10px', fontWeight: '500', marginBottom: '2px' }}>Product {i}</div>
                     <div style={{ fontSize: '8px', color: '#64748b', marginBottom: '4px' }}>Brand Name</div>
-                    <div style={{ fontSize: '10px', fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>$19.99</div>
+                                          <div style={{ fontSize: '10px', fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>₹19.99</div>
                     {bestSellerConfig.showAddToCart !== false && (
                       <button style={{
                         width: '100%',

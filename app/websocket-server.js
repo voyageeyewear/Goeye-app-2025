@@ -222,4 +222,11 @@ class LiveRenderingWebSocketServer {
   }
 }
 
-export default LiveRenderingWebSocketServer; 
+export default LiveRenderingWebSocketServer;
+
+// Start the WebSocket server when this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  // Use port 8081 to avoid conflicts with Vite HMR (64999) and other servers
+  const wsServer = LiveRenderingWebSocketServer.getInstance(8081);
+  console.log('🚀 Live Rendering WebSocket Server started on port 8081');
+} 

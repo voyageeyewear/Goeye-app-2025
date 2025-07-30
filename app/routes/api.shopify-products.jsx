@@ -35,7 +35,7 @@ async function fetchProducts(limit) {
             vendor
             productType
             tags
-            images(first: 1) {
+            images(first: 5) {
               edges {
                 node {
                   url
@@ -92,6 +92,8 @@ async function fetchProducts(limit) {
         url: image.url,
         altText: image.altText
       } : null,
+      // Full images array for product detail functionality  
+      images: node.images,
       // Single variant for backward compatibility
       variant: variant ? {
         id: variant.id,
@@ -168,6 +170,7 @@ async function fetchCollections(limit) {
 
 async function shopifyStorefrontQuery(query, variables = {}) {
   console.log(`🔍 Querying Shopify: ${SHOPIFY_STORE_DOMAIN}`);
+  console.log(`🔑 Using token: ${SHOPIFY_STOREFRONT_TOKEN ? `${SHOPIFY_STOREFRONT_TOKEN.substring(0, 8)}...` : 'MISSING'}`);
   
   try {
     const response = await fetch(`https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`, {
