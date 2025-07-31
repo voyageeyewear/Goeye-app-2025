@@ -329,11 +329,11 @@ class ApiService {
     }
   }
   
-  // Cart API (using backend)
+  // Cart API (using Storefront API)
   static Future<Cart> createCart() async {
     try {
-      final response = await _dio.post('/api/cart');
-      return Cart.fromJson(response.data);
+      // Return an empty cart initially, we'll create the cart on first add
+      return Cart.empty();
     } catch (e) {
       print('Error creating cart: $e');
       throw Exception('Failed to create cart: $e');
@@ -342,47 +342,156 @@ class ApiService {
   
   static Future<Cart> getCart(String cartId) async {
     try {
-      final response = await _dio.get('/api/cart/$cartId');
-      return Cart.fromJson(response.data);
+      final response = await _dio.get('/api/cart?cartId=$cartId');
+      
+      if (response.data['success'] == true) {
+        return _convertStorefrontCartToCart(response.data['cart']);
+      } else {
+        throw Exception(response.data['error'] ?? 'Failed to get cart');
+      }
     } catch (e) {
       print('Error fetching cart: $e');
       throw Exception('Failed to fetch cart: $e');
     }
   }
   
-  static Future<Cart> addToCart(String cartId, String variantId, int quantity) async {
+  static Future<Cart> addToCart(String cartId, String productId, String variantId, int quantity) async {
     try {
-      final response = await _dio.post('/api/cart/$cartId/add', data: {
-        'variantId': variantId,
-        'quantity': quantity,
-      });
-      return Cart.fromJson(response.data);
+      FormData formData;
+      
+      if (cartId.isEmpty) {
+        // Create new cart with first item
+        formData = FormData.fromMap({
+          'action': 'create',
+          'variantId': variantId,
+          'quantity': quantity.toString(),
+        });
+      } else {
+        // Update existing cart
+        formData = FormData.fromMap({
+          'action': 'update',
+          'cartId': cartId,
+          'variantId': variantId,
+          'quantity': quantity.toString(),
+          'updateAction': 'add',
+        });
+      }
+      
+      final response = await _dio.post('/api/cart', data: formData);
+      
+      if (response.data['success'] == true) {
+        return _convertStorefrontCartToCart(response.data['cart']);
+      } else {
+        throw Exception(response.data['error'] ?? 'Failed to add to cart');
+      }
     } catch (e) {
       print('Error adding to cart: $e');
       throw Exception('Failed to add to cart: $e');
     }
   }
   
-  static Future<Cart> updateCartItem(String cartId, String lineId, int quantity) async {
+  static Future<Cart> updateCartItem(String cartId, String variantId, int quantity) async {
     try {
-      final response = await _dio.put('/api/cart/$cartId/update', data: {
-        'lineId': lineId,
-        'quantity': quantity,
+      final formData = FormData.fromMap({
+        'action': 'update',
+        'cartId': cartId,
+        'variantId': variantId,
+        'quantity': quantity.toString(),
+        'updateAction': 'update_quantity',
       });
-      return Cart.fromJson(response.data);
+      
+      final response = await _dio.post('/api/cart', data: formData);
+      
+      if (response.data['success'] == true) {
+        return _convertStorefrontCartToCart(response.data['cart']);
+      } else {
+        throw Exception(response.data['error'] ?? 'Failed to update cart');
+      }
     } catch (e) {
       print('Error updating cart item: $e');
       throw Exception('Failed to update cart item: $e');
     }
   }
   
-  static Future<Cart> removeFromCart(String cartId, String lineId) async {
+  static Future<Cart> removeFromCart(String cartId, String variantId) async {
     try {
-      final response = await _dio.delete('/api/cart/$cartId/remove/$lineId');
-      return Cart.fromJson(response.data);
+      final formData = FormData.fromMap({
+        'action': 'update',
+        'cartId': cartId,
+        'variantId': variantId,
+        'updateAction': 'remove',
+      });
+      
+      final response = await _dio.post('/api/cart', data: formData);
+      
+      if (response.data['success'] == true && response.data['cart'] != null) {
+        return _convertStorefrontCartToCart(response.data['cart']);
+      } else {
+        // Cart was cleared, return empty cart
+        return Cart.empty();
+      }
     } catch (e) {
       print('Error removing from cart: $e');
       throw Exception('Failed to remove from cart: $e');
+    }
+  }
+
+  // Helper function to convert Storefront cart to Cart model
+  static Cart _convertStorefrontCartToCart(Map<String, dynamic> storefrontCart) {
+    try {
+      // Convert line items
+      final List<CartLine> lines = [];
+      if (storefrontCart['lines'] != null) {
+        for (final line in storefrontCart['lines']) {
+          final merchandise = line['merchandise'];
+          
+          // Create ProductVariant for the cart line
+          final cartVariant = ProductVariant(
+            id: merchandise['id'],
+            title: merchandise['title'],
+            price: Price(
+              amount: merchandise['price']['amount'].toString(),
+              currencyCode: merchandise['price']['currencyCode'],
+            ),
+            compareAtPrice: null,
+            availableForSale: true,
+            selectedOptions: [],
+          );
+          
+          // Create CartLine
+          final cartLine = CartLine(
+            id: line['id'],
+            quantity: line['quantity'],
+            merchandise: cartVariant,
+            totalAmount: Price(
+              amount: line['totalAmount']['amount'].toString(),
+              currencyCode: line['totalAmount']['currencyCode'],
+            ),
+          );
+          
+          lines.add(cartLine);
+        }
+      }
+      
+      return Cart(
+        id: storefrontCart['id'],
+        lines: lines,
+        totalAmount: Price(
+          amount: storefrontCart['totalAmount']['amount']?.toString() ?? '0.00',
+          currencyCode: storefrontCart['totalAmount']['currencyCode'] ?? 'INR',
+        ),
+        subtotalAmount: Price(
+          amount: storefrontCart['subtotalAmount']['amount']?.toString() ?? '0.00',
+          currencyCode: storefrontCart['subtotalAmount']['currencyCode'] ?? 'INR',
+        ),
+        taxes: [], // Simplified for now
+        createdAt: DateTime.parse(storefrontCart['createdAt'] ?? DateTime.now().toIso8601String()),
+        updatedAt: DateTime.parse(storefrontCart['updatedAt'] ?? DateTime.now().toIso8601String()),
+        checkoutUrl: storefrontCart['checkoutUrl'],
+      );
+    } catch (e) {
+      print('Error converting storefront cart to cart: $e');
+      throw Exception('Failed to convert cart data: $e');
     }
   }
   

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/product.dart';
 import '../../../../core/services/api_service.dart';
+import '../../../../core/providers/cart_provider.dart';
 
 // Provider for fetching individual product data
 final productDetailProvider = FutureProvider.family<Product?, String>((ref, handle) async {
@@ -285,7 +286,10 @@ class _ProductDetailContentState extends State<_ProductDetailContent> {
 
   Widget _buildPriceSection(ProductVariant selectedVariant) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
       children: [
+        // Current Price - Bold and prominent
         Text(
           selectedVariant.formattedPrice,
           style: const TextStyle(
@@ -294,30 +298,18 @@ class _ProductDetailContentState extends State<_ProductDetailContent> {
             color: Colors.black,
           ),
         ),
+        
+        // Compare At Price - Subtle gray with strikethrough
         if (selectedVariant.formattedCompareAtPrice != null) ...[
           const SizedBox(width: 12),
           Text(
             selectedVariant.formattedCompareAtPrice!,
             style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey[600],
+              fontSize: 20,
+              color: Colors.grey[400],
               decoration: TextDecoration.lineThrough,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Text(
-              'SALE',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+              decorationColor: Colors.grey[400],
+              decorationThickness: 2,
             ),
           ),
         ],
@@ -459,94 +451,137 @@ class _ProductDetailContentState extends State<_ProductDetailContent> {
   }
 
   Widget _buildAddToCartSection(ProductVariant selectedVariant) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Availability Status
-          Row(
-            children: [
-              Icon(
-                selectedVariant.availableForSale 
-                    ? Icons.check_circle 
-                    : Icons.cancel,
-                color: selectedVariant.availableForSale 
-                    ? Colors.green 
-                    : Colors.red,
-                size: 16,
+    return Consumer(
+      builder: (context, ref, child) {
+        final cartState = ref.watch(cartProvider);
+        final cartNotifier = ref.read(cartProvider.notifier);
+        final isLoading = cartState.isLoading;
+        
+        return Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
               ),
-              const SizedBox(width: 8),
-              Text(
-                selectedVariant.availableForSale 
-                    ? 'In Stock' 
-                    : 'Out of Stock',
-                style: TextStyle(
-                  color: selectedVariant.availableForSale 
-                      ? Colors.green 
-                      : Colors.red,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              if (selectedVariant.quantityAvailable != null)
-                Text(
-                  ' (${selectedVariant.quantityAvailable} available)',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                ),
             ],
           ),
-          
-          const SizedBox(height: 16),
-          
-          // Add to Cart Button
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              onPressed: selectedVariant.availableForSale
-                  ? () {
-                      // TODO: Implement add to cart functionality
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Added $quantity ${widget.product.title} to cart'),
-                          backgroundColor: Colors.green,
+          child: Column(
+            children: [
+              // Availability Status
+              Row(
+                children: [
+                  Icon(
+                    selectedVariant.availableForSale 
+                        ? Icons.check_circle 
+                        : Icons.cancel,
+                    color: selectedVariant.availableForSale 
+                        ? Colors.green 
+                        : Colors.red,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    selectedVariant.availableForSale 
+                        ? 'In Stock' 
+                        : 'Out of Stock',
+                    style: TextStyle(
+                      color: selectedVariant.availableForSale 
+                          ? Colors.green 
+                          : Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (selectedVariant.quantityAvailable != null)
+                    Text(
+                      ' (${selectedVariant.quantityAvailable} available)',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12,
+                      ),
+                    ),
+                ],
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Add to Cart Button
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: selectedVariant.availableForSale && !isLoading
+                      ? () async {
+                          try {
+                            // Add to cart using the cart provider
+                            await cartNotifier.addToCart(
+                              selectedVariant.id, 
+                              quantity,
+                            );
+                            
+                            // Show success message
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Added $quantity ${widget.product.title} to cart!',
+                                  ),
+                                  backgroundColor: Colors.green,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            // Show error message
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Failed to add to cart: ${e.toString()}',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 3),
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          selectedVariant.availableForSale
+                              ? 'Add to Cart - ${selectedVariant.formattedPrice}'
+                              : 'Out of Stock',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      );
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 0,
-              ),
-              child: Text(
-                selectedVariant.availableForSale
-                    ? 'Add to Cart - ${selectedVariant.formattedPrice}'
-                    : 'Out of Stock',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 } 
