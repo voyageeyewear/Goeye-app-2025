@@ -6018,6 +6018,27 @@
             // Load and display products
             loadBestSellersProducts();
         }
+
+        function updateNewArrivals() {
+            console.log('✨ Updating New Arrivals section...');
+            
+            // Re-render the new arrivals with current products data
+            if (window.products && Array.isArray(window.products)) {
+                renderProducts('newArrivals', window.products);
+                console.log('✅ New Arrivals section updated with current products');
+            } else {
+                console.log('🔄 No products data available, triggering product reload...');
+                loadProducts();
+            }
+        }
+
+        function updateBestSellers() {
+            console.log('⭐ Updating Best Sellers section...');
+            
+            // Re-load and render best sellers products
+            loadBestSellersProducts();
+            console.log('✅ Best Sellers section updated');
+        }
         
         async function loadBestSellersProducts() {
             try {
@@ -6993,6 +7014,9 @@
                         return transformedProduct;
                     });
                     
+                    // Store products globally
+                    window.products = products;
+                    
                     renderProducts('newArrivals', products);
                     renderProducts('bestSellersHorizontal', products);
                     
@@ -7034,6 +7058,7 @@
             ];
             
             products = sampleProducts;
+            window.products = products;
             renderProducts('newArrivals', products);
             renderProducts('bestSellersHorizontal', products);
         }
@@ -8067,51 +8092,25 @@
             }
         }
 
-        // Get product details for cart functionality
+        // Get product details for cart functionality - ALWAYS fetch fresh data for real-time prices
         async function getProductDetails(productId) {
             try {
-                // First try to get from cached products
-                if (window.cachedProducts && window.cachedProducts.length > 0) {
-                    const product = window.cachedProducts.find(p => p.id === productId);
-                    console.log(`🔍 Searching for product ID "${productId}" in cache...`);
-                    console.log('🔍 Found cached product:', product ? 'YES' : 'NO');
-                    if (product) {
-                        console.log('📦 Cached product structure:', {
-                            id: product.id,
-                            title: product.title,
-                            hasVariants: !!product.variants,
-                            hasVariantEdges: !!product.variants?.edges,
-                            variantCount: product.variants?.edges?.length || 0,
-                            hasImages: !!product.images,
-                            imageStructure: product.images ? Object.keys(product.images) : 'no images',
-                            fullImageData: product.images
-                        });
-                        
-                        const returnProduct = {
-                            id: product.id,
-                            title: product.title,
-                            handle: product.handle,
-                            description: product.description,
-                            images: product.images,
-                            priceRangeV2: product.priceRangeV2,
-                            variants: product.variants?.edges?.map(edge => edge.node) || []
-                        };
-                        
-                        console.log('✅ Returning product:', {
-                            id: returnProduct.id,
-                            title: returnProduct.title,
-                            hasReturnImages: !!returnProduct.images,
-                            returnImageStructure: returnProduct.images ? Object.keys(returnProduct.images) : 'no images'
-                        });
-                        
-                        return returnProduct;
-                    } else {
-                        console.log('❌ Product not found in cache. Available IDs:', window.cachedProducts.map(p => `"${p.id}"`));
+                console.log(`🔍 Fetching FRESH product details for ID: "${productId}"`);
+                
+                // ALWAYS fetch fresh data from API to ensure real-time prices (same as homepage)
+                const cacheBuster = Date.now();
+                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=products&limit=20&_=${cacheBuster}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
                     }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch fresh product data: ${response.status}`);
                 }
-
-                // Fetch fresh product data with variants
-                const response = await fetch(`${CONFIG.apiUrl}/shopify-products`);
+                
                 const data = await response.json();
                 
                 if (data.success && data.products) {
@@ -10794,19 +10793,54 @@
             document.getElementById('productDetailBrand').textContent = 'Olivesk';
             document.getElementById('productDetailTitle').textContent = product.title || 'Beauty Flower Dress';
             
-            // Format price and compare at price
-            const price = product.priceRangeV2?.minVariantPrice?.amount || 
-                         product.variants?.edges?.[0]?.node?.price?.amount || 
-                         product.variants?.edges?.[0]?.node?.price || '299.00';
-            const compareAtPrice = product.priceRangeV2?.maxVariantPrice?.amount || 
-                                 product.variants?.edges?.[0]?.node?.compareAtPrice?.amount ||
-                                 product.variants?.edges?.[0]?.node?.compareAtPrice;
+            // 🔍 DEBUG: Log the complete product pricing structure
+            console.log('💰 PRODUCT DETAIL PRICING DEBUG:', {
+                productId: product.id,
+                title: product.title,
+                priceRangeV2: product.priceRangeV2,
+                variants: product.variants,
+                variantPrice: product.variants?.edges?.[0]?.node?.price,
+                variantCompareAtPrice: product.variants?.edges?.[0]?.node?.compareAtPrice
+            });
+            
+            // Format price and compare at price - USE SAME LOGIC AS HOMEPAGE for consistency
+            // Priority: 1) priceRangeV2 2) variant.price 3) transformed variant price from API
+            let price, compareAtPrice;
+            
+            if (product.priceRangeV2?.minVariantPrice?.amount) {
+                // Use priceRangeV2 if available
+                price = product.priceRangeV2.minVariantPrice.amount;
+                compareAtPrice = product.compareAtPriceRange?.minVariantPrice?.amount;
+            } else if (product.variant?.price?.amount) {
+                // Use the same variant data as homepage (transformed by backend API)
+                price = product.variant.price.amount;
+                compareAtPrice = product.variant.compareAtPrice?.amount;
+            } else if (product.variants?.edges?.[0]?.node) {
+                // Fallback to first variant from edges
+                const firstVariant = product.variants.edges[0].node;
+                price = firstVariant.price?.amount || firstVariant.price;
+                compareAtPrice = firstVariant.compareAtPrice?.amount || firstVariant.compareAtPrice;
+            } else {
+                console.warn('⚠️ No pricing data found for product:', product.id);
+                price = '0.00';
+                compareAtPrice = null;
+            }
+            
+            console.log('💰 EXTRACTED PRICES:', {
+                extractedPrice: price,
+                extractedCompareAtPrice: compareAtPrice,
+                priceSource: product.priceRangeV2?.minVariantPrice?.amount ? 'priceRangeV2' : 
+                           product.variant?.price?.amount ? 'variant.price (HOMEPAGE COMPATIBLE)' : 
+                           product.variants?.edges?.[0]?.node ? 'first variant edge' : 'none',
+                homepageVariant: product.variant
+            });
             
             const currency = product.priceRangeV2?.minVariantPrice?.currencyCode || 'INR';
             const formattedPrice = currency === 'INR' ? `₹${price}` : `₹${price}`;
             
             // Update current price
             document.getElementById('productDetailPrice').textContent = formattedPrice;
+            console.log('✅ PRODUCT DETAIL PRICE SET TO:', formattedPrice);
             
             // Handle compare at price and sale badge
             const originalPriceElement = document.getElementById('productDetailOriginalPrice');

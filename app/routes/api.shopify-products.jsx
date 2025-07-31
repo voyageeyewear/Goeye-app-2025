@@ -64,6 +64,26 @@ async function fetchProducts(limit) {
                 }
               }
             }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            compareAtPriceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
           }
         }
       }
@@ -105,7 +125,10 @@ async function fetchProducts(limit) {
                 parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount)
       } : null,
       // Full variants array for cart functionality
-      variants: node.variants
+      variants: node.variants,
+      // Price range data for consistent pricing
+      priceRangeV2: node.priceRange,
+      compareAtPriceRange: node.compareAtPriceRange
     };
   });
 
