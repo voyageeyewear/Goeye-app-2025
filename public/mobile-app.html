@@ -136,7 +136,7 @@
             right: 0;
             bottom: 0;
             background: #FFFFFF;
-            z-index: 1000;
+            z-index: 30000;
             display: none;
             flex-direction: column;
             animation: slideInUp 0.3s ease-out;
@@ -156,6 +156,29 @@
             }
         }
 
+        /* Notification Animations */
+        @keyframes slideInFromTop {
+            from {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutToTop {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0;
+            }
+        }
+
         .product-detail-header {
             display: flex;
             justify-content: space-between;
@@ -166,6 +189,12 @@
             position: sticky;
             top: 0;
             z-index: 1001;
+        }
+
+        .product-detail-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .product-detail-back,
@@ -184,6 +213,35 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .product-detail-wishlist {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-detail-wishlist:hover {
+            background: #f3f4f6;
+            color: #ef4444;
+        }
+
+        .product-detail-wishlist.favorited {
+            color: #ef4444;
+        }
+
+        .product-detail-wishlist.favorited:hover {
+            background: #fef2f2;
         }
 
         .product-detail-back:hover,
@@ -554,6 +612,19 @@
             gap: 12px;
             margin-bottom: 12px;
         }
+        
+        .collection-title-container {
+            padding: 8px 0 12px 0;
+            text-align: center;
+        }
+        
+        .collection-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+            text-transform: capitalize;
+        }
 
         .collection-back-btn {
             background: none;
@@ -671,6 +742,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             transition: all 0.3s ease;
             position: relative;
+            cursor: pointer;
         }
 
         .collection-product-card:hover {
@@ -1364,6 +1436,284 @@
         body:has(.sort-filter-overlay.active) .collection-page-overlay {
             z-index: 19000;
         }
+
+        /* Banner Styles */
+        .collection-banner {
+            grid-column: 1 / -1; /* Span full width of grid */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            margin: 8px 0;
+            overflow: hidden;
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .collection-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .collection-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .collection-banner:hover::before {
+            opacity: 1;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .banner-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .banner-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .banner-cta {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .banner-cta:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Banner theme variations */
+        .collection-banner.theme-orange {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .collection-banner.theme-orange:hover {
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .collection-banner.theme-green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .collection-banner.theme-green:hover {
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        .collection-banner.theme-red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .collection-banner.theme-red:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .collection-banner.theme-purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .collection-banner.theme-purple:hover {
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Dark theme for banners */
+        .dark-theme .collection-banner {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark-theme .collection-banner:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Feature strip shown right after banner */
+        .post-banner-feature-strip {
+            grid-column: 1 / -1;
+            background: linear-gradient(90deg, #e0f2fe, #fef9c3, #fee2e2);
+            border-radius: 12px;
+            margin: 8px 0 16px;
+            padding: 12px 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .feature-card .feature-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #111827;
+            margin: 0;
+        }
+        .feature-card .feature-subtitle {
+            font-size: 10px;
+            color: #6b7280;
+            margin: 2px 0 0 0;
+        }
+        .feature-icon {
+            width: 40px;
+            height: 28px;
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            color: #111827;
+            background: linear-gradient(135deg, #ffffff, #f3f4f6);
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Eyewear Showcase Banner Styles */
+        #eyewearShowcaseMount { grid-column: 1 / -1; }
+        .eyewear-showcase {
+            grid-column: 1 / -1;
+            overflow: hidden;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+        }
+        .eyewear-slice {
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 22px;
+        }
+        @media (min-width: 768px) {
+            .eyewear-slice { min-height: 260px; padding: 24px 36px; }
+        }
+        /* Diagonal separations via clip-path and negative margins for tight seams */
+        .eyewear-slice.top {
+            background: linear-gradient(90deg, #cfe8ff 0%, #2f80ed 35%, #0ea5e9 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .eyewear-slice.middle {
+            background: #e6e7ea;
+            margin-top: -44px;
+            clip-path: polygon(0 0, 100% 14%, 100% 100%, 0 86%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .eyewear-slice.bottom {
+            background: linear-gradient(90deg, #ffd6d1 0%, #ffe2d9 40%, #fff3b0 100%);
+            margin-top: -44px;
+            clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Text and image layout */
+        .eyewear-content-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+        .eyewear-image-section {
+            flex: 0 0 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .eyewear-text-section {
+            flex: 1;
+            z-index: 2;
+        }
+        .eyewear-text-section.right { text-align: right; }
+        .eyewear-text-section.left { text-align: left; }
+        .eyewear-title {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .eyewear-subtitle {
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0;
+        }
+        /* Clickable showcase sections */
+        .eyewear-slice {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .eyewear-slice:hover {
+            transform: translateY(-2px);
+        }
+        /* Glass images and shadows */
+        .glasses-img {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
+            z-index: 1;
+        }
+        .glasses-top { transform: perspective(800px) rotateX(6deg) rotateY(-12deg); }
+        .glasses-middle { transform: translateY(4px); }
+        .glasses-bottom { transform: perspective(800px) rotateX(2deg) rotateY(10deg); }
+
+        /* Fine-tune for small screens */
+        @media (max-width: 480px) {
+            .eyewear-title { font-size: 26px; }
+            .glasses-img { max-width: 150px; }
+            .eyewear-content-wrapper { gap: 15px; }
+            .eyewear-image-section { flex: 0 0 35%; }
+        }
+
+        /* Hidden utility */
+        .hidden { display: none !important; }
 
         /* Authentication Modal Styles */
         .auth-modal {
@@ -4737,6 +5087,8 @@
             color: #333;
         }
 
+
+
         .products-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -4797,6 +5149,8 @@
             color: #667eea;
             margin: 4px 0 0 0;
         }
+
+
 
         /* Footer */
         .footer {
@@ -5737,7 +6091,10 @@
                 <div class="indicator" onclick="changeSlide(1)"></div>
                 <div class="indicator" onclick="changeSlide(2)"></div>
             </div>
-        </div>
+                </div>
+
+        <!-- Eyewear Showcase (live-config controlled) -->
+        <div id="eyewearShowcaseMount"></div>
 
         <!-- Best Sellers Horizontal -->
         <div class="section fade-in" id="bestSellersSection">
@@ -5757,29 +6114,23 @@
                 <p class="section-subtitle">Explore our collection</p>
             </div>
             <div class="categories-grid" id="categoriesGrid">
-                <div class="category-card" onclick="showCategory('beauty')">
-                    <div class="category-circle rose">
-                        <div class="category-icon">🌹</div>
-                </div>
-                    <div class="category-name">Beauty</div>
-                </div>
-                <div class="category-card" onclick="showCategory('wellness')">
-                    <div class="category-circle citrus">
-                        <div class="category-icon">🍋</div>
-                </div>
-                    <div class="category-name">Wellness</div>
-                </div>
-                <div class="category-card" onclick="showCategory('lifestyle')">
+                <div class="category-card" onclick="showCategory('frontpage')">
                     <div class="category-circle floral">
                         <div class="category-icon">🌸</div>
                     </div>
-                    <div class="category-name">Lifestyle</div>
+                    <div class="category-name">Home page</div>
                 </div>
-                <div class="category-card" onclick="showCategory('skincare')">
-                    <div class="category-circle ocean">
-                        <div class="category-icon">💧</div>
+                <div class="category-card" onclick="showCategory('men')">
+                    <div class="category-circle citrus">
+                        <div class="category-icon">🍋</div>
                     </div>
-                    <div class="category-name">Skincare</div>
+                    <div class="category-name">Men</div>
+                </div>
+                <div class="category-card" onclick="showCategory('women')">
+                    <div class="category-circle rose">
+                        <div class="category-icon">🌸</div>
+                    </div>
+                    <div class="category-name">Women</div>
                 </div>
             </div>
             <button class="view-all-btn" onclick="showAllCategories()">View All Categories</button>
@@ -6260,6 +6611,7 @@
         </div>
     </div>
 
+
     <!-- Thank You Modal -->
     <div id="thankYouModal" class="feature-modal">
         <div class="modal-backdrop"></div>
@@ -6541,7 +6893,12 @@
     <div id="productDetailModal" class="product-detail-overlay">
         <div class="product-detail-header">
             <button class="product-detail-back" onclick="closeProductDetail()">←</button>
-            <button class="product-detail-share" onclick="shareProduct()">⊗</button>
+            <div class="product-detail-header-actions">
+                <button id="productDetailWishlistBtn" class="product-detail-wishlist" onclick="toggleProductDetailWishlist()">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <button class="product-detail-share" onclick="shareProduct()">⊗</button>
+            </div>
         </div>
         
         <div class="product-detail-content">
@@ -6628,6 +6985,11 @@
                             <span id="collectionCartBadge" class="cart-badge" style="display: none;">0</span>
                         </button>
                     </div>
+                </div>
+                
+                <!-- Collection Title -->
+                <div class="collection-title-container">
+                    <h2 id="collectionTitle" class="collection-title">All Products</h2>
                 </div>
                 
                 <div class="collection-controls">
@@ -6989,7 +7351,7 @@
             // Load real data from Shopify
             console.log('📊 Loading real data from Shopify store...');
             loadProducts();
-            loadCollections();
+            loadRealCollections(); // Load real collections with product counts
             
             // Initialize Best Sellers (with delay to ensure DOM is ready)
             setTimeout(() => {
@@ -7008,6 +7370,8 @@
             
             }, 100); // Close the setTimeout for splash screen delay
         });
+
+
 
         // Handle responsive font size adjustments on window resize
         window.addEventListener('resize', function() {
@@ -7059,6 +7423,39 @@
                         interval: 5000,
                         slides: []
                     },
+                    eyewearShowcase: {
+                        enabled: true,
+                        topImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-black-angled.png',
+                        middleImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-tortoise-front.png',
+                        bottomImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-side-black.png',
+                        topTitle: 'PREMIUM',
+                        topSubtitle: 'QUALITY',
+                        middleTitle: 'CUTTING',
+                        middleSubtitle: 'EDGE DESIGN',
+                        bottomTitle: '10+',
+                        bottomSubtitle: 'SHAPES',
+                        topBackground: 'linear-gradient(90deg, #cfe8ff 0%, #2f80ed 35%, #0ea5e9 100%)',
+                        middleBackground: '#e6e7ea',
+                        bottomBackground: 'linear-gradient(90deg, #ffd6d1 0%, #ffe2d9 40%, #fff3b0 100%)',
+                        topImagePosition: 'left',
+                        middleImagePosition: 'left',
+                        bottomImagePosition: 'right',
+                        topTitleColor: '#111827',
+                        topSubtitleColor: '#4b5563',
+                        middleTitleColor: '#111827',
+                        middleSubtitleColor: '#4b5563',
+                        bottomTitleColor: '#111827',
+                        bottomSubtitleColor: '#4b5563',
+                        topLink: '',
+                        middleLink: '',
+                        bottomLink: '',
+                        topTitleColor: '#111827',
+                        topSubtitleColor: '#4b5563',
+                        middleTitleColor: '#111827',
+                        middleSubtitleColor: '#4b5563',
+                        bottomTitleColor: '#111827',
+                        bottomSubtitleColor: '#4b5563'
+                    },
                     bestSeller: {
                         enabled: true,
                         title: 'Best Sellers',
@@ -7073,6 +7470,9 @@
 
         function updateUIFromConfig() {
             console.log('🔄 Updating UI from config:', appConfig);
+            
+            // Render Eyewear Showcase from config
+            renderEyewearShowcase();
             
             // Update announcement bar
             if (appConfig.announcementBar) {
@@ -8109,6 +8509,66 @@
             console.log('✅ Hero slider updated successfully');
         }
 
+        // Render Eyewear Showcase from config
+        function renderEyewearShowcase() {
+            try {
+                const mount = document.getElementById('eyewearShowcaseMount');
+                if (!mount) return;
+                const cfg = appConfig?.eyewearShowcase;
+                if (!cfg || cfg.enabled === false) {
+                    mount.innerHTML = '';
+                    return;
+                }
+                
+                function createSliceContent(imagePos, imageSrc, imageClass, title, subtitle, textAlign, titleColor, subtitleColor, imageSize) {
+                    const imageSizePx = imageSize || '180';
+                    const imageSection = `<div class="eyewear-image-section"><img class="glasses-img ${imageClass}" src="${imageSrc}" alt="${title}" style="max-width: ${imageSizePx}px;" onerror="this.style.opacity=0;"></div>`;
+                    const textSection = `<div class="eyewear-text-section ${textAlign}"><div class="eyewear-title" style="color: ${titleColor || '#111827'}">${title}</div><div class="eyewear-subtitle" style="color: ${subtitleColor || '#4b5563'}">${subtitle}</div></div>`;
+                    
+                    return imagePos === 'left' 
+                        ? `<div class="eyewear-content-wrapper">${imageSection}${textSection}</div>`
+                        : `<div class="eyewear-content-wrapper">${textSection}${imageSection}</div>`;
+                }
+                
+                const html = `
+                    <div class="eyewear-showcase">
+                        <div class="eyewear-slice top" style="background: ${cfg.topBackground || 'linear-gradient(90deg, #cfe8ff 0%, #2f80ed 35%, #0ea5e9 100%)'}" onclick="handleShowcaseClick('${cfg.topLink || ''}', '${cfg.topTitle || 'PREMIUM'}')">
+                            ${createSliceContent(cfg.topImagePosition || 'left', cfg.topImage, 'glasses-top', cfg.topTitle || 'PREMIUM', cfg.topSubtitle || 'QUALITY', cfg.topImagePosition === 'left' ? 'right' : 'left', cfg.topTitleColor, cfg.topSubtitleColor, cfg.topImageSize)}
+                        </div>
+                        <div class="eyewear-slice middle" style="background: ${cfg.middleBackground || '#e6e7ea'}" onclick="handleShowcaseClick('${cfg.middleLink || ''}', '${cfg.middleTitle || 'CUTTING'}')">
+                            ${createSliceContent(cfg.middleImagePosition || 'left', cfg.middleImage, 'glasses-middle', cfg.middleTitle || 'CUTTING', cfg.middleSubtitle || 'EDGE DESIGN', cfg.middleImagePosition === 'left' ? 'right' : 'left', cfg.middleTitleColor, cfg.middleSubtitleColor, cfg.middleImageSize)}
+                        </div>
+                        <div class="eyewear-slice bottom" style="background: ${cfg.bottomBackground || 'linear-gradient(90deg, #ffd6d1 0%, #ffe2d9 40%, #fff3b0 100%)'}" onclick="handleShowcaseClick('${cfg.bottomLink || ''}', '${cfg.bottomTitle || '10+'}')">
+                            ${createSliceContent(cfg.bottomImagePosition || 'right', cfg.bottomImage, 'glasses-bottom', cfg.bottomTitle || '10+', cfg.bottomSubtitle || 'SHAPES', cfg.bottomImagePosition === 'left' ? 'right' : 'left', cfg.bottomTitleColor, cfg.bottomSubtitleColor, cfg.bottomImageSize)}
+                        </div>
+                    </div>`;
+                mount.innerHTML = html;
+            } catch (e) {
+                console.error('Failed to render Eyewear Showcase:', e);
+            }
+        }
+
+        // Handle showcase section clicks
+        function handleShowcaseClick(link, title) {
+            if (!link || link.trim() === '') {
+                console.log(`🎯 Showcase "${title}" clicked but no link configured`);
+                showNotification(`${title} showcase clicked!`, 'info');
+                return;
+            }
+            
+            console.log(`🎯 Showcase "${title}" clicked, navigating to: ${link}`);
+            
+            // Check if it's an external link
+            if (link.startsWith('http://') || link.startsWith('https://')) {
+                window.open(link, '_blank');
+            } else {
+                // Internal navigation
+                window.location.href = link;
+            }
+            
+            showNotification(`Navigating to ${title}...`, 'success');
+        }
+
         // Handle slide button actions
         function handleSlideAction(action, slideTitle) {
             console.log(`🎬 Slide action: ${action} from "${slideTitle}"`);
@@ -8342,7 +8802,15 @@
             
             card.innerHTML = `
                 <div class="product-image" style="background-image: url('${imageUrl}')">
-                    <!-- No badges for best sellers -->
+                    <button class="home-favorite-btn ${isInWishlist(product.id) ? 'favorited' : ''}" 
+                            data-product-id="${product.id}"
+                            data-product-title="${product.title}"
+                            data-product-price="${product.variant?.price?.amount || '299.00'}"
+                            data-product-image="${imageUrl}"
+                            data-product-vendor="${product.vendor || 'EyeJack'}"
+                            onclick="event.stopPropagation(); toggleWishlistFromData(this)">
+                        <i class="fas fa-heart"></i>
+                    </button>
                 </div>
                 <div class="product-info">
                     <div class="product-title">${product.title}</div>
@@ -8462,12 +8930,12 @@
             return card;
         }
 
-        async function loadCollections() {
+        async function loadRealCollections() {
             try {
                 console.log('📂 Loading real collections from Shopify...');
                 
                 // Fetch real collections from your Shopify store
-                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=collections&limit=8`);
+                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?type=collections&limit=10`);
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch collections: ${response.status}`);
@@ -8478,32 +8946,58 @@
                 if (data.success && data.collections) {
                     console.log(`✅ Loaded ${data.collections.length} real collections from Shopify`);
                     
-                    // Transform Shopify collections to our format
-                    collections = data.collections.map(collection => ({
-                        id: collection.id,
-                        title: collection.title,
-                        handle: collection.handle,
-                        description: collection.description,
-                        image: collection.image?.url
-                    }));
+                    // Store collections globally
+                    collections = data.collections;
                     
-                    // Update categories grid with real collections
-                    updateCategoriesWithRealCollections();
+                    // Update category cards with real product counts
+                    updateCategoryCards();
                     
-                    console.log(`📂 Loaded ${collections.length} real collections!`);
+                    console.log(`📂 Updated categories with real collection data!`);
                 } else {
-                    throw new Error('No collections found in response');
+                    console.log('⚠️ No collections found, keeping static categories');
                 }
                 
             } catch (error) {
                 console.error('❌ Failed to load real collections:', error);
-                
-                // Fallback to sample collections
-                collections = [
-                    { id: 'sample-1', title: 'Sample Category', handle: 'sample' },
-                    { id: 'sample-2', title: 'Demo Collection', handle: 'demo' }
-                ];
+                console.log('⚠️ Keeping static categories as fallback');
             }
+        }
+        
+        function updateCategoryCards() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            if (!categoriesGrid || !collections) return;
+            
+            // Debug: Log available collections
+            console.log('📋 Available collections:', collections.map(c => ({ handle: c.handle, title: c.title, count: c.productCount })));
+            
+            // Find collections by handle
+            const collectionMap = {};
+            collections.forEach(collection => {
+                collectionMap[collection.handle] = collection;
+            });
+            
+            // Clean up category names (remove any existing product counts)
+            const categoryCards = categoriesGrid.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                const categoryName = card.querySelector('.category-name');
+                const onclick = card.getAttribute('onclick');
+                
+                if (onclick && categoryName) {
+                    // Extract collection handle from onclick
+                    const match = onclick.match(/showCategory\('([^']+)'\)/);
+                    if (match) {
+                        const handle = match[1];
+                        const collection = collectionMap[handle];
+                        
+                        if (collection || (handle === 'frontpage' && collectionMap['frontpage'])) {
+                            // Keep only the base name without product count
+                            const baseName = categoryName.textContent.split(' (')[0]; // Remove existing count
+                            categoryName.textContent = baseName;
+                            console.log(`✨ Category name cleaned: ${baseName}`);
+                        }
+                    }
+                }
+            });
         }
         
         function updateCategoriesWithRealCollections() {
@@ -8603,9 +9097,29 @@
                         const data = JSON.parse(event.data);
                         console.log('📡 WebSocket message received:', data);
                         
-                        if (data.type === 'config_update') {
-                            console.log('🔄 Configuration update received');
-                            appConfig = { ...appConfig, ...data.payload };
+                                        if (data.type === 'config_update') {
+                    console.log('🔄 Configuration update received');
+                    appConfig = { ...appConfig, ...data.payload };
+                    
+                    // Update eyewear showcase immediately
+                    renderEyewearShowcase();
+                    
+                    // Update banner configuration if present
+                            if (data.payload.banners) {
+                                bannerConfig = { ...bannerConfig, ...data.payload.banners };
+                                console.log('🎯 Banner configuration updated:', bannerConfig);
+                                
+                                // Re-render collection products if collection page is active
+                                const collectionModal = document.getElementById('collectionPageModal');
+                                if (collectionModal && collectionModal.classList.contains('active')) {
+                                    console.log('🔄 Re-rendering collection products with new banner config...');
+                                    const currentProducts = getCurrentCollectionProducts();
+                                    if (currentProducts.length > 0) {
+                                        renderCollectionProducts(currentProducts);
+                                    }
+                                }
+                            }
+                            
                             updateUIFromConfig();
                         } else if (data.type === 'auth_success') {
                             console.log('✅ WebSocket authenticated');
@@ -9213,7 +9727,7 @@
 
         function showCollections() {
             console.log('📂 Opening Collections page...');
-            openCollectionPage();
+            openCollectionPage('all');
         }
 
         function showBestSellers() {
@@ -9222,11 +9736,15 @@
 
         function showCategory(category) {
             console.log(`📱 ${category.charAt(0).toUpperCase() + category.slice(1)} category selected!`);
+            console.log(`🔗 Opening collection page for handle: "${category}"`);
+            
+            // Open collection page with category filter
+            openCollectionPage(category);
         }
 
         function showAllCategories() {
             console.log('📂 Opening Collections page...');
-            openCollectionPage();
+            openCollectionPage('all');
         }
 
         function showAllNewArrivals() {
@@ -10507,10 +11025,35 @@
         }
 
         // Collection Page Functions
+        let currentCollectionFilter = null; // Store current collection filter
+        
+        // Helper function to map collection handles to their display names
+        function getCollectionDisplayName(collectionHandle) {
+            const displayNameMap = {
+                'frontpage': 'Home Collection',
+                'home-page': 'Home Collection',
+                'homepage': 'Home Collection',
+                'men': 'Men\'s Collection',
+                'women': 'Women\'s Collection',
+                'all': 'All Products'
+            };
+            
+            return displayNameMap[collectionHandle] || 'Products';
+        }
+        
         function openCollectionPage(collectionHandle = null) {
             console.log('📂 Opening collection page...');
             const modal = document.getElementById('collectionPageModal');
             const searchInput = document.getElementById('collectionSearchInput');
+            const titleElement = document.getElementById('collectionTitle');
+            
+            // Store collection filter for loadCollectionProducts
+            currentCollectionFilter = collectionHandle;
+            
+            // Set page title based on collection
+            if (titleElement) {
+                titleElement.textContent = getCollectionDisplayName(collectionHandle);
+            }
             
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -10519,9 +11062,9 @@
                 modal.classList.add('active');
             }, 10);
             
-            // Set search value if collection specified
-            if (collectionHandle) {
-                searchInput.value = collectionHandle;
+            // Clear search input when opening with collection filter
+            if (collectionHandle && collectionHandle !== 'all') {
+                searchInput.value = '';
             }
             // Start with empty search to show all products
             
@@ -10542,6 +11085,9 @@
             console.log('📂 Closing collection page...');
             const modal = document.getElementById('collectionPageModal');
             modal.classList.remove('active');
+            
+            // Reset collection filter
+            currentCollectionFilter = null;
             
             setTimeout(() => {
                 modal.style.display = 'none';
@@ -10569,23 +11115,48 @@
             try {
                 console.log('📂 Loading collection products...');
                 
-                // Fetch products from all collections
-                const response = await fetch(`${CONFIG.apiUrl}/shopify-products?limit=50`);
+                // Build API URL based on collection filter
+                let apiUrl = `${CONFIG.apiUrl}/shopify-products?limit=50`;
+                
+                // If we have a specific collection filter, fetch from that collection
+                if (currentCollectionFilter && currentCollectionFilter !== 'all') {
+                    console.log(`🔍 Loading products from collection: ${currentCollectionFilter}`);
+                    apiUrl += `&collection=${currentCollectionFilter}`;
+                }
+                
+                const response = await fetch(apiUrl);
                 const data = await response.json();
                 
-                if (data.success && data.products) {
-                    let products = data.products;
+                if (data.success) {
+                    let products = data.products || [];
                     
-                    // Filter by search if provided
+                    // If no products found for collection, try loading all products as fallback
+                    if (products.length === 0 && currentCollectionFilter && currentCollectionFilter !== 'all') {
+                        console.log(`⚠️ No products found for collection '${currentCollectionFilter}', trying all products...`);
+                        
+                        // Fallback to all products
+                        const fallbackResponse = await fetch(`${CONFIG.apiUrl}/shopify-products?limit=50`);
+                        const fallbackData = await fallbackResponse.json();
+                        
+                        if (fallbackData.success && fallbackData.products) {
+                            products = fallbackData.products;
+                            console.log(`📦 Fallback: Loaded ${products.length} products from all collections`);
+                        }
+                    } else {
+                        console.log(`📦 Fetched ${products.length} products from ${currentCollectionFilter || 'all'} collection`);
+                    }
+                    
+                    // Apply search filter if provided
                     const searchTerm = searchInput.value.toLowerCase().trim();
                     if (searchTerm) {
                         products = products.filter(product => 
                             product.title.toLowerCase().includes(searchTerm) ||
                             product.vendor.toLowerCase().includes(searchTerm) ||
-                            product.productType.toLowerCase().includes(searchTerm)
+                            product.productType.toLowerCase().includes(searchTerm) ||
+                            (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
                         );
+                        console.log(`🔍 Filtered by search "${searchTerm}": ${products.length} products found`);
                     }
-                    // If no search term, show all products (don't filter)
                     
                     if (products.length === 0) {
                         loading.style.display = 'none';
@@ -10593,9 +11164,20 @@
                         return;
                     }
                     
+                    // Debug: Log first product structure
+                    if (products.length > 0) {
+                        console.log('🔍 First product structure:', {
+                            title: products[0].title,
+                            image: products[0].image,
+                            images: products[0].images,
+                            hasImageUrl: !!products[0].image?.url,
+                            hasImagesArray: !!products[0].images && products[0].images.length > 0
+                        });
+                    }
+                    
                     // Render products
                     renderCollectionProducts(products);
-                    console.log(`✅ Loaded ${products.length} products`);
+                    console.log(`✅ Displaying ${products.length} products`);
                 } else {
                     throw new Error('Failed to load products');
                 }
@@ -10616,18 +11198,243 @@
                 const isFeatured = index < 2; // First 2 products are featured
                 const productCard = createCollectionProductCard(product, isFeatured);
                 grid.appendChild(productCard);
+                
+                // Insert banner after every 4 products
+                if ((index + 1) % 4 === 0 && (index + 1) < products.length) {
+                    const bannerIndex = Math.floor((index + 1) / 4) - 1;
+                    const banner = createCollectionBanner(bannerIndex);
+                    if (banner) {
+                        grid.appendChild(banner);
+                        const featureStrip = createBannerFeatureStrip();
+                        if (featureStrip) {
+                            grid.appendChild(featureStrip);
+                        }
+                    }
+                }
             });
             
             loading.style.display = 'none';
             grid.style.display = 'grid';
+            
+            // Update heart icon states after products are rendered
+            setTimeout(() => {
+                refreshHeartIconStates();
+            }, 100);
+        }
+
+        // Banner configuration - can be updated via live rendering
+        let bannerConfig = {
+            enabled: true,
+            banners: [
+                {
+                    id: 'banner_1',
+                    title: '🎯 Flash Sale!',
+                    subtitle: 'Up to 50% Off Selected Items',
+                    cta: 'Shop Now',
+                    theme: 'orange',
+                    action: 'collection',
+                    actionData: 'sale-items',
+                    enabled: true
+                },
+                {
+                    id: 'banner_2', 
+                    title: '🆕 New Arrivals',
+                    subtitle: 'Discover Latest Sunglasses Collection',
+                    cta: 'Explore',
+                    theme: 'purple',
+                    action: 'collection',
+                    actionData: 'new-arrivals',
+                    enabled: true
+                },
+                {
+                    id: 'banner_3',
+                    title: '🚚 Free Shipping',
+                    subtitle: 'On orders over ₹999',
+                    cta: 'Learn More',
+                    theme: 'green',
+                    action: 'external',
+                    actionData: 'https://example.com/shipping',
+                    enabled: true
+                },
+                {
+                    id: 'banner_4',
+                    title: '💎 Premium Collection',
+                    subtitle: 'Luxury frames for style connoisseurs',
+                    cta: 'View Collection',
+                    theme: 'red',
+                    action: 'collection',
+                    actionData: 'premium',
+                    enabled: true
+                }
+            ]
+        };
+
+        function createCollectionBanner(bannerIndex) {
+            if (!bannerConfig.enabled) return null;
+            
+            const availableBanners = bannerConfig.banners.filter(banner => banner.enabled);
+            if (availableBanners.length === 0) return null;
+            
+            // Cycle through available banners
+            const banner = availableBanners[bannerIndex % availableBanners.length];
+            
+            const bannerElement = document.createElement('div');
+            bannerElement.className = `collection-banner ${banner.theme ? `theme-${banner.theme}` : ''}`;
+            bannerElement.dataset.bannerId = banner.id;
+            
+            bannerElement.innerHTML = `
+                <div class="banner-content">
+                    <div class="banner-title">${banner.title}</div>
+                    <div class="banner-subtitle">${banner.subtitle}</div>
+                    <span class="banner-cta">${banner.cta}</span>
+                </div>
+            `;
+            
+            // Add click handler
+            bannerElement.onclick = () => handleBannerClick(banner);
+            
+            console.log(`🎯 Created banner: ${banner.title} (${banner.id})`);
+            return bannerElement;
+        }
+        
+        // Creates the post-banner feature strip with three cards, matching the shared design
+        function createBannerFeatureStrip() {
+            const strip = document.createElement('div');
+            strip.className = 'post-banner-feature-strip';
+            strip.innerHTML = `
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <div>
+                        <p class="feature-title">PREMIUM</p>
+                        <p class="feature-subtitle">Quality</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✂️</div>
+                    <div>
+                        <p class="feature-title">CUTTING</p>
+                        <p class="feature-subtitle">Edge Design</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">➕</div>
+                    <div>
+                        <p class="feature-title">10+</p>
+                        <p class="feature-subtitle">Shapes</p>
+                    </div>
+                </div>
+            `;
+            return strip;
+        }
+
+        function handleBannerClick(banner) {
+            console.log(`🎯 Banner clicked: ${banner.id} - ${banner.title}`);
+            
+            switch (banner.action) {
+                case 'collection':
+                    // Navigate to collection
+                    currentCollectionFilter = banner.actionData;
+                    document.querySelector('.collection-title').textContent = 
+                        banner.actionData.charAt(0).toUpperCase() + banner.actionData.slice(1).replace('-', ' ');
+                    loadCollectionProducts();
+                    break;
+                    
+                case 'external':
+                    // Open external link
+                    window.open(banner.actionData, '_blank');
+                    break;
+                    
+                case 'product':
+                    // Show specific product
+                    showProduct(banner.actionData);
+                    break;
+                    
+                default:
+                    console.log(`Unknown banner action: ${banner.action}`);
+            }
+            
+            // Show click feedback
+            showNotification(`${banner.title} clicked!`, 'info');
+        }
+
+        // Helper function to get current collection products for re-rendering
+        function getCurrentCollectionProducts() {
+            const grid = document.getElementById('collectionProductsGrid');
+            if (!grid) return [];
+            
+            // Extract product data from existing cards (simplified)
+            // In a real implementation, you'd store the current products data
+            const productCards = grid.querySelectorAll('.collection-product-card');
+            console.log(`📊 Found ${productCards.length} product cards for re-rendering`);
+            
+            // For now, trigger a fresh load of products
+            return [];
         }
 
         function createCollectionProductCard(product, isFeatured = false) {
             const card = document.createElement('div');
             card.className = 'collection-product-card';
-            card.onclick = () => showProduct(product.id);
+            card.onclick = (event) => {
+                console.log('🎯 Product card clicked!', {
+                    productId: product.id,
+                    productTitle: product.title,
+                    cardElement: card,
+                    event: event
+                });
+                
+                // Check current modal states
+                const collectionModal = document.getElementById('collectionPageModal');
+                const productModal = document.getElementById('productDetailModal');
+                console.log('📊 Modal states before opening product:', {
+                    collectionModalActive: collectionModal?.classList.contains('active'),
+                    productModalActive: productModal?.classList.contains('active'),
+                    collectionZIndex: collectionModal?.style.zIndex || 'CSS default',
+                    productZIndex: productModal?.style.zIndex || 'CSS default'
+                });
+                
+                // Visual feedback that click is working
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 150);
+                
+                showProduct(product.id);
+            };
             
-            const imageUrl = product.image?.url || (product.images && product.images.edges && product.images.edges[0]?.node?.url) || '';
+            // Debug logging for images
+            console.log('🖼️ Product image debug:', {
+                title: product.title,
+                image: product.image,
+                images: product.images,
+                imageEdges: product.images?.edges
+            });
+            
+            // Better image URL logic - handle different image structures
+            let imageUrl = '';
+            if (product.image && typeof product.image === 'string') {
+                // Direct image URL string
+                imageUrl = product.image;
+            } else if (product.image?.url) {
+                // Image object with URL property
+                imageUrl = product.image.url;
+            } else if (product.images && product.images.length > 0) {
+                // Images array (direct)
+                imageUrl = product.images[0]?.url || product.images[0];
+            } else if (product.images?.edges && product.images.edges.length > 0) {
+                // Images edges structure (GraphQL)
+                imageUrl = product.images.edges[0]?.node?.url;
+            }
+            
+            // Skip placeholder URLs, empty strings, and invalid URLs
+            if (!imageUrl || imageUrl.includes('/api/placeholder/') || imageUrl === 'null' || imageUrl === 'undefined') {
+                imageUrl = '';
+            }
+            
+            // Ensure HTTPS for Shopify images
+            if (imageUrl && imageUrl.startsWith('http://')) {
+                imageUrl = imageUrl.replace('http://', 'https://');
+            }
+            
             const price = product.variant?.price?.amount || product.priceRangeV2?.minVariantPrice?.amount || '299.00';
             const vendor = product.vendor || 'Olivesk';
             const title = product.title || 'Product';
@@ -10635,15 +11442,23 @@
             card.innerHTML = `
                 <div class="collection-product-image-container">
                     ${imageUrl ? 
-                        `<img src="${imageUrl}" alt="${title}" class="collection-product-image" loading="lazy">` :
-                        `<div class="collection-product-placeholder">👕</div>`
+                        `<img src="${imageUrl}" alt="${title}" class="collection-product-image" loading="lazy" 
+                              onerror="console.warn('🖼️ Image failed to load:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
+                        `<div class="collection-product-placeholder">🕶️</div>`
                     }
+                    ${imageUrl ? `<div class="collection-product-placeholder" style="display: none;">🕶️</div>` : ''}
                     ${isFeatured ? 
                         `<div class="collection-featured-badge">
                             <i class="fas fa-bolt"></i>
                         </div>` : ''
                     }
-                    <button class="collection-favorite-btn" onclick="event.stopPropagation(); toggleFavorite('${product.id}', this)">
+                    <button class="collection-favorite-btn ${isInWishlist(product.id) ? 'favorited' : ''}" 
+                            data-product-id="${product.id}"
+                            data-product-title="${title}"
+                            data-product-price="${price}"
+                            data-product-image="${imageUrl || ''}"
+                            data-product-vendor="${vendor}"
+                            onclick="event.stopPropagation(); toggleWishlistFromData(this)">
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
@@ -10663,8 +11478,46 @@
             return card;
         }
 
+        // Helper function to check if product is in wishlist
+        function isInWishlist(productId) {
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            return wishlist.some(item => item.id === productId);
+        }
+
+        // Toggle wishlist using data attributes from button
+        function toggleWishlistFromData(button) {
+            const productId = button.dataset.productId;
+            const productTitle = button.dataset.productTitle;
+            const productPrice = button.dataset.productPrice;
+            const productImage = button.dataset.productImage;
+            const productVendor = button.dataset.productVendor;
+            
+            console.log(`❤️ Toggle wishlist for product ${productId} - ${productTitle}`);
+            
+            const isCurrentlyInWishlist = isInWishlist(productId);
+            
+            if (isCurrentlyInWishlist) {
+                // Remove from wishlist
+                removeFromWishlist(productId);
+                button.classList.remove('favorited');
+                console.log(`💔 Removed ${productTitle} from wishlist`);
+                
+                // Show notification
+                showNotification(`Removed from wishlist`, 'info');
+            } else {
+                // Add to wishlist
+                addToWishlist(productId, productTitle, productPrice, productImage, productVendor);
+                button.classList.add('favorited');
+                console.log(`💖 Added ${productTitle} to wishlist`);
+                
+                // Show notification
+                showNotification(`Added to wishlist!`, 'success');
+            }
+        }
+
+        // Legacy function for backward compatibility
         function toggleFavorite(productId, button) {
-            console.log(`❤️ Toggle favorite for product ${productId}`);
+            console.log(`❤️ Legacy toggle favorite for product ${productId}`);
             button.classList.toggle('favorited');
             
             // Here you could save to localStorage or send to backend
@@ -11316,7 +12169,7 @@
             }
         }
 
-        function addToWishlist(productId, productName, productPrice, productImage) {
+        function addToWishlist(productId, productName, productPrice, productImage, productVendor = 'Olivesk') {
             const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
             const existingItem = wishlist.find(item => item.id === productId);
             
@@ -11326,20 +12179,106 @@
                     name: productName,
                     price: productPrice,
                     image: productImage,
+                    vendor: productVendor,
                     addedAt: new Date().toISOString()
                 });
                 localStorage.setItem('userWishlist', JSON.stringify(wishlist));
                 console.log('Added to wishlist!');
+                
+                // Update wishlist badge if exists
+                updateWishlistBadge();
             } else {
                 console.log('Already in wishlist');
             }
+        }
+
+        // Simple notification system
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.wishlist-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `wishlist-notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: 24px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 40000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                animation: slideInFromTop 0.3s ease-out;
+            `;
+
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info'}-circle"></i>
+                ${message}
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutToTop 0.3s ease-in';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Update wishlist badge count
+        function updateWishlistBadge() {
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            const wishlistBadges = document.querySelectorAll('.wishlist-badge');
+            
+            wishlistBadges.forEach(badge => {
+                if (wishlist.length > 0) {
+                    badge.textContent = wishlist.length;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+        }
+
+        // Refresh heart icon states based on current wishlist
+        function refreshHeartIconStates() {
+            const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
+            const wishlistProductIds = wishlist.map(item => item.id);
+            
+            // Update collection page heart icons
+            const heartButtons = document.querySelectorAll('.collection-favorite-btn');
+            heartButtons.forEach(button => {
+                const productId = button.dataset.productId;
+                if (productId && wishlistProductIds.includes(productId)) {
+                    button.classList.add('favorited');
+                } else {
+                    button.classList.remove('favorited');
+                }
+            });
+            
+            console.log(`❤️ Refreshed ${heartButtons.length} heart icon states`);
         }
 
         function removeFromWishlist(productId) {
             const wishlist = JSON.parse(localStorage.getItem('userWishlist') || '[]');
             const updatedWishlist = wishlist.filter(item => item.id !== productId);
             localStorage.setItem('userWishlist', JSON.stringify(updatedWishlist));
-            loadWishlistItems();
+            
+            // Update wishlist badge
+            updateWishlistBadge();
+            
+            // Reload wishlist items if modal is open
+            if (document.getElementById('wishlistModal')?.classList.contains('active')) {
+                loadWishlistItems();
+            }
+            
             console.log('Removed from wishlist');
         }
 
@@ -12475,8 +13414,20 @@
         // Product Detail Modal Functions
         async function showProduct(productId) {
             try {
-                console.log(`🔍 CLICKED PRODUCT ID: "${productId}" (type: ${typeof productId})`);
+                console.log(`🚀 showProduct called with ID: "${productId}" (type: ${typeof productId})`);
                 console.log('🔍 STACK TRACE:', new Error().stack);
+                
+                // Check if modal exists
+                const modalElement = document.getElementById('productDetailModal');
+                if (!modalElement) {
+                    console.error('❌ Product detail modal not found in DOM!');
+                    return;
+                }
+                console.log('✅ Product detail modal found in DOM');
+                
+                // Ensure modal is ready for use
+                modalElement.style.display = 'none';
+                modalElement.classList.remove('active');
                 
                 // Debug: Show all cached product IDs
                 if (window.cachedProducts && window.cachedProducts.length > 0) {
@@ -12515,12 +13466,19 @@
                 
                 // Show the modal with animation
                 const modal = document.getElementById('productDetailModal');
+                modal.style.display = 'flex';
                 modal.classList.add('active');
+                
+                // Ensure modal is on top with proper z-index
+                modal.style.zIndex = '30000';
                 
                 // Prevent body scroll
                 document.body.style.overflow = 'hidden';
                 
                 console.log('✅ Product detail modal opened');
+                console.log('🎉 Modal classes:', modal.className);
+                console.log('🎉 Modal display style:', modal.style.display);
+                console.log('🎉 Modal z-index:', modal.style.zIndex);
             } catch (error) {
                 console.error('Error loading product details:', error);
             }
@@ -12529,17 +13487,93 @@
         function closeProductDetail() {
             const modal = document.getElementById('productDetailModal');
             modal.classList.remove('active');
+            modal.style.display = 'none';
             
-            // Allow body scroll
-            document.body.style.overflow = '';
+            // Reset z-index
+            modal.style.zIndex = '';
             
-            console.log('Product detail modal closed');
+            // Check if collection page is still open
+            const collectionModal = document.getElementById('collectionPageModal');
+            if (collectionModal && collectionModal.classList.contains('active')) {
+                // Keep body scroll locked for collection page
+                console.log('🔄 Returning to collection page, keeping scroll locked');
+            } else {
+                // Allow body scroll if no other modals are open
+                document.body.style.overflow = '';
+            }
+            
+            console.log('✅ Product detail modal closed');
+        }
+        
+        // Toggle wishlist from product detail modal
+        function toggleProductDetailWishlist() {
+            const product = window.currentProductDetail;
+            if (!product) {
+                console.error('❌ No current product for wishlist toggle');
+                return;
+            }
+            
+            const wishlistBtn = document.getElementById('productDetailWishlistBtn');
+            const isCurrentlyInWishlist = isInWishlist(product.id);
+            
+            console.log(`❤️ Toggle wishlist from product detail for ${product.title}`);
+            
+            // Extract product data for wishlist
+            const productPrice = product.variant?.price?.amount || product.priceRangeV2?.minVariantPrice?.amount || '299.00';
+            const productVendor = product.vendor || 'Olivesk';
+            
+            // Get image URL using the same logic as product cards
+            let productImage = '';
+            if (product.image && typeof product.image === 'string') {
+                productImage = product.image;
+            } else if (product.image?.url) {
+                productImage = product.image.url;
+            } else if (product.images && product.images.length > 0) {
+                productImage = product.images[0]?.url || product.images[0];
+            } else if (product.images?.edges && product.images.edges.length > 0) {
+                productImage = product.images.edges[0]?.node?.url;
+            }
+            
+            if (isCurrentlyInWishlist) {
+                // Remove from wishlist
+                removeFromWishlist(product.id);
+                wishlistBtn.classList.remove('favorited');
+                showNotification(`Removed from wishlist`, 'info');
+                console.log(`💔 Removed ${product.title} from wishlist via product detail`);
+            } else {
+                // Add to wishlist
+                addToWishlist(product.id, product.title, productPrice, productImage, productVendor);
+                wishlistBtn.classList.add('favorited');
+                showNotification(`Added to wishlist!`, 'success');
+                console.log(`💖 Added ${product.title} to wishlist via product detail`);
+            }
+        }
+
+        // Test function for debugging
+        function testProductModal() {
+            console.log('🧪 Testing product modal...');
+            // Try to open modal with first available product
+            if (window.cachedProducts && window.cachedProducts.length > 0) {
+                showProduct(window.cachedProducts[0].id);
+            } else {
+                console.log('No products available for testing');
+            }
         }
 
         function populateProductDetail(product) {
             // Update product information
             document.getElementById('productDetailBrand').textContent = 'Olivesk';
             document.getElementById('productDetailTitle').textContent = product.title || 'Beauty Flower Dress';
+            
+            // Update wishlist button state
+            const wishlistBtn = document.getElementById('productDetailWishlistBtn');
+            if (wishlistBtn) {
+                if (isInWishlist(product.id)) {
+                    wishlistBtn.classList.add('favorited');
+                } else {
+                    wishlistBtn.classList.remove('favorited');
+                }
+            }
             
             // 🔍 DEBUG: Log the complete product pricing structure
             console.log('💰 PRODUCT DETAIL PRICING DEBUG:', {
@@ -12888,6 +13922,10 @@
             setTimeout(() => {
                 updateProductCardsClickable();
             }, 2000);
+            
+            // Initialize wishlist system
+            updateWishlistBadge();
+            console.log('❤️ Wishlist system initialized on page load');
         });
 
     </script>

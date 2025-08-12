@@ -192,6 +192,33 @@ function getDefaultConfiguration() {
         address: "123 Main St, City, State 12345"
       }
     },
+    eyewearShowcase: {
+      enabled: true,
+      topImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-black-angled.png',
+      middleImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-tortoise-front.png',
+      bottomImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-side-black.png',
+      topTitle: 'PREMIUM', topSubtitle: 'QUALITY',
+      middleTitle: 'CUTTING', middleSubtitle: 'EDGE DESIGN',
+      bottomTitle: '10+', bottomSubtitle: 'SHAPES',
+      topBackground: 'linear-gradient(90deg, #cfe8ff 0%, #2f80ed 35%, #0ea5e9 100%)',
+      middleBackground: '#e6e7ea',
+      bottomBackground: 'linear-gradient(90deg, #ffd6d1 0%, #ffe2d9 40%, #fff3b0 100%)',
+      topImagePosition: 'left',
+      middleImagePosition: 'left',
+      bottomImagePosition: 'right',
+      topTitleColor: '#111827',
+      topSubtitleColor: '#4b5563',
+      middleTitleColor: '#111827',
+      middleSubtitleColor: '#4b5563',
+      bottomTitleColor: '#111827',
+      bottomSubtitleColor: '#4b5563',
+      topLink: '',
+      middleLink: '',
+      bottomLink: '',
+      topImageSize: '180',
+      middleImageSize: '180',
+      bottomImageSize: '180'
+    },
     bottomNavigation: {
       enabled: true,
       backgroundColor: "#FFFFFF",

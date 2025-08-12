@@ -7,10 +7,15 @@ export async function loader({ request }) {
   const url = new URL(request.url);
   const type = url.searchParams.get("type") || "products";
   const limit = url.searchParams.get("limit") || "10";
+  const collection = url.searchParams.get("collection");
 
   try {
     if (type === "products") {
-      return await fetchProducts(limit);
+      if (collection) {
+        return await fetchProductsByCollection(collection, limit);
+      } else {
+        return await fetchProducts(limit);
+      }
     } else if (type === "collections") {
       return await fetchCollections(limit);
     }
@@ -136,6 +141,154 @@ async function fetchProducts(limit) {
     success: true,
     products,
     count: products.length
+  });
+}
+
+async function fetchProductsByCollection(collectionHandle, limit) {
+  const query = `
+    query getProductsByCollection($handle: String!, $first: Int!) {
+      collection(handle: $handle) {
+        id
+        title
+        handle
+        products(first: $first) {
+          edges {
+            node {
+              id
+              title
+              handle
+              description
+              vendor
+              productType
+              tags
+              images(first: 5) {
+                edges {
+                  node {
+                    url
+                    altText
+                  }
+                }
+              }
+              variants(first: 250) {
+                edges {
+                  node {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    compareAtPrice {
+                      amount
+                      currencyCode
+                    }
+                    availableForSale
+                    selectedOptions {
+                      name
+                      value
+                    }
+                  }
+                }
+              }
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+                maxVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              compareAtPriceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+                maxVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await shopifyStorefrontQuery(query, { 
+    handle: collectionHandle, 
+    first: parseInt(limit) 
+  });
+  
+  if (response.errors) {
+    throw new Error(response.errors[0].message);
+  }
+
+  if (!response.data.collection) {
+    // If collection not found, return empty result
+    return json({
+      success: true,
+      products: [],
+      count: 0,
+      collection: null
+    });
+  }
+
+  const products = response.data.collection.products.edges.map(({ node }) => {
+    const variant = node.variants.edges[0]?.node || {};
+    const image = node.images.edges[0]?.node;
+    
+    return {
+      id: node.id,
+      title: node.title,
+      handle: node.handle,
+      description: node.description,
+      vendor: node.vendor,
+      productType: node.productType,
+      tags: node.tags,
+      images: node.images.edges.map(edge => ({
+        url: edge.node.url,
+        altText: edge.node.altText
+      })),
+      image: image ? {
+        url: image.url,
+        altText: image.altText
+      } : null,
+      variant: {
+        id: variant.id,
+        title: variant.title,
+        price: variant.price,
+        compareAtPrice: variant.compareAtPrice,
+        availableForSale: variant.availableForSale,
+        selectedOptions: variant.selectedOptions
+      },
+      // Compare at price logic
+      compareAtPrice: variant.compareAtPrice && 
+                     parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount)
+          ? {
+              amount: variant.compareAtPrice.amount,
+              currencyCode: variant.compareAtPrice.currencyCode,
+              formatted: `₹${parseFloat(variant.compareAtPrice.amount).toFixed(2)}`,
+              isDiscounted: parseFloat(variant.compareAtPrice.amount) > parseFloat(variant.price.amount)
+            }
+          : null,
+      variants: node.variants,
+      priceRangeV2: node.priceRange,
+      compareAtPriceRange: node.compareAtPriceRange
+    };
+  });
+
+  return json({
+    success: true,
+    products,
+    count: products.length,
+    collection: {
+      id: response.data.collection.id,
+      title: response.data.collection.title,
+      handle: response.data.collection.handle
+    }
   });
 }
 

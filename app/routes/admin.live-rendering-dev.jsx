@@ -122,6 +122,30 @@ function getDefaultConfiguration() {
       showQuickLinks: true,
       showContactInfo: true
     },
+    eyewearShowcase: {
+      enabled: true,
+      topImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-black-angled.png',
+      middleImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-tortoise-front.png',
+      bottomImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-side-black.png',
+      topTitle: 'PREMIUM', topSubtitle: 'QUALITY',
+      middleTitle: 'CUTTING', middleSubtitle: 'EDGE DESIGN',
+      bottomTitle: '10+', bottomSubtitle: 'SHAPES',
+      topBackground: 'linear-gradient(90deg, #cfe8ff 0%, #2f80ed 35%, #0ea5e9 100%)',
+      middleBackground: '#e6e7ea',
+      bottomBackground: 'linear-gradient(90deg, #ffd6d1 0%, #ffe2d9 40%, #fff3b0 100%)',
+      topImagePosition: 'left',
+      middleImagePosition: 'left',
+      bottomImagePosition: 'right',
+      topTitleColor: '#111827',
+      topSubtitleColor: '#4b5563',
+      middleTitleColor: '#111827',
+      middleSubtitleColor: '#4b5563',
+      bottomTitleColor: '#111827',
+      bottomSubtitleColor: '#4b5563',
+      topLink: '',
+      middleLink: '',
+      bottomLink: ''
+    },
     bottomNavigation: {
       enabled: true,
       backgroundColor: "#FFFFFF",
@@ -241,6 +265,7 @@ export default function AdminLiveRenderingDev() {
     { id: 'header', label: '🏠 Header', icon: '🏠' },
     { id: 'search', label: '🔍 Search', icon: '🔍' },
     { id: 'slider', label: '🎨 Hero Slider', icon: '🎨' },
+    { id: 'showcase', label: '👓 Showcase', icon: '👓' },
     { id: 'categories', label: '📂 Categories', icon: '📂' },
     { id: 'products', label: '🛍️ Products', icon: '🛍️' },
     { id: 'footer', label: '📄 Footer', icon: '📄' }
@@ -460,10 +485,12 @@ export default function AdminLiveRenderingDev() {
           {selectedTab === 1 && <HeaderConfig config={config.header} updateConfig={updateConfig} />}
         {selectedTab === 2 && <SearchConfig config={config.search} updateConfig={updateConfig} />}
         {selectedTab === 3 && <SliderConfig config={config.slider} updateConfig={updateConfig} />}
-        {selectedTab === 4 && <div>📂 Categories Configuration coming soon...</div>}
-        {selectedTab === 5 && <ProductsConfig config={config} updateConfig={updateConfig} />}
-        {selectedTab === 6 && <div>📄 Footer Configuration coming soon...</div>}
+        {selectedTab === 4 && <ShowcaseConfig config={config.eyewearShowcase || {}} updateConfig={updateConfig} />}
+        {selectedTab === 5 && <div>📂 Categories Configuration coming soon...</div>}
+        {selectedTab === 6 && <ProductsConfig config={config} updateConfig={updateConfig} />}
+        {selectedTab === 7 && <div>📄 Footer Configuration coming soon...</div>}
         </div>
+
 
       {/* Live Preview Modal */}
       {showPreviewModal && (
@@ -625,6 +652,234 @@ export default function AdminLiveRenderingDev() {
             </div>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function ShowcaseConfig({ config, updateConfig }) {
+  const cfg = config || {};
+  const setCfg = (updates) => updateConfig('eyewearShowcase', { ...(cfg||{}), ...updates });
+  return (
+    <div style={{ display: 'grid', gap: '20px' }}>
+      <div style={{
+        background: 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)',
+        borderRadius: '12px',
+        padding: '20px',
+        color: 'white'
+      }}>
+        <h3 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>👓 Eyewear Showcase</h3>
+        <p style={{ opacity: .9, margin: '6px 0 0 0' }}>Control the three-section diagonal banner below the hero.</p>
+      </div>
+
+      <label style={{ display:'flex', alignItems:'center', gap:10 }}>
+        <input type="checkbox" checked={cfg.enabled !== false} onChange={(e)=>setCfg({ enabled: e.target.checked })} />
+        <span style={{ fontWeight: 600 }}>Enable Showcase</span>
+      </label>
+
+      {cfg.enabled !== false && (
+        <>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Image URL</label>
+              <input type="url" value={cfg.topImage || ''} onChange={(e)=>setCfg({ topImage: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Image URL</label>
+              <input type="url" value={cfg.middleImage || ''} onChange={(e)=>setCfg({ middleImage: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Image URL</label>
+              <input type="url" value={cfg.bottomImage || ''} onChange={(e)=>setCfg({ bottomImage: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Background</label>
+              <input type="text" value={cfg.topBackground || ''} onChange={(e)=>setCfg({ topBackground: e.target.value })} placeholder="CSS color/gradient" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Background</label>
+              <input type="text" value={cfg.middleBackground || ''} onChange={(e)=>setCfg({ middleBackground: e.target.value })} placeholder="CSS color/gradient" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Background</label>
+              <input type="text" value={cfg.bottomBackground || ''} onChange={(e)=>setCfg({ bottomBackground: e.target.value })} placeholder="CSS color/gradient" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Image Position</label>
+              <select value={cfg.topImagePosition || 'left'} onChange={(e)=>setCfg({ topImagePosition: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }}>
+                <option value="left">Left (40%) + Text Right (60%)</option>
+                <option value="right">Right (40%) + Text Left (60%)</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Image Position</label>
+              <select value={cfg.middleImagePosition || 'left'} onChange={(e)=>setCfg({ middleImagePosition: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }}>
+                <option value="left">Left (40%) + Text Right (60%)</option>
+                <option value="right">Right (40%) + Text Left (60%)</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Image Position</label>
+              <select value={cfg.bottomImagePosition || 'right'} onChange={(e)=>setCfg({ bottomImagePosition: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }}>
+                <option value="left">Left (40%) + Text Right (60%)</option>
+                <option value="right">Right (40%) + Text Left (60%)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Image Size (px)</label>
+              <input type="number" value={cfg.topImageSize || '180'} onChange={(e)=>setCfg({ topImageSize: e.target.value })} min="50" max="400" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Image Size (px)</label>
+              <input type="number" value={cfg.middleImageSize || '180'} onChange={(e)=>setCfg({ middleImageSize: e.target.value })} min="50" max="400" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Image Size (px)</label>
+              <input type="number" value={cfg.bottomImageSize || '180'} onChange={(e)=>setCfg({ bottomImageSize: e.target.value })} min="50" max="400" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Title</label>
+              <input type="text" value={cfg.topTitle || ''} onChange={(e)=>setCfg({ topTitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Subtitle</label>
+              <input type="text" value={cfg.topSubtitle || ''} onChange={(e)=>setCfg({ topSubtitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Title</label>
+              <input type="text" value={cfg.middleTitle || ''} onChange={(e)=>setCfg({ middleTitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Subtitle</label>
+              <input type="text" value={cfg.middleSubtitle || ''} onChange={(e)=>setCfg({ middleSubtitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Title</label>
+              <input type="text" value={cfg.bottomTitle || ''} onChange={(e)=>setCfg({ bottomTitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Subtitle</label>
+              <input type="text" value={cfg.bottomSubtitle || ''} onChange={(e)=>setCfg({ bottomSubtitle: e.target.value })} style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Title Color</label>
+              <input type="color" value={cfg.topTitleColor || '#111827'} onChange={(e)=>setCfg({ topTitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Subtitle Color</label>
+              <input type="color" value={cfg.topSubtitleColor || '#4b5563'} onChange={(e)=>setCfg({ topSubtitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Title Color</label>
+              <input type="color" value={cfg.middleTitleColor || '#111827'} onChange={(e)=>setCfg({ middleTitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Subtitle Color</label>
+              <input type="color" value={cfg.middleSubtitleColor || '#4b5563'} onChange={(e)=>setCfg({ middleSubtitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Title Color</label>
+              <input type="color" value={cfg.bottomTitleColor || '#111827'} onChange={(e)=>setCfg({ bottomTitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Subtitle Color</label>
+              <input type="color" value={cfg.bottomSubtitleColor || '#4b5563'} onChange={(e)=>setCfg({ bottomSubtitleColor: e.target.value })} style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px' }}>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Top Link (URL)</label>
+              <input type="url" value={cfg.topLink || ''} onChange={(e)=>setCfg({ topLink: e.target.value })} placeholder="https://example.com or /page" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Middle Link (URL)</label>
+              <input type="url" value={cfg.middleLink || ''} onChange={(e)=>setCfg({ middleLink: e.target.value })} placeholder="https://example.com or /page" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+            <div>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Bottom Link (URL)</label>
+              <input type="url" value={cfg.bottomLink || ''} onChange={(e)=>setCfg({ bottomLink: e.target.value })} placeholder="https://example.com or /page" style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} />
+            </div>
+          </div>
+
+                      <div style={{ marginTop: 10 }}>
+              <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Live Preview (40% Image + 60% Text Layout)</label>
+              <div style={{ border:'1px solid #e5e7eb', borderRadius:12, overflow:'hidden' }}>
+                <div style={{ background: cfg.topBackground || 'linear-gradient(90deg,#cfe8ff,#2f80ed 35%,#0ea5e9)', padding:16, display:'flex', alignItems:'center', gap:15 }}>
+                  {(cfg.topImagePosition || 'left') === 'left' ? (
+                    <>
+                      <div style={{ flex:'0 0 40%', background:'rgba(255,255,255,0.2)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:'#fff' }}>Image 40%</div>
+                      <div style={{ flex:1, textAlign:'right' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.topTitleColor || '#111827' }}>{cfg.topTitle || 'PREMIUM'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.topSubtitleColor || '#4b5563' }}>{cfg.topSubtitle || 'QUALITY'}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ flex:1, textAlign:'left' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.topTitleColor || '#111827' }}>{cfg.topTitle || 'PREMIUM'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.topSubtitleColor || '#4b5563' }}>{cfg.topSubtitle || 'QUALITY'}</div>
+                      </div>
+                      <div style={{ flex:'0 0 40%', background:'rgba(255,255,255,0.2)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:'#fff' }}>Image 40%</div>
+                    </>
+                  )}
+                </div>
+                <div style={{ background: cfg.middleBackground || '#e6e7ea', padding:16, display:'flex', alignItems:'center', gap:15 }}>
+                  {(cfg.middleImagePosition || 'left') === 'left' ? (
+                    <>
+                      <div style={{ flex:'0 0 40%', background:'rgba(0,0,0,0.1)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>Image 40%</div>
+                      <div style={{ flex:1, textAlign:'right' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.middleTitleColor || '#111827' }}>{cfg.middleTitle || 'CUTTING'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.middleSubtitleColor || '#4b5563' }}>{cfg.middleSubtitle || 'EDGE DESIGN'}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ flex:1, textAlign:'left' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.middleTitleColor || '#111827' }}>{cfg.middleTitle || 'CUTTING'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.middleSubtitleColor || '#4b5563' }}>{cfg.middleSubtitle || 'EDGE DESIGN'}</div>
+                      </div>
+                      <div style={{ flex:'0 0 40%', background:'rgba(0,0,0,0.1)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>Image 40%</div>
+                    </>
+                  )}
+                </div>
+                <div style={{ background: cfg.bottomBackground || 'linear-gradient(90deg,#ffd6d1,#ffe2d9 40%,#fff3b0)', padding:16, display:'flex', alignItems:'center', gap:15 }}>
+                  {(cfg.bottomImagePosition || 'right') === 'left' ? (
+                    <>
+                      <div style={{ flex:'0 0 40%', background:'rgba(255,255,255,0.3)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>Image 40%</div>
+                      <div style={{ flex:1, textAlign:'right' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.bottomTitleColor || '#111827' }}>{cfg.bottomTitle || '10+'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.bottomSubtitleColor || '#4b5563' }}>{cfg.bottomSubtitle || 'SHAPES'}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ flex:1, textAlign:'left' }}>
+                        <div style={{ fontWeight:900, letterSpacing:2, color: cfg.bottomTitleColor || '#111827' }}>{cfg.bottomTitle || '10+'}</div>
+                        <div style={{ fontSize:12, letterSpacing:3, marginTop:4, color: cfg.bottomSubtitleColor || '#4b5563' }}>{cfg.bottomSubtitle || 'SHAPES'}</div>
+                      </div>
+                      <div style={{ flex:'0 0 40%', background:'rgba(255,255,255,0.3)', borderRadius:8, height:60, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>Image 40%</div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+        </>
       )}
     </div>
   );

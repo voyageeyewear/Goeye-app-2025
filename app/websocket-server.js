@@ -144,6 +144,51 @@ class LiveRenderingWebSocketServer {
         title: "Eyejack",
         backgroundColor: "#FFFFFF",
         textColor: "#1F2937"
+      },
+      banners: {
+        enabled: true,
+        banners: [
+          {
+            id: 'banner_1',
+            title: '🎯 Flash Sale!',
+            subtitle: 'Up to 50% Off Selected Items',
+            cta: 'Shop Now',
+            theme: 'orange',
+            action: 'collection',
+            actionData: 'sale-items',
+            enabled: true
+          },
+          {
+            id: 'banner_2', 
+            title: '🆕 New Arrivals',
+            subtitle: 'Discover Latest Sunglasses Collection',
+            cta: 'Explore',
+            theme: 'purple',
+            action: 'collection',
+            actionData: 'new-arrivals',
+            enabled: true
+          },
+          {
+            id: 'banner_3',
+            title: '🚚 Free Shipping',
+            subtitle: 'On orders over ₹999',
+            cta: 'Learn More',
+            theme: 'green',
+            action: 'external',
+            actionData: 'https://example.com/shipping',
+            enabled: true
+          },
+          {
+            id: 'banner_4',
+            title: '💎 Premium Collection',
+            subtitle: 'Luxury frames for style connoisseurs',
+            cta: 'View Collection',
+            theme: 'red',
+            action: 'collection',
+            actionData: 'premium',
+            enabled: true
+          }
+        ]
       }
     };
   }
