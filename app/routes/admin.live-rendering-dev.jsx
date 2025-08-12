@@ -122,6 +122,91 @@ function getDefaultConfiguration() {
       showQuickLinks: true,
       showContactInfo: true
     },
+    eyewearCategories: {
+      enabled: true,
+      eyeglasses: {
+        title: 'Eyeglasses',
+        direction: 'left-to-right',
+        speed: 20,
+        titleColor: '#1f2937',
+        backgroundColor: '#f8fafc',
+        items: [
+          {
+            name: 'Men',
+            description: 'Stylish frames for men',
+            image: 'https://via.placeholder.com/120/0066cc/ffffff?text=Men',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Women',
+            description: 'Elegant frames for women',
+            image: 'https://via.placeholder.com/120/ff6699/ffffff?text=Women',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Kids',
+            description: 'Fun frames for kids',
+            image: 'https://via.placeholder.com/120/33cc99/ffffff?text=Kids',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Essentials',
+            description: 'Basic everyday frames',
+            image: 'https://via.placeholder.com/120/666666/ffffff?text=Essential',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          }
+        ]
+      },
+      sunglasses: {
+        title: 'Sunglasses',
+        direction: 'right-to-left',
+        speed: 25,
+        titleColor: '#1f2937',
+        backgroundColor: '#f8fafc',
+        items: [
+          {
+            name: 'Men',
+            description: 'Cool shades for men',
+            image: 'https://via.placeholder.com/120/000000/ffffff?text=Men',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Women',
+            description: 'Chic sunglasses for women',
+            image: 'https://via.placeholder.com/120/8b4513/ffffff?text=Women',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Kids',
+            description: 'UV protection for kids',
+            image: 'https://via.placeholder.com/120/ff9900/ffffff?text=Kids',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          },
+          {
+            name: 'Essentials',
+            description: 'Classic sun protection',
+            image: 'https://via.placeholder.com/120/4a5568/ffffff?text=Essential',
+            textColor: '#1f2937',
+            descriptionColor: '#6b7280',
+            link: ''
+          }
+        ]
+      }
+    },
     eyewearShowcase: {
       enabled: true,
       topImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-black-angled.png',
@@ -266,6 +351,7 @@ export default function AdminLiveRenderingDev() {
     { id: 'search', label: '🔍 Search', icon: '🔍' },
     { id: 'slider', label: '🎨 Hero Slider', icon: '🎨' },
     { id: 'showcase', label: '👓 Showcase', icon: '👓' },
+    { id: 'eyewear-categories', label: '🕶️ Eyewear Categories', icon: '🕶️' },
     { id: 'categories', label: '📂 Categories', icon: '📂' },
     { id: 'products', label: '🛍️ Products', icon: '🛍️' },
     { id: 'footer', label: '📄 Footer', icon: '📄' }
@@ -486,9 +572,10 @@ export default function AdminLiveRenderingDev() {
         {selectedTab === 2 && <SearchConfig config={config.search} updateConfig={updateConfig} />}
         {selectedTab === 3 && <SliderConfig config={config.slider} updateConfig={updateConfig} />}
         {selectedTab === 4 && <ShowcaseConfig config={config.eyewearShowcase || {}} updateConfig={updateConfig} />}
-        {selectedTab === 5 && <div>📂 Categories Configuration coming soon...</div>}
-        {selectedTab === 6 && <ProductsConfig config={config} updateConfig={updateConfig} />}
-        {selectedTab === 7 && <div>📄 Footer Configuration coming soon...</div>}
+        {selectedTab === 5 && <EyewearCategoriesConfig config={config.eyewearCategories || {}} updateConfig={updateConfig} />}
+        {selectedTab === 6 && <div>📂 Categories Configuration coming soon...</div>}
+        {selectedTab === 7 && <ProductsConfig config={config} updateConfig={updateConfig} />}
+        {selectedTab === 8 && <div>📄 Footer Configuration coming soon...</div>}
         </div>
 
 
@@ -879,6 +966,356 @@ function ShowcaseConfig({ config, updateConfig }) {
                 </div>
               </div>
             </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function EyewearCategoriesConfig({ config, updateConfig }) {
+  const cfg = config || {};
+  const setCfg = (updates) => updateConfig('eyewearCategories', { ...(cfg||{}), ...updates });
+  
+  const setEyeglassesConfig = (updates) => {
+    setCfg({
+      eyeglasses: {
+        ...(cfg.eyeglasses || {}),
+        ...updates
+      }
+    });
+  };
+  
+  const setSunglassesConfig = (updates) => {
+    setCfg({
+      sunglasses: {
+        ...(cfg.sunglasses || {}),
+        ...updates
+      }
+    });
+  };
+  
+  const updateItemInCategory = (category, itemIndex, updates) => {
+    const currentItems = cfg[category]?.items || [];
+    const newItems = [...currentItems];
+    newItems[itemIndex] = { ...newItems[itemIndex], ...updates };
+    
+    if (category === 'eyeglasses') {
+      setEyeglassesConfig({ items: newItems });
+    } else {
+      setSunglassesConfig({ items: newItems });
+    }
+  };
+
+  return (
+    <div style={{ display: 'grid', gap: '20px' }}>
+      <div style={{
+        background: 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)',
+        borderRadius: '12px',
+        padding: '20px',
+        color: 'white'
+      }}>
+        <h3 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>🕶️ Eyewear Categories Marquee</h3>
+        <p style={{ opacity: .9, margin: '6px 0 0 0' }}>Control the animated eyewear category sections with live controls for direction, speed, colors, and content.</p>
+      </div>
+
+      <label style={{ display:'flex', alignItems:'center', gap:10 }}>
+        <input type="checkbox" checked={cfg.enabled !== false} onChange={(e)=>setCfg({ enabled: e.target.checked })} />
+        <span style={{ fontWeight: 600 }}>Enable Eyewear Categories</span>
+      </label>
+
+      {cfg.enabled !== false && (
+        <>
+          {/* Eyeglasses Section */}
+          <div style={{ border: '2px solid #3b82f6', borderRadius: '12px', padding: '20px' }}>
+            <h4 style={{ margin: '0 0 15px 0', color: '#1f2937', fontSize: '1.2rem' }}>👓 Eyeglasses Section</h4>
+            
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '14px', marginBottom: '15px' }}>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Section Title</label>
+                <input 
+                  type="text" 
+                  value={cfg.eyeglasses?.title || 'Eyeglasses'} 
+                  onChange={(e)=>setEyeglassesConfig({ title: e.target.value })} 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Title Color</label>
+                <input 
+                  type="color" 
+                  value={cfg.eyeglasses?.titleColor || '#1f2937'} 
+                  onChange={(e)=>setEyeglassesConfig({ titleColor: e.target.value })} 
+                  style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px', marginBottom: '15px' }}>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Animation Direction</label>
+                <select 
+                  value={cfg.eyeglasses?.direction || 'left-to-right'} 
+                  onChange={(e)=>setEyeglassesConfig({ direction: e.target.value })} 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }}
+                >
+                  <option value="left-to-right">Left to Right</option>
+                  <option value="right-to-left">Right to Left</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Animation Speed (seconds)</label>
+                <input 
+                  type="number" 
+                  value={cfg.eyeglasses?.speed || 20} 
+                  onChange={(e)=>setEyeglassesConfig({ speed: parseInt(e.target.value) })} 
+                  min="5" 
+                  max="60" 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Background Color</label>
+                <input 
+                  type="color" 
+                  value={cfg.eyeglasses?.backgroundColor || '#f8fafc'} 
+                  onChange={(e)=>setEyeglassesConfig({ backgroundColor: e.target.value })} 
+                  style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+            </div>
+
+            <h5 style={{ margin: '20px 0 10px 0', color: '#374151' }}>Category Items</h5>
+            {(cfg.eyeglasses?.items || []).map((item, index) => (
+              <div key={index} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '15px', marginBottom: '10px' }}>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Name</label>
+                    <input 
+                      type="text" 
+                      value={item.name || ''} 
+                      onChange={(e)=>updateItemInCategory('eyeglasses', index, { name: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Description</label>
+                    <input 
+                      type="text" 
+                      value={item.description || ''} 
+                      onChange={(e)=>updateItemInCategory('eyeglasses', index, { description: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Image URL</label>
+                    <input 
+                      type="url" 
+                      value={item.image || ''} 
+                      onChange={(e)=>updateItemInCategory('eyeglasses', index, { image: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Text Color</label>
+                    <input 
+                      type="color" 
+                      value={item.textColor || '#1f2937'} 
+                      onChange={(e)=>updateItemInCategory('eyeglasses', index, { textColor: e.target.value })} 
+                      style={{ width:'100%', height:35, border:'1px solid #e5e7eb', borderRadius:6 }} 
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Redirect Link</label>
+                    <input 
+                      type="url" 
+                      value={item.link || ''} 
+                      onChange={(e)=>updateItemInCategory('eyeglasses', index, { link: e.target.value })} 
+                      placeholder="https://example.com/men-eyeglasses" 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Sunglasses Section */}
+          <div style={{ border: '2px solid #f59e0b', borderRadius: '12px', padding: '20px' }}>
+            <h4 style={{ margin: '0 0 15px 0', color: '#1f2937', fontSize: '1.2rem' }}>🕶️ Sunglasses Section</h4>
+            
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '14px', marginBottom: '15px' }}>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Section Title</label>
+                <input 
+                  type="text" 
+                  value={cfg.sunglasses?.title || 'Sunglasses'} 
+                  onChange={(e)=>setSunglassesConfig({ title: e.target.value })} 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Title Color</label>
+                <input 
+                  type="color" 
+                  value={cfg.sunglasses?.titleColor || '#1f2937'} 
+                  onChange={(e)=>setSunglassesConfig({ titleColor: e.target.value })} 
+                  style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: '14px', marginBottom: '15px' }}>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Animation Direction</label>
+                <select 
+                  value={cfg.sunglasses?.direction || 'right-to-left'} 
+                  onChange={(e)=>setSunglassesConfig({ direction: e.target.value })} 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }}
+                >
+                  <option value="left-to-right">Left to Right</option>
+                  <option value="right-to-left">Right to Left</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Animation Speed (seconds)</label>
+                <input 
+                  type="number" 
+                  value={cfg.sunglasses?.speed || 25} 
+                  onChange={(e)=>setSunglassesConfig({ speed: parseInt(e.target.value) })} 
+                  min="5" 
+                  max="60" 
+                  style={{ width:'100%', padding:12, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+              <div>
+                <label style={{ display:'block', fontWeight:600, marginBottom:6 }}>Background Color</label>
+                <input 
+                  type="color" 
+                  value={cfg.sunglasses?.backgroundColor || '#f8fafc'} 
+                  onChange={(e)=>setSunglassesConfig({ backgroundColor: e.target.value })} 
+                  style={{ width:'100%', height:50, border:'1px solid #e5e7eb', borderRadius:8 }} 
+                />
+              </div>
+            </div>
+
+            <h5 style={{ margin: '20px 0 10px 0', color: '#374151' }}>Category Items</h5>
+            {(cfg.sunglasses?.items || []).map((item, index) => (
+              <div key={index} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '15px', marginBottom: '10px' }}>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Name</label>
+                    <input 
+                      type="text" 
+                      value={item.name || ''} 
+                      onChange={(e)=>updateItemInCategory('sunglasses', index, { name: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Description</label>
+                    <input 
+                      type="text" 
+                      value={item.description || ''} 
+                      onChange={(e)=>updateItemInCategory('sunglasses', index, { description: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Image URL</label>
+                    <input 
+                      type="url" 
+                      value={item.image || ''} 
+                      onChange={(e)=>updateItemInCategory('sunglasses', index, { image: e.target.value })} 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Text Color</label>
+                    <input 
+                      type="color" 
+                      value={item.textColor || '#1f2937'} 
+                      onChange={(e)=>updateItemInCategory('sunglasses', index, { textColor: e.target.value })} 
+                      style={{ width:'100%', height:35, border:'1px solid #e5e7eb', borderRadius:6 }} 
+                    />
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{ display:'block', fontWeight:600, marginBottom:4, fontSize:'14px' }}>Redirect Link</label>
+                    <input 
+                      type="url" 
+                      value={item.link || ''} 
+                      onChange={(e)=>updateItemInCategory('sunglasses', index, { link: e.target.value })} 
+                      placeholder="https://example.com/men-sunglasses" 
+                      style={{ width:'100%', padding:8, border:'1px solid #e5e7eb', borderRadius:6, fontSize:'14px' }} 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Live Preview */}
+          <div style={{ marginTop: 20 }}>
+            <label style={{ display:'block', fontWeight:600, marginBottom:10 }}>Live Preview</label>
+            <div style={{ border:'2px solid #e5e7eb', borderRadius:12, overflow:'hidden', background: cfg.eyeglasses?.backgroundColor || '#f8fafc' }}>
+              <div style={{ padding: '20px 0', overflow: 'hidden' }}>
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                  <h3 style={{ color: cfg.eyeglasses?.titleColor || '#1f2937', margin: 0 }}>{cfg.eyeglasses?.title || 'Eyeglasses'}</h3>
+                </div>
+                <div style={{ display: 'flex', gap: '20px', animation: `scroll-${cfg.eyeglasses?.direction || 'left-to-right'} ${cfg.eyeglasses?.speed || 20}s linear infinite` }}>
+                  {(cfg.eyeglasses?.items || []).map((item, index) => (
+                    <div key={index} style={{ 
+                      minWidth: '150px', 
+                      background: 'white', 
+                      borderRadius: '12px', 
+                      padding: '15px', 
+                      textAlign: 'center',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      <div style={{ 
+                        width: '80px', 
+                        height: '80px', 
+                        background: item.image ? `url(${item.image})` : '#e5e7eb',
+                        backgroundSize: 'cover',
+                        borderRadius: '50%', 
+                        margin: '0 auto 10px' 
+                      }}></div>
+                      <div style={{ fontWeight: 600, color: item.textColor || '#1f2937', fontSize: '14px' }}>{item.name}</div>
+                      <div style={{ fontSize: '12px', color: item.descriptionColor || '#6b7280' }}>{item.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div style={{ padding: '20px 0', overflow: 'hidden', borderTop: '1px solid #e5e7eb' }}>
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                  <h3 style={{ color: cfg.sunglasses?.titleColor || '#1f2937', margin: 0 }}>{cfg.sunglasses?.title || 'Sunglasses'}</h3>
+                </div>
+                <div style={{ display: 'flex', gap: '20px', animation: `scroll-${cfg.sunglasses?.direction || 'right-to-left'} ${cfg.sunglasses?.speed || 25}s linear infinite` }}>
+                  {(cfg.sunglasses?.items || []).map((item, index) => (
+                    <div key={index} style={{ 
+                      minWidth: '150px', 
+                      background: 'white', 
+                      borderRadius: '12px', 
+                      padding: '15px', 
+                      textAlign: 'center',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      <div style={{ 
+                        width: '80px', 
+                        height: '80px', 
+                        background: item.image ? `url(${item.image})` : '#e5e7eb',
+                        backgroundSize: 'cover',
+                        borderRadius: '50%', 
+                        margin: '0 auto 10px' 
+                      }}></div>
+                      <div style={{ fontWeight: 600, color: item.textColor || '#1f2937', fontSize: '14px' }}>{item.name}</div>
+                      <div style={{ fontSize: '12px', color: item.descriptionColor || '#6b7280' }}>{item.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </>
       )}
     </div>

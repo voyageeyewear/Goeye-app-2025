@@ -1605,6 +1605,152 @@
             border: 1px solid #e5e7eb;
         }
 
+        /* Eyewear Categories Marquee Styles */
+        #eyewearCategoriesMount { grid-column: 1 / -1; }
+        .eyewear-categories {
+            background: #f8fafc;
+            overflow: hidden;
+        }
+
+        .eyewear-category-title {
+            text-align: justify;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .eyewear-marquee {
+            display: flex;
+            animation: scroll-left 20s linear infinite;
+            gap: 30px;
+            align-items: center;
+            width: fit-content;
+            will-change: transform;
+        }
+        
+        .eyewear-category-section {
+            margin: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            padding: 0 15px;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000px;
+            perspective: 1000px;
+        }
+
+        .eyewear-marquee.right-to-left {
+            animation: scroll-right 20s linear infinite;
+            will-change: transform;
+        }
+
+        .eyewear-category-item {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            width: calc(25% - 22.5px);
+            min-width: 150px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .eyewear-category-image-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .eyewear-category-item:hover .eyewear-category-image-box {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .eyewear-category-image-container {
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .eyewear-category-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .eyewear-category-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .eyewear-category-text {
+            text-align: center;
+            width: 100%;
+        }
+
+        .eyewear-category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .eyewear-category-description {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        @keyframes scroll-left {
+            from { transform: translate3d(0%, 0, 0); }
+            to { transform: translate3d(-50%, 0, 0); }
+        }
+
+        @keyframes scroll-right {
+            from { transform: translate3d(-50%, 0, 0); }
+            to { transform: translate3d(0%, 0, 0); }
+        }
+
+        /* Responsive adjustments for 4 items display */
+        @media (max-width: 768px) {
+            .eyewear-category-item {
+                width: calc(25% - 22.5px);
+                min-width: 120px;
+            }
+            .eyewear-category-image-container {
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .eyewear-category-item {
+                width: calc(5% - -15px);
+                min-width: 80px;
+            }
+            .eyewear-category-image-container {
+                height: 80px;
+            }
+            .eyewear-marquee {
+                gap: 20px;
+            }
+            .eyewear-category-name {
+                font-size: 14px;
+            }
+            .eyewear-category-description {
+                font-size: 10px;
+            }
+        }
+
         /* Eyewear Showcase Banner Styles */
         #eyewearShowcaseMount { grid-column: 1 / -1; }
         .eyewear-showcase {
@@ -1695,7 +1841,6 @@
         /* Glass images and shadows */
         .glasses-img {
             width: 100%;
-            max-width: 180px;
             height: auto;
             filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25));
             z-index: 1;
@@ -1707,7 +1852,6 @@
         /* Fine-tune for small screens */
         @media (max-width: 480px) {
             .eyewear-title { font-size: 26px; }
-            .glasses-img { max-width: 150px; }
             .eyewear-content-wrapper { gap: 15px; }
             .eyewear-image-section { flex: 0 0 35%; }
         }
@@ -5507,6 +5651,22 @@
             cursor: pointer;
         }
 
+
+        .eyewear-category-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .eyewear-category-button {
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+
         .search-product-card {
             background: white;
             border-radius: 12px;
@@ -6092,6 +6252,9 @@
                 <div class="indicator" onclick="changeSlide(2)"></div>
             </div>
                 </div>
+
+        <!-- Eyewear Category Sections (live-config controlled) -->
+        <div id="eyewearCategoriesMount"></div>
 
         <!-- Eyewear Showcase (live-config controlled) -->
         <div id="eyewearShowcaseMount"></div>
@@ -7423,6 +7586,83 @@
                         interval: 5000,
                         slides: []
                     },
+                    eyewearCategories: {
+                        enabled: true,
+                        eyeglasses: {
+                            title: 'Eyeglasses',
+                            direction: 'left-to-right',
+                            speed: 20,
+                            titleColor: '#1f2937',
+                            backgroundColor: '#f8fafc',
+                            items: [
+                                {
+                                    name: 'Men',
+                                    description: 'Stylish frames for men',
+                                    image: 'https://via.placeholder.com/120/0066cc/ffffff?text=Men',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Women',
+                                    description: 'Elegant frames for women',
+                                    image: 'https://via.placeholder.com/120/ff6699/ffffff?text=Women',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Kids',
+                                    description: 'Fun frames for kids',
+                                    image: 'https://via.placeholder.com/120/33cc99/ffffff?text=Kids',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Essentials',
+                                    description: 'Basic everyday frames',
+                                    image: 'https://via.placeholder.com/120/666666/ffffff?text=Essential',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                }
+                            ]
+                        },
+                        sunglasses: {
+                            title: 'Sunglasses',
+                            direction: 'right-to-left',
+                            speed: 25,
+                            titleColor: '#1f2937',
+                            backgroundColor: '#f8fafc',
+                            items: [
+                                {
+                                    name: 'Men',
+                                    description: 'Cool shades for men',
+                                    image: 'https://via.placeholder.com/120/000000/ffffff?text=Men',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Women',
+                                    description: 'Chic sunglasses for women',
+                                    image: 'https://via.placeholder.com/120/8b4513/ffffff?text=Women',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Kids',
+                                    description: 'UV protection for kids',
+                                    image: 'https://via.placeholder.com/120/ff9900/ffffff?text=Kids',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                },
+                                {
+                                    name: 'Essentials',
+                                    description: 'Classic sun protection',
+                                    image: 'https://via.placeholder.com/120/4a5568/ffffff?text=Essential',
+                                    textColor: '#1f2937',
+                                    descriptionColor: '#6b7280'
+                                }
+                            ]
+                        }
+                    },
                     eyewearShowcase: {
                         enabled: true,
                         topImage: 'https://cdn.jsdelivr.net/gh/arrowpng/assets/placeholder/eyeglass-black-angled.png',
@@ -7470,6 +7710,9 @@
 
         function updateUIFromConfig() {
             console.log('🔄 Updating UI from config:', appConfig);
+            
+            // Render Eyewear Categories from config
+            renderEyewearCategories();
             
             // Render Eyewear Showcase from config
             renderEyewearShowcase();
@@ -8509,6 +8752,82 @@
             console.log('✅ Hero slider updated successfully');
         }
 
+        // Render Eyewear Categories from config
+        function renderEyewearCategories() {
+            try {
+                const mount = document.getElementById('eyewearCategoriesMount');
+                if (!mount) return;
+
+                const cfg = appConfig?.eyewearCategories;
+                if (!cfg?.enabled) {
+                    mount.innerHTML = '';
+                    return;
+                }
+
+                const eyeglassesItems = cfg.eyeglasses.items.map(item => `
+                    <a href="${item.link || '#'}" class="eyewear-category-item" onclick="handleCategoryClick('${item.name}', '${item.link || ''}')">
+                        <div class="eyewear-category-image-box">
+                            <div class="eyewear-category-image-container">
+                                <img src="${item.image}" alt="${item.name}" class="eyewear-category-image">
+                            </div>
+                        </div>
+                        <div class="eyewear-category-text">
+                            <div class="eyewear-category-name" style="color: ${item.textColor || '#1f2937'}">${item.name}</div>
+                            <div class="eyewear-category-description" style="color: ${item.descriptionColor || '#6b7280'}">${item.description}</div>
+                        </div>
+                    </a>
+                `).join('');
+
+                const sunglassesItems = cfg.sunglasses.items.map(item => `
+                    <a href="${item.link || '#'}" class="eyewear-category-item" onclick="handleCategoryClick('${item.name}', '${item.link || ''}')">
+                        <div class="eyewear-category-image-box">
+                            <div class="eyewear-category-image-container">
+                                <img src="${item.image}" alt="${item.name}" class="eyewear-category-image">
+                            </div>
+                        </div>
+                        <div class="eyewear-category-text">
+                            <div class="eyewear-category-name" style="color: ${item.textColor || '#1f2937'}">${item.name}</div>
+                            <div class="eyewear-category-description" style="color: ${item.descriptionColor || '#6b7280'}">${item.description}</div>
+                        </div>
+                    </a>
+                `).join('');
+
+                const eyeglassesDirection = cfg.eyeglasses.direction === 'right-to-left' ? 'right-to-left' : '';
+                const sunglassesDirection = cfg.sunglasses.direction === 'right-to-left' ? 'right-to-left' : '';
+
+                mount.innerHTML = `
+                    <div class="eyewear-categories" style="background: ${cfg.eyeglasses.backgroundColor}">
+                        <div class="eyewear-category-section">
+                            <div class="eyewear-category-header">
+                                <h2 class="eyewear-category-title" style="color: ${cfg.eyeglasses.titleColor}">${cfg.eyeglasses.title}</h2>
+                                <button class="eyewear-category-button">View All</button>
+                            </div>
+                            <div class="eyewear-marquee ${eyeglassesDirection}" style="animation-duration: ${cfg.eyeglasses.speed}s">
+                                ${eyeglassesItems}
+                                ${eyeglassesItems}
+                                ${eyeglassesItems}
+                                ${eyeglassesItems}
+                            </div>
+                        </div>
+                        <div class="eyewear-category-section">
+                            <div class="eyewear-category-header">
+                                <h2 class="eyewear-category-title" style="color: ${cfg.sunglasses.titleColor}">${cfg.sunglasses.title}</h2>
+                                <button class="eyewear-category-button">View All</button>
+                            </div>
+                            <div class="eyewear-marquee ${sunglassesDirection}" style="animation-duration: ${cfg.sunglasses.speed}s">
+                                ${sunglassesItems}
+                                ${sunglassesItems}
+                                ${sunglassesItems}
+                                ${sunglassesItems}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                console.error('Failed to render Eyewear Categories:', e);
+            }
+        }
+
         // Render Eyewear Showcase from config
         function renderEyewearShowcase() {
             try {
@@ -8522,7 +8841,7 @@
                 
                 function createSliceContent(imagePos, imageSrc, imageClass, title, subtitle, textAlign, titleColor, subtitleColor, imageSize) {
                     const imageSizePx = imageSize || '180';
-                    const imageSection = `<div class="eyewear-image-section"><img class="glasses-img ${imageClass}" src="${imageSrc}" alt="${title}" style="max-width: ${imageSizePx}px;" onerror="this.style.opacity=0;"></div>`;
+                    const imageSection = `<div class="eyewear-image-section"><img class="glasses-img ${imageClass}" src="${imageSrc}" alt="${title}" style="width: ${imageSizePx}px;" onerror="this.style.opacity=0;"></div>`;
                     const textSection = `<div class="eyewear-text-section ${textAlign}"><div class="eyewear-title" style="color: ${titleColor || '#111827'}">${title}</div><div class="eyewear-subtitle" style="color: ${subtitleColor || '#4b5563'}">${subtitle}</div></div>`;
                     
                     return imagePos === 'left' 
@@ -8567,6 +8886,28 @@
             }
             
             showNotification(`Navigating to ${title}...`, 'success');
+        }
+
+        // Handle category section clicks
+        function handleCategoryClick(categoryName, link) {
+            if (!link || link === '#' || link.trim() === '') {
+                console.log(`🕶️ Category "${categoryName}" clicked but no link configured`);
+                showNotification(`${categoryName} category clicked!`, 'info');
+                return false;
+            }
+            
+            console.log(`🕶️ Category "${categoryName}" clicked, navigating to: ${link}`);
+            
+            // Check if it's an external link
+            if (link.startsWith('http://') || link.startsWith('https://')) {
+                window.open(link, '_blank');
+            } else {
+                // Internal navigation
+                window.location.href = link;
+            }
+            
+            showNotification(`Navigating to ${categoryName}...`, 'success');
+            return false;
         }
 
         // Handle slide button actions
@@ -9100,6 +9441,9 @@
                                         if (data.type === 'config_update') {
                     console.log('🔄 Configuration update received');
                     appConfig = { ...appConfig, ...data.payload };
+                    
+                    // Update eyewear categories immediately
+                    renderEyewearCategories();
                     
                     // Update eyewear showcase immediately
                     renderEyewearShowcase();
