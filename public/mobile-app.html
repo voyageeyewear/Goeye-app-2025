@@ -286,7 +286,7 @@
             cursor: pointer;
         }
 
-        .myntra-magic {
+        .daily-magic {
             background: linear-gradient(135deg, #313652, #303030);
             border-radius: 12px;
             padding: 16px;
@@ -712,6 +712,343 @@
         .ponnonam-card .wishlist-category-subtitle {
             font-size: 0.85rem;
             margin-top: 8px;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .cart-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-modal.active .cart-content {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-back-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .cart-back-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .cart-back-btn .svg-icon {
+            width: 24px;
+            height: 24px;
+            fill: #374151;
+        }
+
+        .cart-title-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .cart-divider {
+            color: #9ca3af;
+            font-size: 1.25rem;
+            font-weight: 300;
+        }
+
+        .cart-item-count {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .clear-cart-btn {
+            background: none;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .clear-cart-btn:hover {
+            background: #fee2e2;
+            opacity: 1;
+        }
+
+        .clear-cart-btn .svg-icon {
+            width: 18px;
+            height: 18px;
+            fill: #ef4444;
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 20px;
+            background: white;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .cart-item-image.blue-bg {
+            background: #bfdbfe;
+        }
+
+        .cart-item-image.pink-bg {
+            background: #fce7f3;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            margin-right: 16px;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .item-category {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0 0 8px 0;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .quantity {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #111827;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .cart-delivery {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .delivery-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 8px 0;
+        }
+
+        .delivery-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .cart-total {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .cart-next-btn {
+            background: #111827;
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            margin: 20px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: calc(100% - 40px);
+        }
+
+        .cart-next-btn:hover {
+            background: #1f2937;
+            transform: translateY(-1px);
+        }
+
+        /* Empty Cart State */
+        .cart-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            min-height: 400px;
+        }
+
+        .cart-empty-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .empty-cart-svg {
+            width: 100%;
+            height: 100%;
+            fill: #9ca3af;
+        }
+
+        .cart-empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 16px 0;
+        }
+
+        .cart-empty-text {
+            font-size: 1rem;
+            color: #6b7280;
+            line-height: 1.5;
+            margin: 0 0 32px 0;
+            max-width: 300px;
+        }
+
+        .cart-shop-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cart-shop-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
         }
 
         /* Header */
@@ -1311,7 +1648,7 @@
         }
 
         .featured-header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 24px;
         }
 
@@ -1389,7 +1726,7 @@
         }
 
         .mood-header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 32px;
         }
 
@@ -2100,9 +2437,9 @@
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
             </button>
-            <button class="header-icon cart-badge">
+            <button class="header-icon cart-badge" onclick="openCart()">
                 <svg class="svg-icon" viewBox="0 0 24 24">
-                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2 2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                 </svg>
             </button>
         </div>
@@ -2312,11 +2649,11 @@
                     </div>
                 </div>
 
-                <!-- Myntra Magic -->
-                <div class="myntra-magic">
+                <!-- Daily Magic -->
+                <div class="daily-magic">
                     <div class="magic-icon">🎁</div>
                     <div class="magic-content">
-                        <h3>Daily Myntra Magic!</h3>
+                        <h3>Daily Rewards Magic!</h3>
                         <p>Win up to ₹200 now</p>
                     </div>
                 </div>
@@ -2460,7 +2797,7 @@
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                         <div class="list-item-content">
-                            <h3 class="list-item-title">Myntra Suggests</h3>
+                            <h3 class="list-item-title">Eyejack Suggests</h3>
                             <p class="list-item-subtitle">100% personalized feed just for you</p>
                         </div>
                         <svg class="list-item-arrow" viewBox="0 0 24 24">
@@ -2625,6 +2962,94 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <button class="cart-back-btn" onclick="closeCart()">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                </button>
+                <div class="cart-title-container">
+                    <h2 class="cart-title">My Shopping cart</h2>
+                    <span class="cart-divider">|</span>
+                    <span class="cart-item-count">Items 2</span>
+                </div>
+                <button class="clear-cart-btn" onclick="clearCart()" title="Clear Cart">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="cart-items">
+                <!-- Empty Cart State -->
+                <div class="cart-empty" id="cartEmpty" style="display: none;">
+                    <div class="cart-empty-icon">
+                        <svg viewBox="0 0 24 24" class="empty-cart-svg">
+                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="cart-empty-title">Your cart is empty</h3>
+                    <p class="cart-empty-text">Looks like you haven't added anything to your cart yet.<br>Start shopping to fill it up!</p>
+                    <button class="cart-shop-btn" onclick="closeCart()">Start Shopping</button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div class="cart-items-list" id="cartItemsList">
+                    <!-- Cart Item 1 -->
+                <div class="cart-item" data-item-id="1">
+                    <div class="cart-item-image blue-bg">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200&h=200&fit=crop" alt="Black Dashers" class="item-image">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="item-name">Black Dashers</h3>
+                        <p class="item-category">Men's shoes</p>
+                        <div class="item-price">$64</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn minus-btn" onclick="decreaseQuantity(1)">−</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn plus-btn" onclick="increaseQuantity(1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="cart-item" data-item-id="2">
+                    <div class="cart-item-image pink-bg">
+                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=200&fit=crop" alt="Pink Dashers" class="item-image">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="item-name">Pink Dashers</h3>
+                        <p class="item-category">Women's shoes</p>
+                        <div class="item-price">$95</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn minus-btn" onclick="decreaseQuantity(2)">−</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn plus-btn" onclick="increaseQuantity(2)">+</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="cart-delivery" id="cartDelivery">
+                <h3 class="delivery-title">Delivery</h3>
+                <p class="delivery-text">Orders above $300 have<br>FREE shipping</p>
+            </div>
+
+            <div class="cart-total" id="cartTotal">
+                <div class="total-row">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount">$159</span>
+                </div>
+            </div>
+
+            <button class="cart-next-btn" id="cartNextBtn">Next</button>
         </div>
     </div>
 
@@ -3324,6 +3749,7 @@
                 if (e.key === 'Escape') {
                     closeProfile();
                     closeWishlist();
+                    closeCart();
                 }
             });
 
@@ -3340,10 +3766,118 @@
                 document.body.style.overflow = 'auto';
             };
 
+            // Cart Modal Functions
+            window.openCart = function() {
+                const cartModal = document.getElementById('cartModal');
+                cartModal.style.display = 'block';
+                setTimeout(() => {
+                    cartModal.classList.add('active');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.closeCart = function() {
+                const cartModal = document.getElementById('cartModal');
+                cartModal.classList.remove('active');
+                setTimeout(() => {
+                    cartModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            };
+
+            // Cart quantity functions
+            window.increaseQuantity = function(itemId) {
+                const quantityElement = document.querySelector(`[onclick="increaseQuantity(${itemId})"]`).previousElementSibling;
+                let quantity = parseInt(quantityElement.textContent);
+                quantity++;
+                quantityElement.textContent = quantity;
+                updateCartTotal();
+            };
+
+            window.decreaseQuantity = function(itemId) {
+                const quantityElement = document.querySelector(`[onclick="decreaseQuantity(${itemId})"]`).nextElementSibling;
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 1) {
+                    quantity--;
+                    quantityElement.textContent = quantity;
+                    updateCartTotal();
+                }
+            };
+
+            function updateCartTotal() {
+                // Get all quantities and prices
+                const quantities = document.querySelectorAll('.cart-item .quantity');
+                const prices = [64, 95]; // Prices for items
+                let total = 0;
+                
+                quantities.forEach((qty, index) => {
+                    total += parseInt(qty.textContent) * prices[index];
+                });
+                
+                document.querySelector('.total-amount').textContent = `$${total}`;
+                
+                // Update item count
+                const totalItems = Array.from(quantities).reduce((sum, qty) => sum + parseInt(qty.textContent), 0);
+                document.querySelector('.cart-item-count').textContent = `Items ${totalItems}`;
+                
+                // Check if cart is empty and toggle display
+                checkCartEmpty();
+            }
+
+            function checkCartEmpty() {
+                const cartItems = document.querySelectorAll('.cart-item');
+                const isEmpty = cartItems.length === 0;
+                
+                // Toggle visibility of empty state vs cart content
+                const cartEmpty = document.getElementById('cartEmpty');
+                const cartItemsList = document.getElementById('cartItemsList');
+                const cartDelivery = document.getElementById('cartDelivery');
+                const cartTotal = document.getElementById('cartTotal');
+                const cartNextBtn = document.getElementById('cartNextBtn');
+                
+                if (isEmpty) {
+                    cartEmpty.style.display = 'flex';
+                    cartItemsList.style.display = 'none';
+                    cartDelivery.style.display = 'none';
+                    cartTotal.style.display = 'none';
+                    cartNextBtn.style.display = 'none';
+                    document.querySelector('.cart-item-count').textContent = 'Items 0';
+                } else {
+                    cartEmpty.style.display = 'none';
+                    cartItemsList.style.display = 'block';
+                    cartDelivery.style.display = 'block';
+                    cartTotal.style.display = 'block';
+                    cartNextBtn.style.display = 'block';
+                }
+            }
+
+            // Function to remove item from cart (for future use)
+            window.removeCartItem = function(itemId) {
+                const cartItem = document.querySelector(`[data-item-id="${itemId}"]`);
+                if (cartItem) {
+                    cartItem.remove();
+                    updateCartTotal();
+                }
+            };
+
+            // Function to clear entire cart
+            window.clearCart = function() {
+                const cartItems = document.querySelectorAll('.cart-item');
+                cartItems.forEach(item => item.remove());
+                checkCartEmpty();
+            };
+
             // Close wishlist when clicking outside
             document.getElementById('wishlistModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeWishlist();
+                }
+            });
+
+            // Close cart when clicking outside
+            document.getElementById('cartModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCart();
                 }
             });
 

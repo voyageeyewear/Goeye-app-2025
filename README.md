@@ -21,7 +21,7 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
 - **SVG Icons**: Professional scalable icons throughout the interface
 
 #### Interactive Modal Systems
-- **Profile Modal**: Complete Myntra-style profile system with all features
+- **Profile Modal**: Complete e-commerce style profile system with all features
 - **Wishlist Modal**: Full wishlist functionality with empty state and category suggestions
 - **Story Viewer**: Instagram-style story modal with progress bar and interactions
 - **Menu Overlay**: Slide-out navigation with comprehensive menu options
@@ -84,8 +84,8 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
    - Auto-playing product videos with coral borders
    - Products: PILOT, Z-FLEX, ACTIVE, GLAM, CLIP-ON, AIR
 
-#### Profile System (Myntra-Style)
-- **Complete Profile Modal**: Full-screen slide-in modal matching Myntra design
+#### Profile System (E-commerce Style)
+- **Complete Profile Modal**: Full-screen slide-in modal matching modern e-commerce design
 - **Insider Banner**: Gradient promotion banner with rewards and crown icon
 - **User Avatars**: Shopping profile management with admin badge
 - **Profile Tabs**: Basics, Size Details, Skin & Hair categories
@@ -100,7 +100,7 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
 #### Wishlist System
 - **Empty State Design**: Large heart icon with "Your wishlist is empty" message
 - **Descriptive Text**: Clear instructions about wishlist functionality
-- **Shop Now Button**: Pink border button matching Myntra design
+- **Shop Now Button**: Pink border button matching modern e-commerce design
 - **Category Suggestions**: 12 shopping categories in 2-column grid
 - **Special Cards**: Gradient promotional cards (Autumn Winter, Ganesh Chaturthi, Ponnonam)
 - **Product Categories**: Casual Shoes, Track Pants, Cool Jeans, Paithani Sarees, etc.
@@ -191,7 +191,7 @@ Eyejack-mobile-app/
 - **Exclusively at GOEYE**: 6-product video grid (188×188px, clean display)
 
 ### 4. Interactive Elements
-- **Profile System**: Click user icon to access complete Myntra-style profile
+- **Profile System**: Click user icon to access complete e-commerce style profile
 - **Wishlist System**: Click heart icon to access wishlist with categories
 - **Story Viewer**: Full-screen Instagram-style modal with progress bar
 - **Video Controls**: Click to play/pause, auto-play on load
@@ -385,7 +385,7 @@ Eyejack-mobile-app/
 
 ## 🌟 Key Features Highlight
 
-- ✅ **Complete Profile System**: Full Myntra-style profile with all features
+- ✅ **Complete Profile System**: Full e-commerce style profile with all features
 - ✅ **Wishlist Functionality**: Empty state and category suggestions
 - ✅ **SVG Icon System**: Professional scalable icons throughout
 - ✅ **Image-Only Collections**: Clean visual design without text distractions
@@ -487,7 +487,7 @@ For support, email support@eyejack.com or create an issue in the repository.
 - ✅ **User Experience**: Intuitive navigation and visual feedback
 - ✅ **Maintainable Code**: Well-structured, documented, and modular
 - ✅ **Instagram Integration**: Full-featured story system implementation
-- ✅ **Profile System**: Complete Myntra-style profile functionality
+- ✅ **Profile System**: Complete e-commerce style profile functionality
 - ✅ **Wishlist System**: Full wishlist with empty state and categories
 - ✅ **SVG Icon System**: Professional scalable iconography
 - ✅ **Image-Only Design**: Clean visual collections without text distractions
@@ -497,7 +497,7 @@ For support, email support@eyejack.com or create an issue in the repository.
 ## 🎨 Recent Updates
 
 ### Version 3.0 (December 2024)
-- **✅ Complete Profile System**: Full Myntra-style profile modal with all features
+- **✅ Complete Profile System**: Full e-commerce style profile modal with all features
 - **✅ Wishlist Functionality**: Empty state design with category suggestions
 - **✅ SVG Icon System**: Replaced all emoji icons with professional SVG icons
 - **✅ Dark Theme**: Updated color scheme to modern dark palette
