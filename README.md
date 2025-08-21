@@ -1,34 +1,44 @@
 # Eyejack Mobile App 👓
 
-A modern, responsive mobile-first eyewear e-commerce application built with HTML, CSS, and JavaScript. Features a beautiful UI with interactive elements, video carousels, slide-out menu system, and a comprehensive product showcase.
+A modern, responsive mobile-first eyewear e-commerce application built with HTML, CSS, and JavaScript. Features a beautiful UI with image-only collection cards, Instagram-style highlights, interactive story viewer, video carousels, and comprehensive product showcase.
 
 ## 🚀 Features
 
 ### 📱 Mobile-First Design
 - Responsive layout optimized for mobile devices
-- Touch-friendly interactions
-- Smooth animations and transitions
+- Touch-friendly interactions with smooth animations
 - Modern iOS/Android-style interface
+- Natural scrolling without sticky header interference
 
 ### 🎨 UI Components
 
 #### Header Section
 - **Flash Sale Banner**: Animated 50% OFF promotion with lightning icon
 - **Navigation Header**: Logo, hamburger menu button, and action icons (heart, profile, cart)
-- **Search Bar**: Product search functionality with search icon
-- **Category Tabs**: Home, Voyage Eyewear, Eyejack Eyewear navigation
+- **Search Bar**: Modern search functionality with "Search products..." placeholder
+- **Natural Scrolling**: Header scrolls with content (no sticky positioning)
+
+#### Instagram-Style Features
+- **Highlights Section**: Horizontal scrollable Instagram-style highlights
+- **Story Categories**: Men, Women, Kids, Sunglasses, Eyeglasses, Trending, New, Offers
+- **Interactive Story Viewer**: Full-screen modal with progress bar and glassmorphism effects
+- **Story Actions**: "View Product" button and heart reaction with smooth animations
+- **Auto-Close**: Stories auto-close after 5 seconds with progress bar animation
 
 #### Main Sections
 
-1. **Collections to Explore**
-   - FREE LENS promotion card with "With Every Frame" subtitle
-   - New Arrivals showcase with "Shop Now" button
-   - Interactive collection cards with hover effects
+1. **Collections to Explore (Image-Only Cards)**
+   - **Free Lens Card**: Pure image display without text overlays
+   - **New Arrival Card**: High-quality eyewear photography
+   - **Premium Card**: Luxury eyewear collection image
+   - **Sports Card**: Active lifestyle eyewear image
+   - **Interactive**: All cards clickable with hover zoom effects (1.05x scale)
+   - **Clean Design**: No text, buttons, or distractions - pure visual appeal
 
 2. **Eyeglasses & Sunglasses Categories**
    - Clean 4-item grid layout (Men, Women, Kids, Essentials)
-   - High-quality Unsplash product images
-   - Borderless design with 70×70px image containers
+   - High-quality Unsplash product images (93.5×93.5px)
+   - Borderless design with perfect image containers
    - Responsive 4-items-per-row layout
    - Hover animations and click feedback
 
@@ -62,7 +72,7 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
 7. **Exclusively at GOEYE**
    - Clean 2×3 grid layout (6 products total)
    - 188×188px video containers (160×160px on mobile)
-   - Pure video display without text overlays
+   - Pure video display without text overlays or labels
    - Auto-playing product videos with coral borders
    - Products: PILOT, Z-FLEX, ACTIVE, GLAM, CLIP-ON, AIR
 
@@ -76,19 +86,14 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
   - Close functionality: X button, outside click, or Escape key
   - Semi-transparent backdrop overlay
 
-- **Bottom Navigation**
-  - 4 tabs: Home, Search, Cart, Profile with emoji icons
-  - Active state indicators with visual feedback
-  - Touch-friendly design with proper spacing
-
 ## 🛠️ Technical Implementation
 
 ### Technologies Used
 - **HTML5**: Semantic markup and structure
-- **CSS3**: Modern styling with Flexbox/Grid, custom properties
+- **CSS3**: Modern styling with Flexbox/Grid, custom properties, glassmorphism effects
 - **Vanilla JavaScript**: Interactive functionality and DOM manipulation
 - **Video Elements**: HTML5 video for product showcases
-- **CSS Animations**: Keyframe animations for smooth transitions
+- **CSS Animations**: Keyframe animations for smooth transitions and story progress bars
 
 ### Key Features
 - **Responsive Design**: Mobile-first approach with breakpoint at 480px
@@ -96,8 +101,10 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
 - **Video Handling**: Auto-play, error handling, click controls, fallback backgrounds
 - **Carousel Logic**: Custom JavaScript for image/video carousels with autoplay
 - **Menu System**: Slide-out navigation with overlay and multiple close methods
+- **Story System**: Instagram-style story viewer with progress animation
 - **Touch Interactions**: Optimized for mobile touch events and gestures
 - **Performance**: Efficient DOM manipulation and event handling
+- **Natural Scrolling**: No sticky positioning for better mobile UX
 
 ### Performance Optimizations
 - **Lazy Loading**: Videos load on demand with error fallbacks
@@ -105,15 +112,21 @@ A modern, responsive mobile-first eyewear e-commerce application built with HTML
 - **Efficient DOM**: Minimal DOM manipulation with event delegation
 - **CSS Transitions**: Hardware-accelerated animations (transform, opacity)
 - **Clean Code**: Removed all live rendering and WebSocket dependencies
+- **Optimized Images**: High-quality Unsplash images with proper sizing
 
 ## 📂 Project Structure
 
 ```
 Eyejack-mobile-app/
 ├── public/
-│   ├── mobile-app.html          # Main application file (2,135 lines)
-│   └── mobile-app-backup.html   # Backup of previous version
+│   ├── mobile-app.html          # Main application file (2,358 lines)
+│   ├── mobile-app-backup.html   # Backup of previous version
+│   └── mobile-app-clean.html    # Clean version backup
+├── app/
+│   ├── entry.server.jsx         # Remix server entry (live rendering removed)
+│   └── routes/                  # Route handlers
 ├── package.json                 # Project dependencies and scripts
+├── prisma/                      # Database configuration
 └── README.md                   # This documentation file
 ```
 
@@ -121,14 +134,22 @@ Eyejack-mobile-app/
 
 ### 1. Header & Navigation
 - **Flash Sale Banner**: "⚡ Flash Sale - 50% OFF! ⚡" with orange background
-- **Header**: Logo "oe", hamburger menu, heart/profile/cart icons
-- **Search Bar**: "Search products..." placeholder with search icon
+- **Header**: Logo "oe", hamburger menu, heart/profile/cart icons (scrolls naturally)
+- **Search Bar**: Modern design with "Search products..." placeholder
+- **Instagram Highlights**: Horizontal scrollable story categories
 - **Menu Drawer**: Slide-out navigation with special offers and 8 menu items
-- **Category Tabs**: Home, Voyage Eyewear, Eyejack Eyewear
 
-### 2. Product Collections
-- **Collections to Explore**: FREE LENS and New Arrivals cards
-- **Eyeglasses**: 4-category grid (Men, Women, Kids, Essentials) - 70×70px images
+### 2. Product Collections (Image-Only Design)
+- **Collections to Explore**: 4 image-only cards with pure visual appeal
+  - Free Lens: Stylish eyewear collection image
+  - New Arrival: Modern trendy frames image
+  - Premium: Luxury high-end eyewear image
+  - Sports: Active lifestyle eyewear image
+- **Interactive Features**: Hover zoom, click handlers, smooth transitions
+- **Clean Design**: No text overlays, buttons, or visual distractions
+
+### 3. Category Sections
+- **Eyeglasses**: 4-category grid (Men, Women, Kids, Essentials) - 93.5×93.5px images
 - **Sunglasses**: Matching 4-category grid with same structure
 - **Featured Products**: Video carousel with RICKER, COMMANDER, ARISTO (140×250px)
 - **Today's Mood Look**: Men/Women category carousels (100×120px images)
@@ -136,10 +157,12 @@ Eyejack-mobile-app/
 - **New Arrivals**: Second video carousel with TITAN, PHOENIX, MATRIX
 - **Exclusively at GOEYE**: 6-product video grid (188×188px, clean display)
 
-### 3. Interactive Elements
+### 4. Interactive Elements
+- **Story Viewer**: Full-screen Instagram-style modal with progress bar
 - **Video Controls**: Click to play/pause, auto-play on load
 - **Carousel Navigation**: Dots for manual navigation, auto-advance
 - **Menu System**: Hamburger button opens slide-out drawer
+- **Collection Cards**: Clickable with hover effects and zoom animations
 - **Touch Interactions**: Hover effects, click animations, scale transforms
 - **Responsive Behavior**: Adapts to different screen sizes
 
@@ -152,6 +175,8 @@ Eyejack-mobile-app/
 - **Background**: #f8f9fa (Light gray app background)
 - **White**: #ffffff (Card backgrounds)
 - **Flash Sale**: #ff6b35 (Orange banner background)
+- **Story Overlay**: rgba(0,0,0,0.6) (Semi-transparent black)
+- **Glassmorphism**: rgba(255,255,255,0.2) with backdrop-filter blur
 
 ### Typography
 - **Font Family**: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
@@ -159,23 +184,29 @@ Eyejack-mobile-app/
 - **Headings**: 1.5rem - 1.8rem, font-weight 600-700
 - **Body Text**: 1rem, font-weight 400-500
 - **Small Text**: 0.85rem - 0.9rem for captions and labels
+- **Story Text**: White with text-shadow for better readability
 
 ### Spacing & Sizing
 - **Section Padding**: 24px vertical, 16px horizontal
-- **Card Padding**: 12px - 16px internal spacing
+- **Card Padding**: 0px (image-only cards), 12px - 16px for content cards
 - **Grid Gaps**: 8px - 12px between items
 - **Image Sizes**: 
-  - Eyeglasses/Sunglasses: 70×70px
+  - Collection Cards: Full card coverage with object-fit: cover
+  - Eyeglasses/Sunglasses: 93.5×93.5px
   - Today's Mood Look: 100×120px
   - Featured Products: 140×250px
   - Exclusively at GOEYE: 188×188px (160×160px mobile)
+  - Story Profile Pics: 32×32px with white border
 
 ### Animations
 - **Menu Slide**: 0.3s ease transform animation
+- **Story Progress**: 5s linear width transition
+- **Collection Cards**: 0.3s ease scale transform (1.05x on hover)
 - **Video Loading**: Opacity transitions for smooth loading
 - **Click Feedback**: Scale transforms (0.9 → 1.1 → 1.0)
 - **Carousel**: 4-second auto-advance with smooth transitions
 - **Hover Effects**: translateY(-5px) lift animations
+- **Glassmorphism**: Backdrop-filter blur effects on story buttons
 
 ## 📱 Responsive Breakpoints
 
@@ -193,6 +224,12 @@ Eyejack-mobile-app/
     .menu-content {
         width: 90%;
     }
+    
+    .collection-card {
+        min-height: 200px;
+        min-width: 320px;
+        max-width: 320px;
+    }
 }
 ```
 
@@ -207,7 +244,7 @@ Eyejack-mobile-app/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/voyageeyewear/Goeye-app-2025.git
    cd Eyejack-mobile-app
    ```
 
@@ -228,10 +265,24 @@ Eyejack-mobile-app/
 
 ## 🎮 User Interactions
 
+### Story System
+- **Open Story**: Click any highlight circle to open story viewer
+- **Progress Bar**: Visual 5-second countdown with smooth animation
+- **Auto-Close**: Stories automatically close after completion
+- **Manual Close**: Click X button to close story early
+- **View Product**: Click glassmorphism "View Product" button
+- **Heart Reaction**: Click heart button for like animation
+
 ### Menu System
 - **Open Menu**: Click hamburger (☰) button in header
 - **Close Menu**: Click X button, click outside overlay, or press Escape key
 - **Navigation**: Click any menu item for navigation (currently shows alerts)
+
+### Collection Cards (Image-Only)
+- **Hover Effect**: Images scale up (1.05x) on hover
+- **Click Action**: Each card shows specific collection alert
+- **Visual Feedback**: Smooth transitions and hover animations
+- **Touch Friendly**: Large clickable areas for mobile interaction
 
 ### Video Controls
 - **Auto-play**: Videos start automatically when page loads
@@ -245,17 +296,18 @@ Eyejack-mobile-app/
 - **Hover Pause**: Auto-play pauses when hovering over carousel
 - **Touch Friendly**: Large tap targets for mobile interaction
 
-### Product Categories
-- **Grid Layout**: Consistent 4 items per row across all category sections
-- **Touch Feedback**: Scale animations on tap/click
-- **Visual Hierarchy**: Clear typography and spacing for easy scanning
-
 ## 🔧 Customization
 
-### Adding New Products
-1. **Video Sections**: Update HTML with new video sources and product names
-2. **Category Sections**: Replace Unsplash image URLs with new product images
-3. **Carousel Items**: Add new slides to Most Loved section with product details
+### Adding New Stories
+1. **Update storyData**: Add new categories with title, description, profileImage, backgroundImage
+2. **Add Highlight**: Create new highlight item in HTML with appropriate image
+3. **Style Updates**: Ensure consistent styling with existing highlights
+
+### Adding New Collection Cards
+1. **HTML Structure**: Add new collection-card div with collection-image class
+2. **Image Source**: Use high-quality Unsplash or product images
+3. **Click Handler**: Add JavaScript event listener for card interaction
+4. **CSS Styling**: Cards automatically inherit image-only styling
 
 ### Styling Changes
 1. **Colors**: Modify CSS custom properties for consistent theming
@@ -271,10 +323,13 @@ Eyejack-mobile-app/
 
 ## 🌟 Key Features Highlight
 
+- ✅ **Image-Only Collections**: Clean visual design without text distractions
+- ✅ **Instagram Stories**: Full-featured story system with progress and interactions
 - ✅ **Mobile-Optimized**: Perfect touch-friendly shopping experience
 - ✅ **Video Integration**: Rich media product showcases with fallbacks
 - ✅ **Smooth Animations**: Professional 60fps transitions throughout
 - ✅ **Menu System**: Intuitive slide-out navigation with multiple close methods
+- ✅ **Natural Scrolling**: Header scrolls with content for better mobile UX
 - ✅ **Responsive Design**: Seamless experience across all device sizes
 - ✅ **Modern UI**: Clean, contemporary design following mobile best practices
 - ✅ **Performance**: Fast loading with efficient error handling
@@ -283,10 +338,11 @@ Eyejack-mobile-app/
 
 ## 📊 Performance Metrics
 
-- **File Size**: 2,135 lines of clean, optimized code
+- **File Size**: 2,358 lines of clean, optimized code
 - **Load Time**: < 2 seconds on 3G connection
 - **Interactive**: < 1 second to first interaction
 - **Video Loading**: Progressive with gradient fallbacks
+- **Story Loading**: Instant with smooth transitions
 - **Smooth Animations**: 60fps transitions using transform/opacity
 - **Mobile Score**: 95+ expected on Lighthouse performance audit
 
@@ -303,6 +359,8 @@ Eyejack-mobile-app/
 - [ ] **Order Tracking**: Real-time order status and delivery tracking
 - [ ] **Push Notifications**: Order updates and promotional alerts
 - [ ] **Offline Support**: Service worker for offline browsing
+- [ ] **Story Creation**: Allow users to create and share their own stories
+- [ ] **AR Try-On**: Virtual try-on functionality using device camera
 
 ### Technical Improvements
 - [ ] **Progressive Web App**: PWA capabilities for app-like experience
@@ -312,6 +370,7 @@ Eyejack-mobile-app/
 - [ ] **API Integration**: Connect to backend services
 - [ ] **Testing Suite**: Unit and integration tests
 - [ ] **Analytics**: User behavior tracking and insights
+- [ ] **Story Analytics**: Track story views and interactions
 
 ## 📄 License
 
@@ -331,6 +390,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Test on multiple devices and browsers
 - Update documentation for new features
 - Maintain performance standards
+- Test story system across different browsers
+- Ensure accessibility compliance
 
 ## 📞 Support
 
@@ -339,7 +400,9 @@ For support, email support@eyejack.com or create an issue in the repository.
 ### Common Issues
 - **Menu not opening**: Ensure JavaScript is enabled and no console errors
 - **Videos not playing**: Check internet connection and browser video support
+- **Stories not loading**: Verify image URLs and JavaScript functionality
 - **Layout issues**: Verify viewport meta tag and CSS Grid/Flexbox support
+- **Collection cards not clickable**: Check JavaScript event listeners
 
 ## 🏆 Achievements
 
@@ -349,9 +412,23 @@ For support, email support@eyejack.com or create an issue in the repository.
 - ✅ **Modern Standards**: HTML5, CSS3, ES6+ JavaScript implementation
 - ✅ **User Experience**: Intuitive navigation and visual feedback
 - ✅ **Maintainable Code**: Well-structured, documented, and modular
+- ✅ **Instagram Integration**: Full-featured story system implementation
+- ✅ **Image-Only Design**: Clean visual collections without text distractions
+- ✅ **Natural Scrolling**: Removed sticky positioning for better mobile UX
+
+## 🎨 Recent Updates
+
+### Version 2.0 (December 2024)
+- **✅ Image-Only Collection Cards**: Converted all collection cards to pure image display
+- **✅ Instagram Stories**: Added full story system with progress bars and interactions
+- **✅ Removed Sticky Header**: Natural scrolling for better mobile experience
+- **✅ Enhanced Interactions**: Improved hover effects and click feedback
+- **✅ Performance Optimization**: Cleaned up CSS and removed obsolete code
+- **✅ Modern Design**: Updated to contemporary mobile-first design patterns
 
 ---
 
 **Built with ❤️ for the modern mobile shopping experience**
 
+*Repository: https://github.com/voyageeyewear/Goeye-app-2025.git*
 *Last Updated: December 2024*
