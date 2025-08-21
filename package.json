@@ -3,9 +3,7 @@
   "private": true,
   "scripts": {
     "build": "remix vite:build",
-    "dev": "concurrently \"remix vite:dev\" \"node app/websocket-server.js\"",
-    "dev:remix": "remix vite:dev",
-    "dev:ws": "node app/websocket-server.js",
+    "dev": "remix vite:dev",
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",

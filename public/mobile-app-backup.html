@@ -1,0 +1,2542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyejack Mobile App - Complete</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        /* Flash Sale Announcement Bar */
+        .announcement-bar {
+            background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .announcement-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .announcement-icon {
+            font-size: 16px;
+            animation: bounce 2s infinite;
+        }
+
+        /* Header */
+        .header {
+            background: #4A5568; /* Dark blue-gray matching screenshot */
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .off-badge {
+            background: #E53E3E; /* Red background */
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 4px rgba(229, 62, 62, 0.3);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: white;
+            font-family: Georgia, serif;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .header-icon:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-badge::after {
+            content: '0';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: #4A5568;
+            padding: 0 16px 12px 16px;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 25px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .search-bar:focus-within {
+            border-color: #2563EB;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 16px;
+            color: #4A5568;
+            background: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .search-btn:hover {
+            color: #2563EB;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: #4A5568;
+            display: flex;
+            padding: 0 16px 12px 16px;
+            gap: 20px;
+        }
+
+        .nav-tab {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            opacity: 0.8;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.1);
+            opacity: 1;
+        }
+
+        .nav-tab.active {
+            background: rgba(255,255,255,0.15);
+            opacity: 1;
+        }
+
+        .nav-tab-icon {
+            font-size: 16px;
+        }
+
+        /* Collections to Explore */
+        .collections-section {
+            padding: 20px 16px;
+            background: #f8f9fa;
+        }
+
+        .collections-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .collections-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .collections-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0 16px 16px 16px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .collections-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .collections-grid {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .collection-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            min-height: 180px;
+            min-width: 300px;
+            max-width: 300px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Free Lens Card */
+        .free-lens-card {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            padding: 20px;
+        }
+
+        .free-lens-card .collection-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .free-lens-card .collection-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .free-lens-card .collection-subtitle {
+            font-size: 1rem;
+            color: #4a5568;
+            margin: 0 0 16px 0;
+            border-bottom: 2px solid #2d3748;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        .collection-btn {
+            background: transparent;
+            color: #2d3748;
+            border: 2px solid #2d3748;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .collection-btn:hover {
+            background: #2d3748;
+            color: white;
+        }
+
+        .collection-image {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .model-image {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .person-avatar {
+            font-size: 3rem;
+            filter: grayscale(20%);
+        }
+
+        .glasses-overlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* New Arrival Card */
+        .new-arrival-card {
+            background: white;
+            padding: 20px;
+            position: relative;
+        }
+
+        .new-arrival-card .collection-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .new-arrival-card .collection-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+        }
+
+        .new-arrival-card .collection-subtitle {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+
+        .new-arrival-card .collection-btn {
+            background: #2d3748;
+            color: white;
+            border: 2px solid #2d3748;
+        }
+
+        .new-arrival-card .collection-btn:hover {
+            background: transparent;
+            color: #2d3748;
+        }
+
+        /* Premium Card */
+        .premium-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #d69e2e;
+        }
+
+        .premium-card .collection-title {
+            color: #d69e2e;
+            font-size: 1.8rem;
+        }
+
+        .premium-card .collection-btn {
+            background: #d69e2e;
+            color: white;
+            border: 2px solid #d69e2e;
+        }
+
+        .premium-card .collection-btn:hover {
+            background: transparent;
+            color: #d69e2e;
+        }
+
+        /* Sports Card */
+        .sports-card {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 20px;
+        }
+
+        .sports-card .collection-title {
+            color: #2d3748;
+            font-size: 1.8rem;
+        }
+
+        .sports-card .collection-btn {
+            background: #38b2ac;
+            color: white;
+            border: 2px solid #38b2ac;
+        }
+
+        .sports-card .collection-btn:hover {
+            background: transparent;
+            color: #38b2ac;
+        }
+
+        .collection-features {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feature-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+
+        .feature-icon.orange {
+            background: #ed8936;
+        }
+
+        .feature-icon.green {
+            background: #48bb78;
+        }
+
+        .feature-icon.black {
+            background: #2d3748;
+        }
+
+        .feature-icon.gold {
+            background: #d69e2e;
+        }
+
+        .feature-icon.silver {
+            background: #a0aec0;
+        }
+
+        .glasses-showcase {
+            margin-top: 20px;
+        }
+
+        .showcase-glasses {
+            font-size: 2.5rem;
+            color: #2d3748;
+            transform: rotate(15deg);
+        }
+
+        @media (min-width: 480px) {
+            .collection-card {
+                min-height: 200px;
+                min-width: 320px;
+                max-width: 320px;
+            }
+        }
+
+        /* Category Sections */
+        .category-section {
+            padding: 30px 20px;
+            background: white;
+            margin: 20px 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .view-all-btn {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #2563eb;
+        }
+
+        .category-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .category-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Featured Products Section */
+        .featured-products-section {
+            padding: 24px 16px;
+            background: white;
+        }
+
+        .featured-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .featured-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .featured-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .featured-carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 0 0 16px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .featured-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .featured-product-card {
+            flex: 0 0 auto;
+            width: 140px;
+        }
+
+        .product-video-container {
+            position: relative;
+            width: 140px;
+            height: 250px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 24px 16px 16px;
+            color: white;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Today's mood Look Section */
+        .mood-look-section {
+            padding: 24px 16px;
+            background: #f8f9fa;
+        }
+
+        .mood-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .mood-title {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .mood-highlight {
+            background: #2d3748;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .mood-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .mood-category {
+            margin-bottom: 32px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .mood-category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .mood-category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .mood-category-subtitle {
+            font-size: 0.9rem;
+            color: #718096;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .mood-arrow {
+            font-size: 1.2rem;
+            color: #2d3748;
+            margin-left: auto;
+        }
+
+        .mood-looks-carousel {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 0 0 8px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .mood-looks-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mood-look-card {
+            flex: 0 0 auto;
+        }
+
+        .mood-look-image {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+
+        .mood-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .mood-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 16px 8px 8px;
+            color: white;
+        }
+
+        .mood-look-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            display: block;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Most Loved Section */
+        .most-loved-section {
+            padding: 24px 16px;
+            background: white;
+        }
+
+        .most-loved-header {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .most-loved-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .most-loved-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .most-loved-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .most-loved-carousel {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .most-loved-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .most-loved-slide.active {
+            opacity: 1;
+        }
+
+        .most-loved-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .most-loved-image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .loved-product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .most-loved-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 2;
+            display: none;
+        }
+
+        .most-loved-product-name {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .most-loved-product-desc {
+            font-size: 1.1rem;
+            margin: 0 0 24px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .most-loved-shop-btn {
+            background: white;
+            color: #2d3748;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .most-loved-shop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        /* Navigation Dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #2d3748;
+            transform: scale(1.2);
+        }
+
+        .dot:hover {
+            background: #718096;
+        }
+
+        /* Exclusively at GOEYE Section */
+        .exclusive-section {
+            padding: 24px 16px;
+            background: white;
+        }
+
+        .exclusive-header {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .exclusive-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .exclusive-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .exclusive-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .exclusive-product-card {
+            position: relative;
+        }
+
+        .exclusive-product-container {
+            position: relative;
+            width: 188px;
+            height: 188px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #fd7f6f;
+        }
+
+        .exclusive-product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        /* Menu Overlay Styles */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 85%;
+            max-width: 400px;
+            height: 100%;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .menu-overlay.active .menu-content {
+            transform: translateX(0);
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #2d3748;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .menu-close:hover {
+            background: #f7fafc;
+        }
+
+        .menu-section {
+            padding: 24px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0 0 16px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-offer-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 120px;
+        }
+
+        .menu-offer-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .menu-offer-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .menu-offer-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 4px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-offer-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 12px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-offer-btn {
+            background: white;
+            color: #2d3748;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-offer-btn:hover {
+            background: #f7fafc;
+            transform: translateY(-1px);
+        }
+
+        .menu-navigation {
+            padding: 8px 0;
+        }
+
+        .menu-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .menu-nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-nav-icon {
+            font-size: 1.1rem;
+            margin-right: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-nav-text {
+            flex: 1;
+            font-size: 1rem;
+            color: #2d3748;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .menu-nav-arrow {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            font-weight: 300;
+        }
+
+        /* Responsive adjustments for exclusive section */
+        @media (max-width: 480px) {
+            .exclusive-product-container {
+                width: 190px;
+                height: 190px;
+            }
+            
+            .menu-content {
+                width: 90%;
+            }
+        }
+
+        /* Glasses Category Sections */
+        .glasses-category-section {
+            padding: 24px 16px;
+            background: white;
+        }
+
+        .glasses-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 20px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .glasses-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .glasses-category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .glasses-category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .glasses-image-container {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 8px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .glasses-category-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .glasses-category-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d3748;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6b7280;
+            transition: all 0.2s;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .nav-item.active {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .nav-item:hover {
+            color: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .product-showcase {
+                gap: 10px;
+            }
+            
+            .product-item {
+                width: 100px;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Sale Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="announcement-content">
+            <span class="announcement-icon">⚡</span>
+            <span>Flash Sale - 50% OFF!</span>
+            <span class="announcement-icon">⚡</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <div class="off-badge">
+                🛍️ 50% OFF
+        </div>
+        </div>
+        <div class="logo">oe</div>
+        <div class="header-right">
+            <button class="header-icon">♡</button>
+            <button class="header-icon">👤</button>
+            <button class="header-icon cart-badge">🛒</button>
+        </div>
+    </header>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-content">
+            <div class="menu-header">
+                <h2 class="menu-title">Menu</h2>
+                <button class="menu-close" onclick="toggleMenu()">✕</button>
+            </div>
+
+            <div class="menu-section">
+                <h3 class="menu-section-title">Special Offers</h3>
+                <div class="menu-offer-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop&crop=face" alt="Eyeglasses Offer" class="menu-offer-image">
+                    <div class="menu-offer-content">
+                        <h4 class="menu-offer-title">EYEGLASSES</h4>
+                        <p class="menu-offer-subtitle">For Every Scene, Every Style</p>
+                        <button class="menu-offer-btn">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-navigation">
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">🛍️</span>
+                    <span class="menu-nav-text">Shop By Category</span>
+                    <span class="menu-nav-arrow">›</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">📦</span>
+                    <span class="menu-nav-text">Shop By Collection</span>
+                    <span class="menu-nav-arrow">›</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">🎁</span>
+                    <span class="menu-nav-text">New Arrivals</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">📋</span>
+                    <span class="menu-nav-text">Frame Guide</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">💬</span>
+                    <span class="menu-nav-text">Track your order</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">↩️</span>
+                    <span class="menu-nav-text">Return /Exchange Center</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">🚚</span>
+                    <span class="menu-nav-text">Delivery and Shipping</span>
+                </div>
+                
+                <div class="menu-nav-item" onclick="closeMenu()">
+                    <span class="menu-nav-icon">💬</span>
+                    <span class="menu-nav-text">Contact Us</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search products...">
+            <button class="search-btn">🔍</button>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <a href="#" class="nav-tab active">
+            <span class="nav-tab-icon">☰</span>
+            Home
+        </a>
+        <a href="#" class="nav-tab">
+            <span class="nav-tab-icon">👁️</span>
+            Voyage Eyewear
+        </a>
+        <a href="#" class="nav-tab">
+            <span class="nav-tab-icon">🔧</span>
+            Eyejack Eyewear
+        </a>
+    </nav>
+
+    <!-- Collections to Explore -->
+    <section class="collections-section">
+        <div class="collections-header">
+            <h2 class="collections-title">Collections to Explore</h2>
+            </div>
+            
+        <div class="collections-grid">
+            <!-- Free Lens Section -->
+            <div class="collection-card free-lens-card">
+                <div class="collection-content">
+                    <h3 class="collection-title">FREE LENS</h3>
+                    <p class="collection-subtitle">With Every Frame</p>
+                    <button class="collection-btn">Shop Now</button>
+                </div>
+                <div class="collection-image">
+                    <div class="model-image">
+                        <div class="person-avatar">👨‍💼</div>
+                        <div class="glasses-overlay">👓</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- New Arrival Section -->
+            <div class="collection-card new-arrival-card">
+                <div class="collection-content">
+                    <h3 class="collection-title">New Arrival</h3>
+                    <p class="collection-subtitle">Introducing all new Z-Flex collection</p>
+                    <button class="collection-btn">SHOP NOW</button>
+                </div>
+                <div class="collection-features">
+                    <div class="feature-icons">
+                        <div class="feature-icon orange">👓</div>
+                        <div class="feature-icon green">👓</div>
+                        <div class="feature-icon black">👓</div>
+                </div>
+                    <div class="glasses-showcase">
+                        <div class="showcase-glasses">👓</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Premium Collection Card -->
+            <div class="collection-card premium-card">
+                <div class="collection-content">
+                    <h3 class="collection-title">Premium</h3>
+                    <p class="collection-subtitle">Luxury frames for style connoisseurs</p>
+                    <button class="collection-btn">EXPLORE</button>
+                </div>
+                <div class="collection-features">
+                    <div class="feature-icons">
+                        <div class="feature-icon gold">💎</div>
+                        <div class="feature-icon silver">⭐</div>
+                    </div>
+                    <div class="glasses-showcase">
+                        <div class="showcase-glasses">🕶️</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sports Collection Card -->
+            <div class="collection-card sports-card">
+                <div class="collection-content">
+                    <h3 class="collection-title">Sports</h3>
+                    <p class="collection-subtitle">Active lifestyle eyewear</p>
+                    <button class="collection-btn">SHOP</button>
+                </div>
+                <div class="collection-image">
+                    <div class="model-image">
+                        <div class="person-avatar">🏃‍♂️</div>
+                        <div class="glasses-overlay">🥽</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Eyeglasses Section -->
+    <section class="glasses-category-section">
+        <h2 class="glasses-section-title">Eyeglasses</h2>
+        <div class="glasses-grid">
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Men" class="glasses-category-image">
+        </div>
+                <div class="glasses-category-name">Men</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" alt="Women" class="glasses-category-image">
+            </div>
+                <div class="glasses-category-name">Women</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face" alt="Kids" class="glasses-category-image">
+                </div>
+                <div class="glasses-category-name">Kids</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center" alt="Essentials" class="glasses-category-image">
+                </div>
+                <div class="glasses-category-name">Essentials</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sunglasses Section -->
+    <section class="glasses-category-section">
+        <h2 class="glasses-section-title">Sunglasses</h2>
+        <div class="glasses-grid">
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" alt="Men" class="glasses-category-image">
+        </div>
+                <div class="glasses-category-name">Men</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=face" alt="Women" class="glasses-category-image">
+            </div>
+                <div class="glasses-category-name">Women</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face" alt="Kids" class="glasses-category-image">
+                </div>
+                <div class="glasses-category-name">Kids</div>
+            </div>
+            <div class="glasses-category-card">
+                <div class="glasses-image-container">
+                    <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center" alt="Essentials" class="glasses-category-image">
+                </div>
+                <div class="glasses-category-name">Essentials</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="featured-products-section">
+        <div class="featured-header">
+            <h2 class="featured-title">Featured Products</h2>
+            <p class="featured-subtitle">Discover our products through video</p>
+        </div>
+        <div class="featured-carousel">
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">RICKER</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">COMMANDER</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">ARISTO</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Today's mood Look Section -->
+    <section class="mood-look-section">
+        <div class="mood-header">
+            <h2 class="mood-title">Today's mood <span class="mood-highlight">Look</span></h2>
+            <p class="mood-subtitle">Discover every look, for every style</p>
+        </div>
+        
+        <!-- Men Section -->
+        <div class="mood-category">
+            <div class="mood-category-header">
+                <h3 class="mood-category-title">Men</h3>
+                <p class="mood-category-subtitle">Explore All</p>
+                <div class="mood-arrow">→</div>
+            </div>
+            <div class="mood-looks-carousel">
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=240&fit=crop&crop=face" alt="CEO Look" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">CEO Look</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=240&fit=crop&crop=face" alt="Casual Wear" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">Casual Wear</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=240&fit=crop&crop=face" alt="Athletic Look" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">Athletic Look</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Women Section -->
+        <div class="mood-category">
+            <div class="mood-category-header">
+                <h3 class="mood-category-title">Women</h3>
+                <p class="mood-category-subtitle">Explore All</p>
+                <div class="mood-arrow">→</div>
+            </div>
+            <div class="mood-looks-carousel">
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=240&fit=crop&crop=face" alt="Boss Lady" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">Boss Lady</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=240&fit=crop&crop=face" alt="Glam Queen" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">Glam Queen</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mood-look-card">
+                    <div class="mood-look-image">
+                        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&h=240&fit=crop&crop=face" alt="Athletic Look" class="mood-image">
+                        <div class="mood-overlay">
+                            <span class="mood-look-name">Athletic Look</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Loved Section -->
+    <section class="most-loved-section">
+        <div class="most-loved-header">
+            <h2 class="most-loved-title">Most Loved</h2>
+            <p class="most-loved-subtitle">Customers favourite listed every 15 days</p>
+        </div>
+        
+        <div class="most-loved-carousel-container">
+            <div class="most-loved-carousel">
+                <div class="most-loved-slide active">
+                    <div class="most-loved-card">
+                        <div class="most-loved-image">
+                            <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600&h=800&fit=crop&crop=center" alt="DRIP Silver wayfarer Eyeglasses" class="loved-product-image">
+                            <div class="most-loved-content">
+                                <h3 class="most-loved-product-name">DRIP</h3>
+                                <p class="most-loved-product-desc">Silver wayfarer Eyeglasses</p>
+                                <button class="most-loved-shop-btn">Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="most-loved-slide">
+                    <div class="most-loved-card">
+                        <div class="most-loved-image">
+                            <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=800&fit=crop&crop=center" alt="COMMANDER Black Frame Sunglasses" class="loved-product-image">
+                            <div class="most-loved-content">
+                                <h3 class="most-loved-product-name">COMMANDER</h3>
+                                <p class="most-loved-product-desc">Black Frame Sunglasses</p>
+                                <button class="most-loved-shop-btn">Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="most-loved-slide">
+                    <div class="most-loved-card">
+                        <div class="most-loved-image">
+                            <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=600&h=800&fit=crop&crop=center" alt="VOYAGE Classic Aviators" class="loved-product-image">
+                            <div class="most-loved-content">
+                                <h3 class="most-loved-product-name">VOYAGE</h3>
+                                <p class="most-loved-product-desc">Classic Aviator Sunglasses</p>
+                                <button class="most-loved-shop-btn">Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="most-loved-slide">
+                    <div class="most-loved-card">
+                        <div class="most-loved-image">
+                            <img src="https://images.unsplash.com/photo-1556306535-38febf6782e7?w=600&h=800&fit=crop&crop=center" alt="ELITE Premium Frames" class="loved-product-image">
+                            <div class="most-loved-content">
+                                <h3 class="most-loved-product-name">ELITE</h3>
+                                <p class="most-loved-product-desc">Premium Designer Frames</p>
+                                <button class="most-loved-shop-btn">Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="most-loved-slide">
+                    <div class="most-loved-card">
+                        <div class="most-loved-image">
+                            <img src="https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&h=800&fit=crop&crop=center" alt="SPORT Athletic Frames" class="loved-product-image">
+                            <div class="most-loved-content">
+                                <h3 class="most-loved-product-name">SPORT</h3>
+                                <p class="most-loved-product-desc">Athletic Performance Frames</p>
+                                <button class="most-loved-shop-btn">Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Dots -->
+            <div class="carousel-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section (Second) -->
+    <section class="featured-products-section">
+        <div class="featured-header">
+            <h2 class="featured-title">New Arrivals</h2>
+            <p class="featured-subtitle">Discover our latest products through video</p>
+        </div>
+        <div class="featured-carousel">
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">TITAN</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">PHOENIX</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-product-card">
+                <div class="product-video-container">
+                    <video class="product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4">
+                    </video>
+                    <div class="product-overlay">
+                        <h3 class="product-name">MATRIX</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exclusively at GOEYE Section -->
+    <section class="exclusive-section">
+        <div class="exclusive-header">
+            <h2 class="exclusive-title">Exclusively at GOEYE</h2>
+            <p class="exclusive-subtitle">Get the perfect vision and style</p>
+        </div>
+        
+        <div class="exclusive-grid">
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+            
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+            
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+            
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+            
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+            
+            <div class="exclusive-product-card">
+                <div class="exclusive-product-container">
+                    <video class="exclusive-product-video" autoplay muted loop playsinline>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">🔍</div>
+            <div class="nav-label">Search</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">🛒</div>
+            <div class="nav-label">Cart</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">Profile</div>
+        </a>
+    </nav>
+
+    <script>
+        // Menu functionality - Global functions
+        function toggleMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.toggle('active');
+            }
+        }
+
+        function closeMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.remove('active');
+            }
+        }
+
+        // Clean app - DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', function() {
+                        console.log('🚀 Live Rendering connected');
+                        // Send authentication
+                        liveRenderingWS.send(JSON.stringify({
+                            type: 'auth',
+                            payload: { shop: 'development', token: 'dev-token' }
+                        }));
+                        
+                        console.log('🔐 Mobile app authenticated with shop: development');
+                        
+                        // Show connection indicator
+                        showConnectionStatus('connected');
+                    };
+                    
+                    liveRenderingWS.onmessage = function(event) {
+                        try {
+                            const data = JSON.parse(event.data);
+                            console.log('📱 Live update received:', data);
+                            
+                            if (data.type === 'live_update') {
+                                console.log('🎨 Applying live update:', data.payload);
+                                applyLiveUpdate(data.payload);
+                            } else if (data.type === 'config_update') {
+                                console.log('🔧 Applying config update:', data.payload);
+                                applyFullConfig(data.payload);
+                            } else if (data.type === 'config_saved') {
+                                console.log('💾 Applying saved config:', data.payload.config);
+                                applyFullConfig(data.payload.config);
+                                showUpdateFeedback('💾 Configuration Saved');
+                            } else if (data.type === 'auth_success') {
+                                console.log('✅ Authentication successful');
+                            } else if (data.type === 'ping') {
+                                // Respond to ping with pong
+                                liveRenderingWS.send(JSON.stringify({ type: 'pong' }));
+                            } else {
+                                console.log('❓ Unknown message type:', data.type);
+                            }
+                        } catch (error) {
+                            console.error('❌ Error processing WebSocket message:', error);
+                        }
+                    };
+                    
+                    liveRenderingWS.onclose = function() {
+                        console.log('📱 Live Rendering disconnected');
+                        showConnectionStatus('disconnected');
+                        
+                        // Attempt to reconnect after 3 seconds
+                        setTimeout(connectLiveRendering, 3000);
+                    };
+                    
+                    liveRenderingWS.onerror = function(error) {
+                        console.error('📱 Live Rendering error:', error);
+                        showConnectionStatus('error');
+                    };
+                    
+                } catch (error) {
+                    console.error('📱 Failed to connect Live Rendering:', error);
+                    showConnectionStatus('error');
+                }
+            }
+
+            function showConnectionStatus(status) {
+                // Create or update connection indicator
+                let indicator = document.getElementById('live-connection-indicator');
+                if (!indicator) {
+                    indicator = document.createElement('div');
+                    indicator.id = 'live-connection-indicator';
+                    indicator.style.cssText = `
+                        position: fixed;
+                        top: 10px;
+                        right: 10px;
+                        padding: 8px 12px;
+                        border-radius: 20px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        z-index: 10000;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                        cursor: pointer;
+                    `;
+                    
+                    // Add click handler for debugging
+                    indicator.addEventListener('click', function() {
+                        if (liveRenderingWS && liveRenderingWS.readyState === WebSocket.OPEN) {
+                            console.log('🔧 Testing WebSocket connection...');
+                            showUpdateFeedback('🔧 Connection Test');
+                        } else {
+                            console.log('❌ WebSocket not connected');
+                            showUpdateFeedback('❌ Not Connected');
+                        }
+                    });
+                    
+                    document.body.appendChild(indicator);
+                }
+                
+                switch (status) {
+                    case 'connected':
+                        indicator.textContent = '🟢 Live';
+                        indicator.style.backgroundColor = '#059669';
+                        indicator.style.color = 'white';
+                        break;
+                    case 'disconnected':
+                        indicator.textContent = '🟡 Reconnecting...';
+                        indicator.style.backgroundColor = '#D97706';
+                        indicator.style.color = 'white';
+                        break;
+                    case 'error':
+                        indicator.textContent = '🔴 Offline';
+                        indicator.style.backgroundColor = '#DC2626';
+                        indicator.style.color = 'white';
+                        break;
+                }
+            }
+
+            function applyLiveUpdate(payload) {
+                const { section, updates, fullConfig } = payload;
+                console.log(`🎨 Applying live update to ${section}:`, updates);
+                
+                // Apply updates based on section
+                switch (section) {
+                    case 'announcementBar':
+                        updateAnnouncementBar(updates);
+                        break;
+                    case 'header':
+                        updateHeader(updates);
+                        break;
+                    case 'hero':
+                        updateHero(updates);
+                        break;
+                    case 'categories':
+                        updateCategories(updates);
+                        break;
+                    case 'styling':
+                        updateStyling(updates);
+                        break;
+                    case 'layout':
+                        updateLayout(updates);
+                        break;
+                }
+                
+                // Show visual feedback
+                showUpdateFeedback(section);
+            }
+
+            function applyFullConfig(config) {
+                console.log('🎨 Applying full configuration:', config);
+                
+                if (config.announcementBar) {
+                    updateAnnouncementBar(config.announcementBar);
+                }
+                if (config.header) {
+                    updateHeader(config.header);
+                }
+                if (config.hero) {
+                    updateHero(config.hero);
+                }
+                if (config.categories) {
+                    updateCategories(config.categories);
+                }
+                if (config.styling) {
+                    updateStyling(config.styling);
+                }
+                if (config.layout) {
+                    updateLayout(config.layout);
+                }
+            }
+
+            function updateAnnouncementBar(updates) {
+                const announcementBar = document.querySelector('.announcement-bar');
+                const announcementText = document.querySelector('.announcement-text');
+                
+                if (updates.enabled !== undefined) {
+                    announcementBar.style.display = updates.enabled ? 'flex' : 'none';
+                }
+                if (updates.text) {
+                    announcementText.textContent = updates.text;
+                }
+                if (updates.backgroundColor) {
+                    announcementBar.style.background = updates.backgroundColor;
+                }
+                if (updates.textColor) {
+                    announcementText.style.color = updates.textColor;
+                }
+            }
+
+            function updateHeader(updates) {
+                console.log('🎨 updateHeader called with:', updates);
+                
+                const header = document.querySelector('.header');
+                const logo = document.querySelector('.logo');
+                const badge = document.querySelector('.off-badge');
+                const searchInput = document.querySelector('.search-input');
+                
+                console.log('🔍 Found elements:', { header: !!header, logo: !!logo, badge: !!badge, searchInput: !!searchInput });
+                
+                if (updates.logoText && logo) {
+                    console.log(`🔤 Updating logo from "${logo.textContent}" to "${updates.logoText}"`);
+                    logo.textContent = updates.logoText;
+                    logo.style.animation = 'pulse 0.3s ease';
+                    setTimeout(() => logo.style.animation = '', 300);
+                }
+                if (updates.logoFontFamily && logo) {
+                    logo.style.fontFamily = updates.logoFontFamily;
+                }
+                if (updates.logoFontSize && logo) {
+                    logo.style.fontSize = updates.logoFontSize + 'px';
+                }
+                if (updates.badgeText && badge) {
+                    console.log(`🏷️ Updating badge from "${badge.textContent}" to "${updates.badgeText}"`);
+                    badge.textContent = updates.badgeText;
+                }
+                if (updates.backgroundColor && header) {
+                    console.log(`🎨 Updating header background to: ${updates.backgroundColor}`);
+                    header.style.backgroundColor = updates.backgroundColor;
+                    const searchContainer = document.querySelector('.search-container');
+                    const navTabs = document.querySelector('.nav-tabs');
+                    if (searchContainer) searchContainer.style.backgroundColor = updates.backgroundColor;
+                    if (navTabs) navTabs.style.backgroundColor = updates.backgroundColor;
+                }
+                if (updates.badgeBackgroundColor && badge) {
+                    badge.style.backgroundColor = updates.badgeBackgroundColor;
+                }
+                if (updates.padding && header) {
+                    header.style.padding = updates.padding + 'px 16px';
+                }
+                if (updates.searchPlaceholder && searchInput) {
+                    searchInput.placeholder = updates.searchPlaceholder;
+                }
+                
+                console.log('✅ updateHeader completed');
+            }
+
+            function updateHero(updates) {
+                console.log('🎨 updateHero called with:', updates);
+                
+                // Update collections section instead of hero banner
+                const collectionsTitle = document.querySelector('.collections-title');
+                const freeLensTitle = document.querySelector('.free-lens-card .collection-title');
+                const freeLensSubtitle = document.querySelector('.free-lens-card .collection-subtitle');
+                const newArrivalTitle = document.querySelector('.new-arrival-card .collection-title');
+                const newArrivalSubtitle = document.querySelector('.new-arrival-card .collection-subtitle');
+                const collectionsSection = document.querySelector('.collections-section');
+                
+                console.log('🔍 Found collections elements:', { 
+                    collectionsTitle: !!collectionsTitle, 
+                    freeLensTitle: !!freeLensTitle,
+                    newArrivalTitle: !!newArrivalTitle,
+                    collectionsSection: !!collectionsSection
+                });
+                
+                if (updates.title && collectionsTitle) {
+                    console.log(`📝 Updating collections title to: ${updates.title}`);
+                    collectionsTitle.textContent = updates.title;
+                }
+                if (updates.freeLensTitle && freeLensTitle) {
+                    freeLensTitle.textContent = updates.freeLensTitle;
+                }
+                if (updates.freeLensSubtitle && freeLensSubtitle) {
+                    freeLensSubtitle.textContent = updates.freeLensSubtitle;
+                }
+                if (updates.newArrivalTitle && newArrivalTitle) {
+                    newArrivalTitle.textContent = updates.newArrivalTitle;
+                }
+                if (updates.newArrivalSubtitle && newArrivalSubtitle) {
+                    newArrivalSubtitle.textContent = updates.newArrivalSubtitle;
+                }
+                if (updates.backgroundColor && collectionsSection) {
+                    collectionsSection.style.backgroundColor = updates.backgroundColor;
+                }
+                
+                console.log('✅ updateHero (collections) completed');
+            }
+
+            function updateCategories(updates) {
+                const eyeglassesTitle = document.querySelector('.section-title');
+                const sunglassesTitle = document.querySelectorAll('.section-title')[1];
+                const categoryCards = document.querySelectorAll('.category-card');
+                
+                if (updates.eyeglassesTitle && eyeglassesTitle) {
+                    eyeglassesTitle.textContent = updates.eyeglassesTitle;
+                }
+                if (updates.sunglassesTitle && sunglassesTitle) {
+                    sunglassesTitle.textContent = updates.sunglassesTitle;
+                }
+                if (updates.borderRadius) {
+                    categoryCards.forEach(card => {
+                        card.style.borderRadius = updates.borderRadius + 'px';
+                    });
+                }
+                if (updates.padding) {
+                    categoryCards.forEach(card => {
+                        card.style.padding = updates.padding + 'px';
+                    });
+                }
+                if (updates.backgroundColor) {
+                    categoryCards.forEach(card => {
+                        card.style.backgroundColor = updates.backgroundColor;
+                    });
+                }
+                if (updates.textColor) {
+                    categoryCards.forEach(card => {
+                        card.style.color = updates.textColor;
+                    });
+                }
+            }
+
+            function updateStyling(updates) {
+                const root = document.documentElement;
+                
+                if (updates.primaryFont) {
+                    document.body.style.fontFamily = updates.primaryFont;
+                }
+                if (updates.baseFontSize) {
+                    document.body.style.fontSize = updates.baseFontSize + 'px';
+                }
+                if (updates.primaryColor) {
+                    root.style.setProperty('--primary-color', updates.primaryColor);
+                }
+                if (updates.secondaryColor) {
+                    root.style.setProperty('--secondary-color', updates.secondaryColor);
+                }
+                if (updates.successColor) {
+                    root.style.setProperty('--success-color', updates.successColor);
+                }
+                if (updates.warningColor) {
+                    root.style.setProperty('--warning-color', updates.warningColor);
+                }
+            }
+
+            function updateLayout(updates) {
+                const container = document.querySelector('.mobile-app');
+                
+                if (updates.maxWidth) {
+                    container.style.maxWidth = updates.maxWidth + 'px';
+                }
+                if (updates.globalPadding) {
+                    const sections = document.querySelectorAll('.categories-section, .hero-banner');
+                    sections.forEach(section => {
+                        section.style.padding = `${updates.sectionSpacing || 24}px ${updates.globalPadding}px`;
+                    });
+                }
+                if (updates.cardBorderRadius) {
+                    const cards = document.querySelectorAll('.category-card');
+                    cards.forEach(card => {
+                        card.style.borderRadius = updates.cardBorderRadius + 'px';
+                    });
+                }
+                if (updates.buttonBorderRadius) {
+                    const buttons = document.querySelectorAll('.shop-now-btn, .nav-item');
+                    buttons.forEach(btn => {
+                        btn.style.borderRadius = updates.buttonBorderRadius + 'px';
+                    });
+                }
+                if (updates.inputBorderRadius) {
+                    const inputs = document.querySelectorAll('.search-bar');
+                    inputs.forEach(input => {
+                        input.style.borderRadius = updates.inputBorderRadius + 'px';
+                    });
+                }
+            }
+
+            function showUpdateFeedback(section) {
+                // Create a temporary visual feedback
+                const feedback = document.createElement('div');
+                feedback.textContent = `✨ ${section} updated`;
+                feedback.style.cssText = `
+                    position: fixed;
+                    top: 50px;
+                    right: 10px;
+                    background: #059669;
+                    color: white;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    z-index: 10001;
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                document.body.appendChild(feedback);
+                
+                setTimeout(() => {
+                    feedback.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => feedback.remove(), 300);
+                }, 2000);
+            }
+
+            // Add CSS animations for feedback
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Featured Products Video Handling
+        document.addEventListener('DOMContentLoaded', function() {
+                // Handle video loading and errors
+                const videos = document.querySelectorAll('.product-video');
+                videos.forEach(video => {
+                    video.addEventListener('error', function() {
+                        // If video fails to load, show a placeholder
+                        const container = this.parentElement;
+                        container.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        this.style.display = 'none';
+                    });
+                    
+                    video.addEventListener('loadeddata', function() {
+                        // Video loaded successfully
+                        this.style.opacity = '1';
+                    });
+                });
+
+                // Add touch/click interaction for mobile
+                const productCards = document.querySelectorAll('.featured-product-card');
+                productCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        const video = this.querySelector('.product-video');
+                        if (video.paused) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    });
+                });
+
+                // Most Loved Carousel Functionality
+                let currentSlideIndex = 0;
+                const slides = document.querySelectorAll('.most-loved-slide');
+                const dots = document.querySelectorAll('.dot');
+                let autoplayInterval;
+
+                function showSlide(index) {
+                    // Remove active class from all slides and dots
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    
+                    // Add active class to current slide and dot
+                    if (slides[index]) {
+                        slides[index].classList.add('active');
+                        dots[index].classList.add('active');
+                    }
+                    
+                    currentSlideIndex = index;
+                }
+
+                function nextSlide() {
+                    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+                    showSlide(currentSlideIndex);
+                }
+
+                function currentSlide(index) {
+                    showSlide(index - 1);
+                    // Reset autoplay when user manually changes slide
+                    clearInterval(autoplayInterval);
+                    startAutoplay();
+                }
+
+                function startAutoplay() {
+                    autoplayInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
+                }
+
+                // Initialize carousel if slides exist
+                if (slides.length > 0) {
+                    showSlide(0);
+                    startAutoplay();
+                    
+                    // Pause autoplay on hover
+                    const carouselContainer = document.querySelector('.most-loved-carousel-container');
+                    if (carouselContainer) {
+                        carouselContainer.addEventListener('mouseenter', () => {
+                            clearInterval(autoplayInterval);
+                        });
+                        
+                        carouselContainer.addEventListener('mouseleave', () => {
+                            startAutoplay();
+                        });
+                    }
+                }
+
+                // Make currentSlide function globally available for onclick
+                window.currentSlide = currentSlide;
+
+
+            // Category card hover effects
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 150);
+                });
+            });
+
+            // Navigation tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all tabs
+                    navTabs.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
+            });
+
+            // Bottom navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
+
+            // Shop now button
+            const shopNowBtn = document.querySelector('.shop-now-btn');
+            shopNowBtn.addEventListener('click', function() {
+                // Add pulse animation
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'pulse 0.5s';
+                }, 10);
+                
+                // Show alert (replace with actual navigation)
+                alert('Redirecting to Rakhi Sale collection!');
+            });
+
+            // Header icons
+            const headerIcons = document.querySelectorAll('.header-icon, .menu-btn');
+            headerIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    // Add click feedback
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.1)';
+                    }, 100);
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+
+            // Add CSS animation for pulse
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+
+
+            // Setup menu event listeners
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                // Close menu when clicking outside
+                menuOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeMenu();
+                    }
+                });
+            }
+
+            // Close menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

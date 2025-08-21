@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyejack Mobile App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        /* Menu functionality - Global functions */
+        function toggleMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.toggle('active');
+            }
+        }
+
+        function closeMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.remove('active');
+            }
+        }
+
+        // Test the menu functionality
+        console.log('Menu functions loaded');
+    </style>
+</head>
+<body>
+    <h1>Test Page</h1>
+    <button onclick="toggleMenu()">Test Menu</button>
+    <div id="menuOverlay">Menu Overlay</div>
+    
+    <script>
+        // Menu functionality - Global functions
+        function toggleMenu() {
+            console.log('toggleMenu called');
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.toggle('active');
+                console.log('Menu toggled');
+            } else {
+                console.log('Menu overlay not found');
+            }
+        }
+
+        function closeMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay) {
+                menuOverlay.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

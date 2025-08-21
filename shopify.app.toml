@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "622cf197c59429207b751183449a2a6d"
+client_id = "16f857752a7f7bd70afca5b39cb6abf2"
 name = "eyejack-mobileapp"
 handle = "eyejack-mobileapp"
-application_url = "https://example.com/"
+application_url = "http://localhost:3000/"
 embedded = true
 
 [build]
@@ -25,7 +25,7 @@ api_version = "2025-07"
 scopes = "read_products,write_products,read_collections,read_orders,write_orders,read_customers,write_customers,read_inventory,write_inventory,read_cart_transforms,write_cart_transforms"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "http://localhost:3000/api/auth" ]
 
 [pos]
 embedded = false

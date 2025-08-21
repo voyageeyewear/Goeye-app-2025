@@ -9,15 +9,7 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
-import LiveRenderingWebSocketServer from "./websocket-server.js";
-
 const ABORT_DELAY = 5_000;
-
-// Initialize WebSocket server when the app starts
-const WEBSOCKET_PORT = process.env.WEBSOCKET_PORT || 8080;
-if (process.env.NODE_ENV !== 'test') {
-  LiveRenderingWebSocketServer.getInstance(WEBSOCKET_PORT);
-}
 
 export default function handleRequest(
   request,
