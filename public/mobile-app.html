@@ -474,6 +474,246 @@
             margin: 20px 0;
         }
 
+        /* Wishlist Modal Styles */
+        .wishlist-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .wishlist-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .wishlist-modal.active .wishlist-content {
+            transform: translateX(0);
+        }
+
+        .wishlist-header {
+            display: flex;
+            align-items: center;
+            padding: 20px 16px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .wishlist-back-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+
+        .wishlist-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .wishlist-count {
+            color: #6b7280;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .wishlist-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            min-height: 50vh;
+        }
+
+        .wishlist-empty-icon {
+            width: 80px;
+            height: 80px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 2rem;
+            color: #9ca3af;
+        }
+
+        .wishlist-empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+
+        .wishlist-empty-text {
+            font-size: 1rem;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            max-width: 300px;
+        }
+
+        .wishlist-shop-btn {
+            background: white;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-shop-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .wishlist-categories {
+            padding: 20px 16px;
+        }
+
+        .wishlist-categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .wishlist-category-card {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 1.2;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .wishlist-category-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .wishlist-category-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 16px;
+            color: white;
+        }
+
+        .wishlist-category-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .wishlist-category-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin: 4px 0 0 0;
+        }
+
+        /* Autumn Winter Card */
+        .autumn-winter-card {
+            background: linear-gradient(135deg, #d4a574, #b8956a);
+        }
+
+        .autumn-winter-card .wishlist-category-overlay {
+            background: none;
+            color: white;
+            padding: 20px;
+        }
+
+        .autumn-winter-card .wishlist-category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .autumn-winter-card .wishlist-category-subtitle {
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        /* Ganesh Chaturthi Card */
+        .ganesh-card {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .ganesh-card .wishlist-category-overlay {
+            background: none;
+            color: white;
+            padding: 20px;
+        }
+
+        .ganesh-card .wishlist-category-title {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .ganesh-card .wishlist-category-subtitle {
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        /* Ponnonam Card */
+        .ponnonam-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .ponnonam-card .wishlist-category-overlay {
+            background: none;
+            color: white;
+            padding: 20px;
+        }
+
+        .ponnonam-card .wishlist-category-title {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .ponnonam-card .wishlist-category-subtitle {
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
         /* Header */
         .header {
             background: #313652; /* Dark blue-gray matching screenshot */
@@ -1850,7 +2090,11 @@
         </div>
         <div class="logo">oe</div>
         <div class="header-right">
-            <button class="header-icon">♡</button>
+            <button class="header-icon" onclick="openWishlist()">
+                <svg class="svg-icon" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </button>
             <button class="header-icon" onclick="openProfile()">
                 <svg class="svg-icon" viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -2253,6 +2497,133 @@
 
                 <!-- App Version -->
                 <div class="app-version">APP VERSION 4.2507.20</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div class="wishlist-modal" id="wishlistModal">
+        <div class="wishlist-content">
+            <div class="wishlist-header">
+                <button class="wishlist-back-btn" onclick="closeWishlist()">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                </button>
+                <h1 class="wishlist-title">Wishlist</h1>
+                <span class="wishlist-count">0 items</span>
+            </div>
+
+            <!-- Empty Wishlist State -->
+            <div class="wishlist-empty">
+                <div class="wishlist-empty-icon">♡</div>
+                <h2 class="wishlist-empty-title">Your wishlist is empty</h2>
+                <p class="wishlist-empty-text">Save items that you like in your wishlist. Review them anytime and easily move them to the bag.</p>
+                <button class="wishlist-shop-btn" onclick="closeWishlist()">SHOP NOW</button>
+            </div>
+
+            <!-- Category Suggestions -->
+            <div class="wishlist-categories">
+                <div class="wishlist-categories-grid">
+                    <!-- Autumn Winter Card -->
+                    <div class="wishlist-category-card autumn-winter-card">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">AUTUMN WINTER'25</h3>
+                            <p class="wishlist-category-subtitle">Essentials For The Weather Shift</p>
+                            <div style="margin-top: 12px; font-size: 1.2rem;">→</div>
+                        </div>
+                    </div>
+
+                    <!-- Casual Shoes -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop" alt="Casual Shoes" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Casual Shoes</h3>
+                        </div>
+                    </div>
+
+                    <!-- Track Pants -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=300&fit=crop" alt="Track Pants" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Track Pants</h3>
+                        </div>
+                    </div>
+
+                    <!-- Cool Jeans -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=300&fit=crop" alt="Cool Jeans" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Cool Jeans</h3>
+                        </div>
+                    </div>
+
+                    <!-- Ganesh Chaturthi Card -->
+                    <div class="wishlist-category-card ganesh-card">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">GANESH CHATURTHI SHOP</h3>
+                            <p class="wishlist-category-subtitle">Get Ready For Bappa's Arrival</p>
+                            <div style="margin-top: 12px; font-size: 1.2rem;">→</div>
+                        </div>
+                    </div>
+
+                    <!-- Paithani Sarees -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400&h=300&fit=crop" alt="Paithani Sarees" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Paithani Sarees</h3>
+                        </div>
+                    </div>
+
+                    <!-- Anarkali Sets -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=300&fit=crop" alt="Anarkali Sets" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Anarkali Sets</h3>
+                        </div>
+                    </div>
+
+                    <!-- Festive Makeup -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop" alt="Festive Makeup" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Festive Makeup</h3>
+                        </div>
+                    </div>
+
+                    <!-- Ponnonam Card -->
+                    <div class="wishlist-category-card ponnonam-card">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">PONNONAM VARAVAAY!!</h3>
+                            <p class="wishlist-category-subtitle">Get Onam-Ready With Us</p>
+                            <div style="margin-top: 12px; font-size: 1.2rem;">→</div>
+                        </div>
+                    </div>
+
+                    <!-- Kasavu Sarees -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1583391733975-b8fc7ce3a9c6?w=400&h=300&fit=crop" alt="Kasavu Sarees" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Kasavu Sarees</h3>
+                        </div>
+                    </div>
+
+                    <!-- White Shirts -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=300&fit=crop" alt="White Shirts" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">White Shirts</h3>
+                        </div>
+                    </div>
+
+                    <!-- Temple Jewellery -->
+                    <div class="wishlist-category-card">
+                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop" alt="Temple Jewellery" class="wishlist-category-image">
+                        <div class="wishlist-category-overlay">
+                            <h3 class="wishlist-category-title">Temple Jewellery</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -2952,6 +3323,27 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeProfile();
+                    closeWishlist();
+                }
+            });
+
+            // Wishlist Modal Functions
+            window.openWishlist = function() {
+                const wishlistModal = document.getElementById('wishlistModal');
+                wishlistModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.closeWishlist = function() {
+                const wishlistModal = document.getElementById('wishlistModal');
+                wishlistModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            };
+
+            // Close wishlist when clicking outside
+            document.getElementById('wishlistModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeWishlist();
                 }
             });
 
