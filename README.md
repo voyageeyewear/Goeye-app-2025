@@ -349,6 +349,43 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Images**: Unsplash for high-quality product photography
 - **Fonts**: System fonts for optimal performance and readability
 
+## 🎨 **Live Customization System**
+
+### **Real-time Backend Customization**
+The app now includes a comprehensive backend system for live customization of all app elements:
+
+#### **🖼️ Collections Management**
+- **Dual Upload System**: Upload images from computer OR add via URL
+- **Drag & Drop Support**: Simply drag images onto upload zones  
+- **Real-time Updates**: Changes appear instantly on mobile app
+- **Individual Control**: Add, edit, or remove collection items
+- **Smart Image Handling**: Proper empty states and validation
+- **File Support**: All image formats, 5MB size limit
+- **Clickable Images**: All images open in new tabs
+
+#### **🎯 Customization Features**
+- **Header Styling**: Colors, fonts, logo, text settings
+- **Theme Management**: Primary/secondary colors, typography
+- **Banner Control**: Text, colors, show/hide, animations
+- **Navigation Styling**: Colors, fonts, active states
+- **Product Display**: Prices, ratings, discounts, card styling
+- **Button Customization**: Colors, fonts, border radius
+- **Layout Settings**: Container width, padding, grid gaps
+- **Custom CSS**: Advanced styling with custom CSS rules
+
+#### **🚀 Admin Dashboard**
+- **Live Preview**: See changes instantly while editing
+- **Visual Interface**: Intuitive controls for all customizations
+- **File Upload**: Drag & drop or browse for images
+- **Real-time Sync**: WebSocket connection for instant updates
+- **Status Feedback**: Success/error notifications
+- **Connection Monitor**: Live connection status display
+
+#### **📱 Access Points**
+- **Mobile App**: `http://localhost:3001/`
+- **Admin Dashboard**: `http://localhost:3001/admin-dashboard.html`
+- **Backend API**: `http://localhost:3001/api/v1/`
+
 ## 📞 Support
 
 For support, email support@voyageeyewear.com or join our Slack channel.
@@ -357,4 +394,4 @@ For support, email support@voyageeyewear.com or join our Slack channel.
 
 **Built with ❤️ by the Voyage Eyewear Team**
 
-*Last Updated: December 2024 - Version 4.0*
+*Last Updated: August 2025 - Version 5.0 (Collections Customization)*
