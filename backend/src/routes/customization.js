@@ -113,6 +113,70 @@ let appCustomizations = {
         items: []
     },
     
+    // Highlights Section Settings
+    highlights: {
+        show: true,
+        backgroundColor: '#ffffff',
+        borderColor: '#f0f0f0',
+        padding: '16px 0',
+        circleSize: '75px',
+        gradientColors: ['#f09433', '#e6683c', '#dc2743', '#cc2366', '#bc1888'],
+        labelColor: '#374151',
+        labelSize: '12px',
+        labelFont: 'Inter, sans-serif',
+        spacing: '16px',
+        items: [
+            {
+                id: 'highlight_1',
+                label: 'New Arrivals',
+                imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=200&fit=crop&crop=face',
+                order: 1
+            },
+            {
+                id: 'highlight_2',
+                label: 'Trending',
+                imageUrl: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center',
+                order: 2
+            },
+            {
+                id: 'highlight_3',
+                label: 'Sale',
+                imageUrl: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=200&h=200&fit=crop&crop=center',
+                order: 3
+            },
+            {
+                id: 'highlight_4',
+                label: 'Sunglasses',
+                imageUrl: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=200&h=200&fit=crop&crop=center',
+                order: 4
+            },
+            {
+                id: 'highlight_5',
+                label: 'Eyeglasses',
+                imageUrl: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center',
+                order: 5
+            },
+            {
+                id: 'highlight_6',
+                label: 'Premium',
+                imageUrl: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200&h=200&fit=crop&crop=center',
+                order: 6
+            },
+            {
+                id: 'highlight_7',
+                label: 'Vintage',
+                imageUrl: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center',
+                order: 7
+            },
+            {
+                id: 'highlight_8',
+                label: 'Sports',
+                imageUrl: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center',
+                order: 8
+            }
+        ]
+    },
+    
     // Custom CSS
     customCSS: '',
     
@@ -481,6 +545,178 @@ router.get('/collections/items/:itemId', (req, res) => {
     res.json({
         success: true,
         data: item
+    });
+});
+
+// ===== HIGHLIGHTS MANAGEMENT ENDPOINTS =====
+
+// Add new highlight item
+router.post('/highlights/items', (req, res) => {
+    const { label, imageUrl } = req.body;
+    
+    if (!label || !imageUrl) {
+        return res.status(400).json({
+            success: false,
+            message: 'Label and image URL are required'
+        });
+    }
+    
+    const newItem = {
+        id: `highlight_${Date.now()}`,
+        label: label,
+        imageUrl: imageUrl || '',
+        order: appCustomizations.highlights.items.length + 1
+    };
+    
+    appCustomizations.highlights.items.push(newItem);
+    appCustomizations.lastUpdated = new Date().toISOString();
+    
+    // Broadcast changes
+    const io = req.app.get('io');
+    if (io) {
+        io.emit('customization:updated', {
+            section: 'highlights',
+            data: appCustomizations.highlights,
+            fullData: appCustomizations
+        });
+    }
+    
+    res.json({
+        success: true,
+        message: 'Highlight item added successfully',
+        data: newItem
+    });
+});
+
+// Update highlight item
+router.put('/highlights/items/:itemId', (req, res) => {
+    const { itemId } = req.params;
+    const updates = req.body;
+    
+    const itemIndex = appCustomizations.highlights.items.findIndex(item => item.id === itemId);
+    
+    if (itemIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Highlight item not found'
+        });
+    }
+    
+    // Update the item
+    appCustomizations.highlights.items[itemIndex] = {
+        ...appCustomizations.highlights.items[itemIndex],
+        ...updates
+    };
+    
+    appCustomizations.lastUpdated = new Date().toISOString();
+    
+    // Broadcast changes
+    const io = req.app.get('io');
+    if (io) {
+        io.emit('customization:updated', {
+            section: 'highlights',
+            data: appCustomizations.highlights,
+            fullData: appCustomizations
+        });
+    }
+    
+    res.json({
+        success: true,
+        message: 'Highlight item updated successfully',
+        data: appCustomizations.highlights.items[itemIndex]
+    });
+});
+
+// Remove highlight item
+router.delete('/highlights/items/:itemId', (req, res) => {
+    const { itemId } = req.params;
+    
+    const itemIndex = appCustomizations.highlights.items.findIndex(item => item.id === itemId);
+    
+    if (itemIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Highlight item not found'
+        });
+    }
+    
+    // Remove the item
+    const removedItem = appCustomizations.highlights.items.splice(itemIndex, 1)[0];
+    appCustomizations.lastUpdated = new Date().toISOString();
+    
+    // Broadcast changes
+    const io = req.app.get('io');
+    if (io) {
+        io.emit('customization:updated', {
+            section: 'highlights',
+            data: appCustomizations.highlights,
+            fullData: appCustomizations
+        });
+    }
+    
+    res.json({
+        success: true,
+        message: 'Highlight item removed successfully',
+        data: removedItem
+    });
+});
+
+// Get specific highlight item
+router.get('/highlights/items/:itemId', (req, res) => {
+    const { itemId } = req.params;
+    
+    const item = appCustomizations.highlights.items.find(item => item.id === itemId);
+    
+    if (!item) {
+        return res.status(404).json({
+            success: false,
+            message: 'Highlight item not found'
+        });
+    }
+    
+    res.json({
+        success: true,
+        data: item
+    });
+});
+
+// Reorder highlights
+router.put('/highlights/reorder', (req, res) => {
+    const { itemIds } = req.body;
+    
+    if (!Array.isArray(itemIds)) {
+        return res.status(400).json({
+            success: false,
+            message: 'itemIds must be an array'
+        });
+    }
+    
+    // Update order based on array position
+    itemIds.forEach((itemId, index) => {
+        const itemIndex = appCustomizations.highlights.items.findIndex(item => item.id === itemId);
+        if (itemIndex !== -1) {
+            appCustomizations.highlights.items[itemIndex].order = index + 1;
+        }
+    });
+    
+    // Sort items by order
+    appCustomizations.highlights.items.sort((a, b) => a.order - b.order);
+    appCustomizations.lastUpdated = new Date().toISOString();
+    
+    // Broadcast changes
+    const io = req.app.get('io');
+    if (io) {
+        io.emit('customization:updated', {
+            section: 'highlights',
+            data: appCustomizations.highlights,
+            fullData: appCustomizations
+        });
+    }
+    
+    res.json({
+        success: true,
+        message: 'Highlights reordered successfully',
+        data: appCustomizations.highlights.items
     });
 });
 

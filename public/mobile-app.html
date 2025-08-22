@@ -4207,6 +4207,7 @@
                 if (customizations.typography) applyTypographyCustomization(customizations.typography);
                 if (customizations.layout) applyLayoutCustomization(customizations.layout);
                 if (customizations.collections) applyCollectionsCustomization(customizations.collections);
+                if (customizations.highlights) applyHighlightsCustomization(customizations.highlights);
                 if (customizations.customCSS) applyCustomCSS(customizations.customCSS);
             }
 
@@ -4240,6 +4241,9 @@
                         break;
                     case 'collections':
                         applyCollectionsCustomization(data);
+                        break;
+                    case 'highlights':
+                        applyHighlightsCustomization(data);
                         break;
                     default:
                         console.warn(`Unknown customization section: ${section}`);
@@ -4742,6 +4746,113 @@
                     
                     collectionsGrid.appendChild(cardElement);
                 });
+            }
+
+            function applyHighlightsCustomization(highlightsData) {
+                if (!highlightsData) {
+                    console.log('❌ No highlights data provided');
+                    return;
+                }
+                
+                console.log('🎨 Applying highlights customization:', highlightsData);
+                
+                // Find highlights section
+                const highlightsSection = document.querySelector('.highlights-section');
+                if (!highlightsSection) {
+                    console.log('❌ Highlights section not found!');
+                    return;
+                }
+                console.log('✅ Found highlights section:', highlightsSection);
+                
+                // Show/hide section
+                if (highlightsData.hasOwnProperty('show')) {
+                    highlightsSection.style.display = highlightsData.show ? 'block' : 'none';
+                }
+                
+                // Apply section styling
+                if (highlightsData.backgroundColor) {
+                    highlightsSection.style.backgroundColor = highlightsData.backgroundColor;
+                }
+                
+                if (highlightsData.borderColor) {
+                    highlightsSection.style.borderBottomColor = highlightsData.borderColor;
+                }
+                
+                if (highlightsData.padding) {
+                    highlightsSection.style.padding = highlightsData.padding;
+                }
+                
+                // Update highlights items
+                if (highlightsData.items && Array.isArray(highlightsData.items)) {
+                    updateHighlightItems(highlightsData.items, highlightsData);
+                }
+            }
+
+            function updateHighlightItems(items, highlightsData) {
+                console.log('🔄 Updating highlight items:', items);
+                
+                const container = document.querySelector('.highlights-container');
+                if (!container) {
+                    console.log('❌ Highlights container not found!');
+                    return;
+                }
+                
+                // Clear existing highlights
+                container.innerHTML = '';
+                
+                // Sort items by order
+                const sortedItems = items.sort((a, b) => (a.order || 0) - (b.order || 0));
+                
+                // Create highlight items
+                sortedItems.forEach(item => {
+                    if (item.imageUrl && item.imageUrl !== '' && item.label) {
+                        const highlightDiv = document.createElement('div');
+                        highlightDiv.className = 'highlight-item';
+                        highlightDiv.style.cursor = 'pointer';
+                        
+                        const circleSize = highlightsData.circleSize || '75px';
+                        const labelColor = highlightsData.labelColor || '#374151';
+                        const labelSize = highlightsData.labelSize || '12px';
+                        const labelFont = highlightsData.labelFont || 'Inter, sans-serif';
+                        
+                        // Create gradient from colors array
+                        let gradientColors = '#f09433, #e6683c, #dc2743, #cc2366, #bc1888';
+                        if (highlightsData.gradientColors && Array.isArray(highlightsData.gradientColors)) {
+                            gradientColors = highlightsData.gradientColors.join(', ');
+                        }
+                        
+                        highlightDiv.innerHTML = `
+                            <div class="highlight-circle" style="width: ${circleSize}; height: ${circleSize}; background: linear-gradient(45deg, ${gradientColors});">
+                                <img src="${item.imageUrl}" alt="${item.label}" class="highlight-image" 
+                                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <span class="highlight-label" style="color: ${labelColor}; font-size: ${labelSize}; font-family: ${labelFont};">${item.label}</span>
+                        `;
+                        
+                        // Add click handler for story viewer
+                        highlightDiv.addEventListener('click', function() {
+                            const label = item.label;
+                            
+                            // Add click animation
+                            const circle = this.querySelector('.highlight-circle');
+                            circle.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                circle.style.transform = 'scale(1)';
+                            }, 150);
+                            
+                            // Open story viewer (if exists)
+                            if (typeof openStoryViewer === 'function') {
+                                openStoryViewer(label);
+                            } else {
+                                console.log(`Opening story for: ${label}`);
+                            }
+                        });
+                        
+                        container.appendChild(highlightDiv);
+                    }
+                });
+                
+                console.log(`✅ Created ${sortedItems.length} highlight items`);
             }
 
             function applyCustomCSS(cssText) {
