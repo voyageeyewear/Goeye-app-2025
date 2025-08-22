@@ -1,8 +1,42 @@
-# 👓 Eyejack Mobile App - Complete E-commerce Experience
+# 🕶️ **Eyejack Mobile App - Complete E-commerce Experience**
 
-A comprehensive mobile-first eyewear e-commerce application built with modern web technologies, featuring a complete shopping experience with cart functionality, user profiles, wishlist management, and Instagram-style interactions.
+> **A comprehensive mobile-first e-commerce application with live customization system**
+
+[![Version](https://img.shields.io/badge/version-5.0-blue.svg)](https://github.com/voyageeyewear/Goeye-app-2025)
+[![Status](https://img.shields.io/badge/status-active-green.svg)](http://localhost:3001)
+[![Backend](https://img.shields.io/badge/backend-live-brightgreen.svg)](http://localhost:3001/admin-dashboard.html)
+
+A feature-rich, mobile-first e-commerce platform designed for eyewear retail. Built with modern web technologies, it offers a complete shopping experience with real-time customization capabilities, comprehensive product management, and an intuitive admin dashboard.
+
+---
+
+## 🚀 **Quick Start**
+
+### **Access Points**
+- **📱 Mobile App**: `http://localhost:3001/`
+- **🎛️ Admin Dashboard**: `http://localhost:3001/admin-dashboard.html`
+- **🔧 Backend API**: `http://localhost:3001/api/v1/`
+- **📊 Health Check**: `http://localhost:3001/health`
+
+### **Start the Application**
+```bash
+# Navigate to backend directory
+cd backend
+
+# Start the real-time server
+PORT=3001 node src/realtime-server.js
+```
+
+---
 
 ## 🌟 Key Features Overview
+
+### 🎨 **Live Customization System**
+- **Real-time Backend**: Comprehensive admin dashboard for live app customization
+- **Collections Management**: Upload and manage images with dual upload system (file + URL)
+- **Drag & Drop Support**: Interactive image upload zones with visual feedback
+- **WebSocket Sync**: Instant synchronization between admin and mobile app
+- **Smart Image Handling**: Proper validation, empty states, and clickable images
 
 ### 🛒 Complete Shopping Experience
 - **Shopping Cart Modal**: Full-featured cart with product management and checkout flow
