@@ -6,6 +6,10 @@
     <title>Eyejack Mobile App - Complete</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Real-time Backend Integration -->
+    <script src="eyejack-realtime-client.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -1241,8 +1245,8 @@
         }
 
         .highlight-circle {
-            width: 64px;
-            height: 64px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
             padding: 2px;
@@ -1456,7 +1460,7 @@
             gap: 16px;
             overflow-x: auto;
             overflow-y: hidden;
-            padding: 0 16px 16px 16px;
+            padding: 0 16px 16px 0px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
@@ -2265,7 +2269,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #2d3748;
-            margin: 0 0 20px 0;
+            margin: 0 0 10px 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
@@ -4010,6 +4014,866 @@
                 }
             `;
             document.head.appendChild(style);
+
+            // Helper functions for real-time UI updates
+            function showConnectionStatus(message, type) {
+                const statusDiv = document.createElement('div');
+                statusDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: 500;
+                    z-index: 10000;
+                    font-size: 14px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                `;
+                statusDiv.textContent = message;
+                document.body.appendChild(statusDiv);
+                
+                setTimeout(() => {
+                    statusDiv.remove();
+                }, 3000);
+            }
+
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: 500;
+                    z-index: 10000;
+                    font-size: 14px;
+                    max-width: 300px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 4000);
+            }
+
+            function updateProductsInUI(products) {
+                // Update product displays in the UI
+                console.log('Updating products in UI:', products);
+                // This would update the actual product cards in your UI
+                // For now, just log the update
+            }
+
+            function updatePriceInUI(priceData) {
+                // Update specific product price in UI
+                console.log('Updating price in UI:', priceData);
+                // This would find and update the specific product price
+                // For now, just log the update
+            }
+
+            // Customization functions
+            function applyCustomizations(customizations) {
+                console.log('Applying full customizations:', customizations);
+                
+                // Apply app title
+                if (customizations.appTitle) {
+                    const titleElements = document.querySelectorAll('.logo-text, .app-title');
+                    titleElements.forEach(el => {
+                        if (el) el.textContent = customizations.appTitle;
+                    });
+                }
+
+                // Apply header color
+                if (customizations.headerColor) {
+                    const header = document.querySelector('.header');
+                    if (header) {
+                        header.style.backgroundColor = customizations.headerColor;
+                    }
+                }
+
+                // Apply theme colors
+                if (customizations.backgroundColor) {
+                    document.body.style.backgroundColor = customizations.backgroundColor;
+                }
+
+                if (customizations.textColor) {
+                    document.body.style.color = customizations.textColor;
+                }
+
+                // Apply banner settings
+                const banner = document.querySelector('.announcement-bar');
+                if (banner) {
+                    if (customizations.showBanner === false) {
+                        banner.style.display = 'none';
+                    } else {
+                        banner.style.display = 'block';
+                        if (customizations.bannerText) {
+                            const bannerContent = banner.querySelector('.announcement-content');
+                            if (bannerContent) {
+                                bannerContent.textContent = customizations.bannerText;
+                            }
+                        }
+                        if (customizations.bannerColor) {
+                            banner.style.background = customizations.bannerColor;
+                        }
+                    }
+                }
+
+                // Apply product settings
+                const productCards = document.querySelectorAll('.product-card, .category-card');
+                productCards.forEach(card => {
+                    if (customizations.productRadius) {
+                        card.style.borderRadius = customizations.productRadius;
+                    }
+                });
+
+                // Show/hide prices
+                if (customizations.showPrices === false) {
+                    const prices = document.querySelectorAll('.price, .product-price');
+                    prices.forEach(price => price.style.display = 'none');
+                } else {
+                    const prices = document.querySelectorAll('.price, .product-price');
+                    prices.forEach(price => price.style.display = 'block');
+                }
+
+                // Show/hide ratings
+                if (customizations.showRatings === false) {
+                    const ratings = document.querySelectorAll('.rating, .product-rating');
+                    ratings.forEach(rating => rating.style.display = 'none');
+                } else {
+                    const ratings = document.querySelectorAll('.rating, .product-rating');
+                    ratings.forEach(rating => rating.style.display = 'block');
+                }
+
+                // Apply primary color to buttons and accents
+                if (customizations.primaryColor) {
+                    const buttons = document.querySelectorAll('.btn-primary, .shop-now-btn');
+                    buttons.forEach(btn => {
+                        btn.style.backgroundColor = customizations.primaryColor;
+                    });
+                }
+            }
+
+            function applyPreviewChange(previewData) {
+                console.log('Applying preview change:', previewData);
+                
+                switch (previewData.type) {
+                    case 'title':
+                        const titleElements = document.querySelectorAll('.logo-text, .app-title');
+                        titleElements.forEach(el => {
+                            if (el) el.textContent = previewData.value;
+                        });
+                        break;
+                        
+                    case 'bannerText':
+                        const bannerContent = document.querySelector('.announcement-content');
+                        if (bannerContent) {
+                            bannerContent.textContent = previewData.value;
+                        }
+                        break;
+                        
+                    case 'showBanner':
+                        const banner = document.querySelector('.announcement-bar');
+                        if (banner) {
+                            banner.style.display = previewData.value ? 'block' : 'none';
+                        }
+                        break;
+                }
+            }
+
+            // Comprehensive customization functions
+            function applyFullCustomization(customizations) {
+                console.log('Applying full customization:', customizations);
+                
+                if (customizations.header) applyHeaderCustomization(customizations.header);
+                if (customizations.theme) applyThemeCustomization(customizations.theme);
+                if (customizations.banner) applyBannerCustomization(customizations.banner);
+                if (customizations.navigation) applyNavigationCustomization(customizations.navigation);
+                if (customizations.products) applyProductCustomization(customizations.products);
+                if (customizations.buttons) applyButtonCustomization(customizations.buttons);
+                if (customizations.typography) applyTypographyCustomization(customizations.typography);
+                if (customizations.layout) applyLayoutCustomization(customizations.layout);
+                if (customizations.collections) applyCollectionsCustomization(customizations.collections);
+                if (customizations.customCSS) applyCustomCSS(customizations.customCSS);
+            }
+
+            function applyCustomizationSection(section, data) {
+                console.log(`Applying ${section} customization:`, data);
+                
+                switch (section) {
+                    case 'header':
+                        applyHeaderCustomization(data);
+                        break;
+                    case 'theme':
+                        applyThemeCustomization(data);
+                        break;
+                    case 'banner':
+                        applyBannerCustomization(data);
+                        break;
+                    case 'navigation':
+                        applyNavigationCustomization(data);
+                        break;
+                    case 'products':
+                        applyProductCustomization(data);
+                        break;
+                    case 'buttons':
+                        applyButtonCustomization(data);
+                        break;
+                    case 'typography':
+                        applyTypographyCustomization(data);
+                        break;
+                    case 'layout':
+                        applyLayoutCustomization(data);
+                        break;
+                    case 'collections':
+                        applyCollectionsCustomization(data);
+                        break;
+                    default:
+                        console.warn(`Unknown customization section: ${section}`);
+                }
+            }
+
+            function applyHeaderCustomization(headerData) {
+                const header = document.querySelector('.header');
+                if (header && headerData.backgroundColor) {
+                    header.style.backgroundColor = headerData.backgroundColor;
+                }
+                
+                if (headerData.textColor) {
+                    const headerElements = document.querySelectorAll('.header, .header *');
+                    headerElements.forEach(el => {
+                        el.style.color = headerData.textColor;
+                    });
+                }
+                
+                if (headerData.logoText) {
+                    const logoElements = document.querySelectorAll('.logo-text');
+                    logoElements.forEach(el => {
+                        if (el) el.textContent = headerData.logoText;
+                    });
+                }
+                
+                if (headerData.fontFamily) {
+                    const headerText = document.querySelectorAll('.header, .header *');
+                    headerText.forEach(el => {
+                        el.style.fontFamily = headerData.fontFamily;
+                    });
+                }
+                
+                if (headerData.fontSize) {
+                    const logoElements = document.querySelectorAll('.logo-text');
+                    logoElements.forEach(el => {
+                        el.style.fontSize = headerData.fontSize;
+                    });
+                }
+                
+                if (headerData.height) {
+                    if (header) header.style.height = headerData.height;
+                }
+            }
+
+            function applyThemeCustomization(themeData) {
+                if (themeData.backgroundColor) {
+                    document.body.style.backgroundColor = themeData.backgroundColor;
+                }
+                
+                if (themeData.textColor) {
+                    document.body.style.color = themeData.textColor;
+                }
+                
+                if (themeData.primaryColor) {
+                    const primaryElements = document.querySelectorAll('.btn-primary, .shop-now-btn, .nav-item.active');
+                    primaryElements.forEach(el => {
+                        el.style.backgroundColor = themeData.primaryColor;
+                    });
+                }
+                
+                if (themeData.secondaryColor) {
+                    const secondaryElements = document.querySelectorAll('.btn-secondary');
+                    secondaryElements.forEach(el => {
+                        el.style.backgroundColor = themeData.secondaryColor;
+                    });
+                }
+                
+                if (themeData.accentColor) {
+                    const accentElements = document.querySelectorAll('.accent-color');
+                    accentElements.forEach(el => {
+                        el.style.color = themeData.accentColor;
+                    });
+                }
+                
+                if (themeData.borderRadius) {
+                    const roundedElements = document.querySelectorAll('.category-card, .product-card, .btn');
+                    roundedElements.forEach(el => {
+                        el.style.borderRadius = themeData.borderRadius;
+                    });
+                }
+                
+                if (themeData.fontFamily) {
+                    document.body.style.fontFamily = themeData.fontFamily;
+                }
+                
+                if (themeData.darkMode) {
+                    document.body.classList.toggle('dark-mode', themeData.darkMode);
+                }
+            }
+
+            function applyBannerCustomization(bannerData) {
+                const banner = document.querySelector('.announcement-bar');
+                if (!banner) return;
+                
+                if (bannerData.show === false) {
+                    banner.style.display = 'none';
+                    return;
+                } else {
+                    banner.style.display = 'block';
+                }
+                
+                if (bannerData.backgroundColor) {
+                    banner.style.background = bannerData.backgroundColor;
+                }
+                
+                if (bannerData.textColor) {
+                    banner.style.color = bannerData.textColor;
+                }
+                
+                if (bannerData.text) {
+                    const bannerContent = banner.querySelector('.announcement-content');
+                    if (bannerContent) {
+                        bannerContent.textContent = bannerData.text;
+                    }
+                }
+                
+                if (bannerData.fontSize) {
+                    banner.style.fontSize = bannerData.fontSize;
+                }
+                
+                if (bannerData.fontWeight) {
+                    banner.style.fontWeight = bannerData.fontWeight;
+                }
+            }
+
+            function applyNavigationCustomization(navData) {
+                const navigation = document.querySelector('.bottom-nav');
+                if (!navigation) return;
+                
+                if (navData.backgroundColor) {
+                    navigation.style.backgroundColor = navData.backgroundColor;
+                }
+                
+                if (navData.textColor) {
+                    const navItems = navigation.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        item.style.color = navData.textColor;
+                    });
+                }
+                
+                if (navData.activeColor) {
+                    const activeItems = navigation.querySelectorAll('.nav-item.active');
+                    activeItems.forEach(item => {
+                        item.style.color = navData.activeColor;
+                    });
+                }
+                
+                if (navData.borderColor) {
+                    navigation.style.borderTopColor = navData.borderColor;
+                }
+                
+                if (navData.fontSize) {
+                    const navItems = navigation.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        item.style.fontSize = navData.fontSize;
+                    });
+                }
+            }
+
+            function applyProductCustomization(productData) {
+                if (productData.showPrices === false) {
+                    const prices = document.querySelectorAll('.price, .product-price');
+                    prices.forEach(price => price.style.display = 'none');
+                } else {
+                    const prices = document.querySelectorAll('.price, .product-price');
+                    prices.forEach(price => price.style.display = 'block');
+                }
+                
+                if (productData.showRatings === false) {
+                    const ratings = document.querySelectorAll('.rating, .product-rating');
+                    ratings.forEach(rating => rating.style.display = 'none');
+                } else {
+                    const ratings = document.querySelectorAll('.rating, .product-rating');
+                    ratings.forEach(rating => rating.style.display = 'block');
+                }
+                
+                if (productData.showDiscounts === false) {
+                    const discounts = document.querySelectorAll('.discount, .sale-badge');
+                    discounts.forEach(discount => discount.style.display = 'none');
+                } else {
+                    const discounts = document.querySelectorAll('.discount, .sale-badge');
+                    discounts.forEach(discount => discount.style.display = 'block');
+                }
+                
+                if (productData.cardBorderRadius) {
+                    const productCards = document.querySelectorAll('.product-card, .category-card');
+                    productCards.forEach(card => {
+                        card.style.borderRadius = productData.cardBorderRadius;
+                    });
+                }
+                
+                if (productData.cardShadow) {
+                    const productCards = document.querySelectorAll('.product-card, .category-card');
+                    productCards.forEach(card => {
+                        card.style.boxShadow = productData.cardShadow;
+                    });
+                }
+                
+                if (productData.titleFontSize) {
+                    const titles = document.querySelectorAll('.product-title, .category-title');
+                    titles.forEach(title => {
+                        title.style.fontSize = productData.titleFontSize;
+                    });
+                }
+                
+                if (productData.priceFontSize) {
+                    const prices = document.querySelectorAll('.price, .product-price');
+                    prices.forEach(price => {
+                        price.style.fontSize = productData.priceFontSize;
+                    });
+                }
+            }
+
+            function applyButtonCustomization(buttonData) {
+                if (buttonData.primaryBackground) {
+                    const primaryBtns = document.querySelectorAll('.btn-primary, .shop-now-btn');
+                    primaryBtns.forEach(btn => {
+                        btn.style.backgroundColor = buttonData.primaryBackground;
+                    });
+                }
+                
+                if (buttonData.primaryText) {
+                    const primaryBtns = document.querySelectorAll('.btn-primary, .shop-now-btn');
+                    primaryBtns.forEach(btn => {
+                        btn.style.color = buttonData.primaryText;
+                    });
+                }
+                
+                if (buttonData.secondaryBackground) {
+                    const secondaryBtns = document.querySelectorAll('.btn-secondary');
+                    secondaryBtns.forEach(btn => {
+                        btn.style.backgroundColor = buttonData.secondaryBackground;
+                    });
+                }
+                
+                if (buttonData.secondaryText) {
+                    const secondaryBtns = document.querySelectorAll('.btn-secondary');
+                    secondaryBtns.forEach(btn => {
+                        btn.style.color = buttonData.secondaryText;
+                    });
+                }
+                
+                if (buttonData.borderRadius) {
+                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
+                    allBtns.forEach(btn => {
+                        btn.style.borderRadius = buttonData.borderRadius;
+                    });
+                }
+                
+                if (buttonData.fontSize) {
+                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
+                    allBtns.forEach(btn => {
+                        btn.style.fontSize = buttonData.fontSize;
+                    });
+                }
+                
+                if (buttonData.fontWeight) {
+                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
+                    allBtns.forEach(btn => {
+                        btn.style.fontWeight = buttonData.fontWeight;
+                    });
+                }
+            }
+
+            function applyTypographyCustomization(typographyData) {
+                if (typographyData.headingFont) {
+                    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                    headings.forEach(heading => {
+                        heading.style.fontFamily = typographyData.headingFont;
+                    });
+                }
+                
+                if (typographyData.bodyFont) {
+                    document.body.style.fontFamily = typographyData.bodyFont;
+                }
+                
+                if (typographyData.h1Size) {
+                    const h1s = document.querySelectorAll('h1');
+                    h1s.forEach(h1 => h1.style.fontSize = typographyData.h1Size);
+                }
+                
+                if (typographyData.h2Size) {
+                    const h2s = document.querySelectorAll('h2');
+                    h2s.forEach(h2 => h2.style.fontSize = typographyData.h2Size);
+                }
+                
+                if (typographyData.h3Size) {
+                    const h3s = document.querySelectorAll('h3');
+                    h3s.forEach(h3 => h3.style.fontSize = typographyData.h3Size);
+                }
+                
+                if (typographyData.bodySize) {
+                    const bodyElements = document.querySelectorAll('p, span, div');
+                    bodyElements.forEach(el => {
+                        if (!el.style.fontSize) {
+                            el.style.fontSize = typographyData.bodySize;
+                        }
+                    });
+                }
+            }
+
+            function applyLayoutCustomization(layoutData) {
+                if (layoutData.containerMaxWidth) {
+                    const containers = document.querySelectorAll('.container, .main-content');
+                    containers.forEach(container => {
+                        container.style.maxWidth = layoutData.containerMaxWidth;
+                    });
+                }
+                
+                if (layoutData.sectionPadding) {
+                    const sections = document.querySelectorAll('section, .section');
+                    sections.forEach(section => {
+                        section.style.padding = layoutData.sectionPadding;
+                    });
+                }
+                
+                if (layoutData.gridGap) {
+                    const grids = document.querySelectorAll('.grid, .product-grid, .category-grid');
+                    grids.forEach(grid => {
+                        grid.style.gap = layoutData.gridGap;
+                    });
+                }
+                
+                if (layoutData.borderRadius) {
+                    const elements = document.querySelectorAll('.card, .product-card, .category-card');
+                    elements.forEach(el => {
+                        el.style.borderRadius = layoutData.borderRadius;
+                    });
+                }
+            }
+
+            function applyCollectionsCustomization(collectionsData) {
+                if (!collectionsData) {
+                    console.log('❌ No collections data provided');
+                    return;
+                }
+                
+                console.log('🎨 Applying collections customization:', collectionsData);
+                console.log('🔍 Looking for collections section...');
+                
+                // Find collections section
+                const collectionsSection = document.querySelector('.collections-section');
+                if (!collectionsSection) {
+                    console.log('❌ Collections section not found!');
+                    return;
+                }
+                console.log('✅ Found collections section:', collectionsSection);
+                
+                // Show/hide section
+                if (collectionsData.hasOwnProperty('show')) {
+                    collectionsSection.style.display = collectionsData.show ? 'block' : 'none';
+                }
+                
+                // Apply section background
+                if (collectionsData.backgroundColor) {
+                    collectionsSection.style.backgroundColor = collectionsData.backgroundColor;
+                }
+                
+                // Apply section padding
+                if (collectionsData.padding) {
+                    collectionsSection.style.padding = collectionsData.padding;
+                }
+                
+                // Update section title
+                const titleElement = collectionsSection.querySelector('h2, .section-title');
+                if (titleElement && collectionsData.title) {
+                    titleElement.textContent = collectionsData.title;
+                    
+                    if (collectionsData.titleColor) {
+                        titleElement.style.color = collectionsData.titleColor;
+                    }
+                    if (collectionsData.titleSize) {
+                        titleElement.style.fontSize = collectionsData.titleSize;
+                    }
+                    if (collectionsData.titleFont) {
+                        titleElement.style.fontFamily = collectionsData.titleFont;
+                    }
+                }
+                
+                // Apply grid layout
+                const collectionsGrid = collectionsSection.querySelector('.collections-grid');
+                if (collectionsGrid) {
+                    if (collectionsData.itemsPerRow) {
+                        collectionsGrid.style.gridTemplateColumns = `repeat(${collectionsData.itemsPerRow}, 1fr)`;
+                    }
+                    if (collectionsData.spacing) {
+                        collectionsGrid.style.gap = collectionsData.spacing;
+                    }
+                }
+                
+                // Update collection items
+                if (collectionsData.items && Array.isArray(collectionsData.items)) {
+                    updateCollectionItems(collectionsData.items, collectionsData);
+                }
+                
+                // Apply card styling to all collection cards
+                const collectionCards = collectionsSection.querySelectorAll('.collection-card');
+                collectionCards.forEach(card => {
+                    if (collectionsData.cardBackgroundColor) {
+                        card.style.backgroundColor = collectionsData.cardBackgroundColor;
+                    }
+                    if (collectionsData.cardBorderRadius) {
+                        card.style.borderRadius = collectionsData.cardBorderRadius;
+                    }
+                    if (collectionsData.cardShadow) {
+                        card.style.boxShadow = collectionsData.cardShadow;
+                    }
+                    
+                    // Apply text styling
+                    const cardText = card.querySelector('.collection-title, h3, p');
+                    if (cardText) {
+                        if (collectionsData.textColor) {
+                            cardText.style.color = collectionsData.textColor;
+                        }
+                        if (collectionsData.textSize) {
+                            cardText.style.fontSize = collectionsData.textSize;
+                        }
+                        if (collectionsData.textFont) {
+                            cardText.style.fontFamily = collectionsData.textFont;
+                        }
+                    }
+                    
+                    // Handle image visibility
+                    const cardImage = card.querySelector('img, .collection-image');
+                    if (cardImage) {
+                        cardImage.style.display = collectionsData.showImages ? 'block' : 'none';
+                        
+                        if (collectionsData.imageAspectRatio) {
+                            const [width, height] = collectionsData.imageAspectRatio.split(':');
+                            cardImage.style.aspectRatio = `${width}/${height}`;
+                        }
+                    }
+                });
+            }
+
+            function updateCollectionItems(items, collectionsData) {
+                console.log('🔄 Updating collection items:', items);
+                const collectionsGrid = document.querySelector('.collections-grid');
+                if (!collectionsGrid) {
+                    console.log('❌ Collections grid not found!');
+                    return;
+                }
+                console.log('✅ Found collections grid:', collectionsGrid);
+                
+                // Clear existing items
+                collectionsGrid.innerHTML = '';
+                
+                // Add new items
+                items.forEach(item => {
+                    if (!item.show) return; // Skip hidden items
+                    
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'collection-card';
+                    cardElement.style.backgroundColor = item.backgroundColor || collectionsData.cardBackgroundColor || '#f8fafc';
+                    cardElement.style.borderRadius = collectionsData.cardBorderRadius || '12px';
+                    cardElement.style.boxShadow = collectionsData.cardShadow || '0 4px 6px rgba(0,0,0,0.1)';
+                    cardElement.style.overflow = 'hidden';
+                    cardElement.style.cursor = 'pointer';
+                    cardElement.style.transition = 'transform 0.2s ease';
+                    
+                    let cardHTML = '';
+                    
+                    // Add image if enabled and image exists (not placeholder)
+                    if (collectionsData.showImages && item.image && item.image !== '/api/placeholder/300/200' && item.image.trim() !== '') {
+                        const [width, height] = (collectionsData.imageAspectRatio || '16:9').split(':');
+                        cardHTML += `
+                            <div class="collection-image" style="
+                                width: 100%;
+                                aspect-ratio: ${width}/${height};
+                                background-image: url('${item.image}');
+                                background-size: cover;
+                                background-position: center;
+                            "></div>
+                        `;
+                    }
+                    
+                    // Add title
+                    cardHTML += `
+                        <div class="collection-content" style="padding: 16px;">
+                            <h3 class="collection-title" style="
+                                margin: 0;
+                                color: ${item.textColor || collectionsData.textColor || '#1f2937'};
+                                font-size: ${collectionsData.textSize || '16px'};
+                                font-family: ${collectionsData.textFont || 'Inter, sans-serif'};
+                                font-weight: 600;
+                            ">${item.title}</h3>
+                        </div>
+                    `;
+                    
+                    cardElement.innerHTML = cardHTML;
+                    
+                    // Add hover effect
+                    cardElement.addEventListener('mouseenter', () => {
+                        cardElement.style.transform = 'translateY(-4px)';
+                    });
+                    cardElement.addEventListener('mouseleave', () => {
+                        cardElement.style.transform = 'translateY(0)';
+                    });
+                    
+                    collectionsGrid.appendChild(cardElement);
+                });
+            }
+
+            function applyCustomCSS(cssText) {
+                // Remove existing custom CSS
+                const existingStyle = document.getElementById('custom-css-style');
+                if (existingStyle) {
+                    existingStyle.remove();
+                }
+                
+                // Add new custom CSS
+                if (cssText && cssText.trim()) {
+                    const style = document.createElement('style');
+                    style.id = 'custom-css-style';
+                    style.textContent = cssText;
+                    document.head.appendChild(style);
+                }
+            }
+
+            // Load current customizations from backend
+            async function loadCurrentCustomizations() {
+                try {
+                    console.log('🔄 Loading current customizations...');
+                    const response = await fetch('http://localhost:3001/api/v1/customization');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        console.log('✅ Loaded customizations:', data.data);
+                        console.log('🎨 Collections data:', data.data.collections);
+                        applyFullCustomization(data.data);
+                        showNotification('Customizations loaded!', 'info');
+                    } else {
+                        console.error('❌ Failed to load customizations:', data);
+                    }
+                } catch (error) {
+                    console.error('❌ Error loading customizations:', error);
+                }
+            }
+
+            // Real-time Backend Integration
+            if (window.EyejackRealtime) {
+                console.log('🔗 Initializing real-time connection...');
+                
+                // Subscribe to product updates and customization events
+                window.EyejackRealtime.subscribe(['products', 'orders', 'analytics', 'customization']);
+                
+                // Handle connection events
+                window.EyejackRealtime.on('connected', () => {
+                    console.log('✅ Real-time connection established!');
+                    // Show connection status in UI
+                    showConnectionStatus('Connected to live backend', 'success');
+                    
+                    // Load current customizations when connected
+                    loadCurrentCustomizations();
+                });
+
+                window.EyejackRealtime.on('disconnected', () => {
+                    console.log('❌ Real-time connection lost');
+                    showConnectionStatus('Connection lost', 'error');
+                });
+
+                // Handle product updates
+                window.EyejackRealtime.on('products:updated', (data) => {
+                    console.log('📦 Products updated:', data);
+                    updateProductsInUI(data);
+                });
+
+                window.EyejackRealtime.on('product:added', (product) => {
+                    console.log('🆕 New product added:', product);
+                    showNotification(`New product: ${product.name}`, 'info');
+                });
+
+                window.EyejackRealtime.on('price:changed', (data) => {
+                    console.log('💰 Price changed:', data);
+                    updatePriceInUI(data);
+                    showNotification(`Price updated for ${data.name}`, 'info');
+                });
+
+                // Handle order events
+                window.EyejackRealtime.on('order:added', (order) => {
+                    console.log('🛒 New order:', order);
+                    showNotification(`Order #${order.id} placed!`, 'success');
+                });
+
+                // Handle app customization from dashboard
+                window.EyejackRealtime.on('app:customize', (customizations) => {
+                    console.log('🎨 Applying customizations:', customizations);
+                    applyCustomizations(customizations);
+                    showNotification('App customized from dashboard!', 'info');
+                });
+
+                // Handle real-time preview changes
+                window.EyejackRealtime.on('app:preview', (previewData) => {
+                    console.log('👀 Preview change:', previewData);
+                    applyPreviewChange(previewData);
+                });
+
+                // Handle comprehensive customization updates
+                window.EyejackRealtime.on('customization:updated', (data) => {
+                    console.log('🎨 Section customization updated:', data);
+                    console.log('🎨 Applying section:', data.section, 'with data:', data.data);
+                    applyCustomizationSection(data.section, data.data);
+                    showNotification(`${data.section} updated!`, 'info');
+                });
+
+                window.EyejackRealtime.on('customization:bulk-updated', (data) => {
+                    console.log('🎨 Bulk customization update:', data);
+                    applyFullCustomization(data.data);
+                    showNotification('App fully customized!', 'success');
+                });
+
+                window.EyejackRealtime.on('customization:reset', (data) => {
+                    console.log('🔄 Customizations reset:', data);
+                    applyFullCustomization(data.data);
+                    showNotification('App reset to defaults!', 'info');
+                });
+
+                window.EyejackRealtime.on('customization:imported', (data) => {
+                    console.log('📥 Customizations imported:', data);
+                    applyFullCustomization(data.data);
+                    showNotification('New customizations imported!', 'success');
+                });
+
+                // Authenticate user (mock user for demo)
+                setTimeout(() => {
+                    window.EyejackRealtime.authenticate('user123', 'customer');
+                }, 1000);
+
+                // Request initial data
+                setTimeout(() => {
+                    window.EyejackRealtime.getProducts();
+                }, 2000);
+            }
         });
     </script>
 </body>

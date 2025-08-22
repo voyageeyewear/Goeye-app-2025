@@ -29,27 +29,10 @@ export default function BannerManager() {
   const [previewBanner, setPreviewBanner] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  // WebSocket connection for real-time updates
+  // WebSocket connection disabled - live rendering system removed
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8081');
-    
-    ws.onopen = () => {
-      console.log('🔗 Connected to live rendering system');
-      setIsConnected(true);
-      ws.send(JSON.stringify({
-        type: 'auth',
-        payload: { shop: 'development', token: 'admin_token' }
-      }));
-    };
-
-    ws.onclose = () => {
-      console.log('❌ Disconnected from live rendering system');
-      setIsConnected(false);
-    };
-
-    return () => {
-      ws.close();
-    };
+    console.log('ℹ️ Live rendering system disabled');
+    setIsConnected(false);
   }, []);
 
   const themes = [

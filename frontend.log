@@ -1,0 +1,11 @@
+
+> dev
+> remix vite:dev
+
+WebSocket server error: Port 64999 is already in use
+Port 3000 is in use, trying another one...
+Port 3001 is in use, trying another one...
+Port 3002 is in use, trying another one...
+  ➜  Local:   http://localhost:3003/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help

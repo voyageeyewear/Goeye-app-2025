@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyejack Admin Dashboard - Live Customization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        .dashboard {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .status-connected {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .customization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .customization-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .color-input {
+            height: 40px;
+            padding: 4px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .range-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .range-input {
+            flex: 1;
+        }
+
+        .range-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .textarea-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 40px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #10b981;
+        }
+
+        .notification.error {
+            background: #ef4444;
+        }
+
+        .notification.info {
+            background: #3b82f6;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: #dc2626;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🎨 Eyejack Admin Dashboard</h1>
+            <p>Live App Customization & Real-time Control Panel</p>
+        </div>
+
+        <div class="controls-header">
+            <div class="connection-status" id="connectionStatus">
+                <div class="status-dot"></div>
+                <span>Connecting...</span>
+            </div>
+            
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>Live Mode</span>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="applyAllChanges()">
+                    📡 Apply All Changes
+                </button>
+                <button class="btn btn-secondary" onclick="exportSettings()">
+                    💾 Export Settings
+                </button>
+                <button class="btn btn-danger" onclick="resetToDefaults()">
+                    🔄 Reset to Defaults
+                </button>
+            </div>
+        </div>
+
+        <div class="customization-grid">
+            <!-- Header Customization -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">🏠</div>
+                    <div class="card-title">Header & Branding</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Logo Text</label>
+                    <input type="text" class="form-control" id="header-logoText" value="Eyejack" onchange="updatePreview('header')">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Background Color</label>
+                        <input type="color" class="color-input" id="header-backgroundColor" value="#ffffff" onchange="updatePreview('header')">
+                    </div>
+                    <div class="form-group">
+                        <label>Text Color</label>
+                        <input type="color" class="color-input" id="header-textColor" value="#1f2937" onchange="updatePreview('header')">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Font Family</label>
+                        <select class="form-control" id="header-fontFamily" onchange="updatePreview('header')">
+                            <option value="Inter, sans-serif">Inter</option>
+                            <option value="Roboto, sans-serif">Roboto</option>
+                            <option value="Poppins, sans-serif">Poppins</option>
+                            <option value="Montserrat, sans-serif">Montserrat</option>
+                            <option value="Open Sans, sans-serif">Open Sans</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Font Size</label>
+                        <input type="text" class="form-control" id="header-fontSize" value="24px" onchange="updatePreview('header')">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="header-showLogo" checked onchange="updatePreview('header')">
+                    <label for="header-showLogo">Show Logo</label>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-title">Header Preview</div>
+                    <div id="header-preview" class="color-preview">Eyejack</div>
+                </div>
+            </div>
+
+            <!-- Theme Customization -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">🎨</div>
+                    <div class="card-title">Theme & Colors</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Primary Color</label>
+                        <input type="color" class="color-input" id="theme-primaryColor" value="#3b82f6" onchange="updatePreview('theme')">
+                    </div>
+                    <div class="form-group">
+                        <label>Secondary Color</label>
+                        <input type="color" class="color-input" id="theme-secondaryColor" value="#6b7280" onchange="updatePreview('theme')">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Background Color</label>
+                        <input type="color" class="color-input" id="theme-backgroundColor" value="#f8fafc" onchange="updatePreview('theme')">
+                    </div>
+                    <div class="form-group">
+                        <label>Text Color</label>
+                        <input type="color" class="color-input" id="theme-textColor" value="#1f2937" onchange="updatePreview('theme')">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Accent Color</label>
+                    <input type="color" class="color-input" id="theme-accentColor" value="#10b981" onchange="updatePreview('theme')">
+                </div>
+                
+                <div class="form-group">
+                    <label>Border Radius</label>
+                    <div class="range-group">
+                        <input type="range" class="range-input" id="theme-borderRadius" min="0" max="20" value="8" onchange="updatePreview('theme')">
+                        <span class="range-value" id="theme-borderRadius-value">8px</span>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="theme-darkMode" onchange="updatePreview('theme')">
+                    <label for="theme-darkMode">Dark Mode</label>
+                </div>
+            </div>
+
+            <!-- Banner Customization -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">📢</div>
+                    <div class="card-title">Announcement Banner</div>
+                </div>
+                
+                <div class="checkbox-group" style="margin-bottom: 16px;">
+                    <input type="checkbox" id="banner-show" checked onchange="updatePreview('banner')">
+                    <label for="banner-show">Show Banner</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>Banner Text</label>
+                    <input type="text" class="form-control" id="banner-text" value="🔥 Flash Sale - Up to 70% Off!" onchange="updatePreview('banner')">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Background Color</label>
+                        <input type="color" class="color-input" id="banner-backgroundColor" value="#f97316" onchange="updatePreview('banner')">
+                    </div>
+                    <div class="form-group">
+                        <label>Text Color</label>
+                        <input type="color" class="color-input" id="banner-textColor" value="#ffffff" onchange="updatePreview('banner')">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Font Size</label>
+                        <input type="text" class="form-control" id="banner-fontSize" value="14px" onchange="updatePreview('banner')">
+                    </div>
+                    <div class="form-group">
+                        <label>Font Weight</label>
+                        <select class="form-control" id="banner-fontWeight" onchange="updatePreview('banner')">
+                            <option value="400">Normal</option>
+                            <option value="500">Medium</option>
+                            <option value="600" selected>Semi Bold</option>
+                            <option value="700">Bold</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="banner-animation" checked onchange="updatePreview('banner')">
+                    <label for="banner-animation">Enable Animation</label>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-title">Banner Preview</div>
+                    <div id="banner-preview" class="color-preview">🔥 Flash Sale - Up to 70% Off!</div>
+                </div>
+            </div>
+
+            <!-- Product Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">🛍️</div>
+                    <div class="card-title">Product Display</div>
+                </div>
+                
+                <div class="checkbox-group" style="margin-bottom: 12px;">
+                    <input type="checkbox" id="products-showPrices" checked onchange="updatePreview('products')">
+                    <label for="products-showPrices">Show Prices</label>
+                </div>
+                
+                <div class="checkbox-group" style="margin-bottom: 12px;">
+                    <input type="checkbox" id="products-showRatings" checked onchange="updatePreview('products')">
+                    <label for="products-showRatings">Show Ratings</label>
+                </div>
+                
+                <div class="checkbox-group" style="margin-bottom: 16px;">
+                    <input type="checkbox" id="products-showDiscounts" checked onchange="updatePreview('products')">
+                    <label for="products-showDiscounts">Show Discounts</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>Card Border Radius</label>
+                    <div class="range-group">
+                        <input type="range" class="range-input" id="products-cardBorderRadius" min="0" max="20" value="8" onchange="updatePreview('products')">
+                        <span class="range-value" id="products-cardBorderRadius-value">8px</span>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Title Font Size</label>
+                        <input type="text" class="form-control" id="products-titleFontSize" value="16px" onchange="updatePreview('products')">
+                    </div>
+                    <div class="form-group">
+                        <label>Price Font Size</label>
+                        <input type="text" class="form-control" id="products-priceFontSize" value="18px" onchange="updatePreview('products')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Customization -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">🔘</div>
+                    <div class="card-title">Buttons & Actions</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Primary Background</label>
+                        <input type="color" class="color-input" id="buttons-primaryBackground" value="#3b82f6" onchange="updatePreview('buttons')">
+                    </div>
+                    <div class="form-group">
+                        <label>Primary Text</label>
+                        <input type="color" class="color-input" id="buttons-primaryText" value="#ffffff" onchange="updatePreview('buttons')">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Secondary Background</label>
+                        <input type="color" class="color-input" id="buttons-secondaryBackground" value="#6b7280" onchange="updatePreview('buttons')">
+                    </div>
+                    <div class="form-group">
+                        <label>Secondary Text</label>
+                        <input type="color" class="color-input" id="buttons-secondaryText" value="#ffffff" onchange="updatePreview('buttons')">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Border Radius</label>
+                        <div class="range-group">
+                            <input type="range" class="range-input" id="buttons-borderRadius" min="0" max="20" value="8" onchange="updatePreview('buttons')">
+                            <span class="range-value" id="buttons-borderRadius-value">8px</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Font Size</label>
+                        <input type="text" class="form-control" id="buttons-fontSize" value="14px" onchange="updatePreview('buttons')">
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-title">Button Preview</div>
+                    <div style="display: flex; gap: 12px;">
+                        <button id="button-primary-preview" style="padding: 8px 16px; border: none; border-radius: 8px; background: #3b82f6; color: white;">Primary Button</button>
+                        <button id="button-secondary-preview" style="padding: 8px 16px; border: none; border-radius: 8px; background: #6b7280; color: white;">Secondary Button</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collections Section -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">🖼️</div>
+                    <div class="card-title">Collections Section</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Collection Items</label>
+                    <div id="collectionsItemsList">
+                        <!-- Dynamic collection items will be loaded here -->
+                    </div>
+                    <button class="btn btn-secondary" onclick="addCollectionItem()" style="width: 100%; margin-top: 8px; padding: 12px 20px; font-size: 14px; font-weight: 600;">
+                        ➕ Add New Collection Slot
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom CSS -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <div class="card-icon">💻</div>
+                    <div class="card-title">Custom CSS</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional CSS Rules</label>
+                    <textarea class="form-control textarea-control" id="customCSS" placeholder="/* Add your custom CSS here */
+.custom-class {
+    /* Your styles */
+}" onchange="updatePreview('custom')"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="applyCustomCSS()" style="width: 100%; margin-top: 12px;">
+                    🎨 Apply Custom CSS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="realtime-client.js"></script>
+    
+    <script>
+        let socket;
+        let currentCustomizations = {};
+
+        // Initialize connection
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeConnection();
+            loadCurrentSettings();
+            setupRangeSliders();
+        });
+
+        function initializeConnection() {
+            socket = io('http://localhost:3001');
+            
+            socket.on('connect', () => {
+                updateConnectionStatus(true);
+                showNotification('Connected to live backend!', 'success');
+            });
+
+            socket.on('disconnect', () => {
+                updateConnectionStatus(false);
+                showNotification('Disconnected from backend', 'error');
+            });
+
+            socket.on('customization:updated', (data) => {
+                showNotification(`${data.section} updated successfully!`, 'success');
+            });
+
+            socket.on('customization:bulk-updated', (data) => {
+                showNotification('All customizations applied successfully!', 'success');
+            });
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            if (connected) {
+                statusEl.className = 'connection-status status-connected';
+                statusEl.innerHTML = '<div class="status-dot"></div><span>Connected to Backend</span>';
+            } else {
+                statusEl.className = 'connection-status status-disconnected';
+                statusEl.innerHTML = '<div class="status-dot"></div><span>Disconnected</span>';
+            }
+        }
+
+        async function loadCurrentSettings() {
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentCustomizations = data.data;
+                    populateFormFields();
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showNotification('Error loading current settings', 'error');
+            }
+        }
+
+        function populateFormFields() {
+            // Populate header fields
+            if (currentCustomizations.header) {
+                document.getElementById('header-logoText').value = currentCustomizations.header.logoText || 'Eyejack';
+                document.getElementById('header-backgroundColor').value = currentCustomizations.header.backgroundColor || '#ffffff';
+                document.getElementById('header-textColor').value = currentCustomizations.header.textColor || '#1f2937';
+                document.getElementById('header-fontFamily').value = currentCustomizations.header.fontFamily || 'Inter, sans-serif';
+                document.getElementById('header-fontSize').value = currentCustomizations.header.fontSize || '24px';
+                document.getElementById('header-showLogo').checked = currentCustomizations.header.showLogo !== false;
+            }
+
+            // Populate theme fields
+            if (currentCustomizations.theme) {
+                document.getElementById('theme-primaryColor').value = currentCustomizations.theme.primaryColor || '#3b82f6';
+                document.getElementById('theme-secondaryColor').value = currentCustomizations.theme.secondaryColor || '#6b7280';
+                document.getElementById('theme-backgroundColor').value = currentCustomizations.theme.backgroundColor || '#f8fafc';
+                document.getElementById('theme-textColor').value = currentCustomizations.theme.textColor || '#1f2937';
+                document.getElementById('theme-accentColor').value = currentCustomizations.theme.accentColor || '#10b981';
+                document.getElementById('theme-borderRadius').value = parseInt(currentCustomizations.theme.borderRadius) || 8;
+                document.getElementById('theme-darkMode').checked = currentCustomizations.theme.darkMode || false;
+            }
+
+            // Populate banner fields
+            if (currentCustomizations.banner) {
+                document.getElementById('banner-show').checked = currentCustomizations.banner.show !== false;
+                document.getElementById('banner-text').value = currentCustomizations.banner.text || '🔥 Flash Sale - Up to 70% Off!';
+                document.getElementById('banner-backgroundColor').value = currentCustomizations.banner.backgroundColor || '#f97316';
+                document.getElementById('banner-textColor').value = currentCustomizations.banner.textColor || '#ffffff';
+                document.getElementById('banner-fontSize').value = currentCustomizations.banner.fontSize || '14px';
+                document.getElementById('banner-fontWeight').value = currentCustomizations.banner.fontWeight || '600';
+                document.getElementById('banner-animation').checked = currentCustomizations.banner.animation !== false;
+            }
+
+            // Update all previews
+            updatePreview('header');
+            updatePreview('theme');
+            updatePreview('banner');
+            updatePreview('products');
+            updatePreview('buttons');
+        }
+
+        function setupRangeSliders() {
+            // Theme border radius
+            const themeRadiusSlider = document.getElementById('theme-borderRadius');
+            const themeRadiusValue = document.getElementById('theme-borderRadius-value');
+            
+            themeRadiusSlider.addEventListener('input', function() {
+                themeRadiusValue.textContent = this.value + 'px';
+            });
+
+            // Products card border radius
+            const productsRadiusSlider = document.getElementById('products-cardBorderRadius');
+            const productsRadiusValue = document.getElementById('products-cardBorderRadius-value');
+            
+            productsRadiusSlider.addEventListener('input', function() {
+                productsRadiusValue.textContent = this.value + 'px';
+            });
+
+            // Buttons border radius
+            const buttonsRadiusSlider = document.getElementById('buttons-borderRadius');
+            const buttonsRadiusValue = document.getElementById('buttons-borderRadius-value');
+            
+            buttonsRadiusSlider.addEventListener('input', function() {
+                buttonsRadiusValue.textContent = this.value + 'px';
+            });
+        }
+
+        function updatePreview(section) {
+            switch (section) {
+                case 'header':
+                    updateHeaderPreview();
+                    break;
+                case 'banner':
+                    updateBannerPreview();
+                    break;
+                case 'buttons':
+                    updateButtonPreview();
+                    break;
+            }
+        }
+
+        function updateHeaderPreview() {
+            const preview = document.getElementById('header-preview');
+            const logoText = document.getElementById('header-logoText').value;
+            const backgroundColor = document.getElementById('header-backgroundColor').value;
+            const textColor = document.getElementById('header-textColor').value;
+            const fontFamily = document.getElementById('header-fontFamily').value;
+            const fontSize = document.getElementById('header-fontSize').value;
+            
+            preview.style.backgroundColor = backgroundColor;
+            preview.style.color = textColor;
+            preview.style.fontFamily = fontFamily;
+            preview.style.fontSize = fontSize;
+            preview.textContent = logoText;
+        }
+
+        function updateBannerPreview() {
+            const preview = document.getElementById('banner-preview');
+            const text = document.getElementById('banner-text').value;
+            const backgroundColor = document.getElementById('banner-backgroundColor').value;
+            const textColor = document.getElementById('banner-textColor').value;
+            const fontSize = document.getElementById('banner-fontSize').value;
+            const fontWeight = document.getElementById('banner-fontWeight').value;
+            
+            preview.style.backgroundColor = backgroundColor;
+            preview.style.color = textColor;
+            preview.style.fontSize = fontSize;
+            preview.style.fontWeight = fontWeight;
+            preview.textContent = text;
+        }
+
+        function updateButtonPreview() {
+            const primaryBtn = document.getElementById('button-primary-preview');
+            const secondaryBtn = document.getElementById('button-secondary-preview');
+            
+            const primaryBg = document.getElementById('buttons-primaryBackground').value;
+            const primaryText = document.getElementById('buttons-primaryText').value;
+            const secondaryBg = document.getElementById('buttons-secondaryBackground').value;
+            const secondaryText = document.getElementById('buttons-secondaryText').value;
+            const borderRadius = document.getElementById('buttons-borderRadius').value + 'px';
+            const fontSize = document.getElementById('buttons-fontSize').value;
+            
+            primaryBtn.style.backgroundColor = primaryBg;
+            primaryBtn.style.color = primaryText;
+            primaryBtn.style.borderRadius = borderRadius;
+            primaryBtn.style.fontSize = fontSize;
+            
+            secondaryBtn.style.backgroundColor = secondaryBg;
+            secondaryBtn.style.color = secondaryText;
+            secondaryBtn.style.borderRadius = borderRadius;
+            secondaryBtn.style.fontSize = fontSize;
+        }
+
+        async function applyAllChanges() {
+            const customizations = gatherAllCustomizations();
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(customizations)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('All customizations applied successfully!', 'success');
+                } else {
+                    showNotification('Error applying customizations', 'error');
+                }
+            } catch (error) {
+                console.error('Error applying changes:', error);
+                showNotification('Error applying customizations', 'error');
+            }
+        }
+
+        function gatherAllCustomizations() {
+            return {
+                header: {
+                    logoText: document.getElementById('header-logoText').value,
+                    backgroundColor: document.getElementById('header-backgroundColor').value,
+                    textColor: document.getElementById('header-textColor').value,
+                    fontFamily: document.getElementById('header-fontFamily').value,
+                    fontSize: document.getElementById('header-fontSize').value,
+                    showLogo: document.getElementById('header-showLogo').checked
+                },
+                theme: {
+                    primaryColor: document.getElementById('theme-primaryColor').value,
+                    secondaryColor: document.getElementById('theme-secondaryColor').value,
+                    backgroundColor: document.getElementById('theme-backgroundColor').value,
+                    textColor: document.getElementById('theme-textColor').value,
+                    accentColor: document.getElementById('theme-accentColor').value,
+                    borderRadius: document.getElementById('theme-borderRadius').value + 'px',
+                    darkMode: document.getElementById('theme-darkMode').checked
+                },
+                banner: {
+                    show: document.getElementById('banner-show').checked,
+                    text: document.getElementById('banner-text').value,
+                    backgroundColor: document.getElementById('banner-backgroundColor').value,
+                    textColor: document.getElementById('banner-textColor').value,
+                    fontSize: document.getElementById('banner-fontSize').value,
+                    fontWeight: document.getElementById('banner-fontWeight').value,
+                    animation: document.getElementById('banner-animation').checked
+                },
+                products: {
+                    showPrices: document.getElementById('products-showPrices').checked,
+                    showRatings: document.getElementById('products-showRatings').checked,
+                    showDiscounts: document.getElementById('products-showDiscounts').checked,
+                    cardBorderRadius: document.getElementById('products-cardBorderRadius').value + 'px',
+                    titleFontSize: document.getElementById('products-titleFontSize').value,
+                    priceFontSize: document.getElementById('products-priceFontSize').value
+                },
+                buttons: {
+                    primaryBackground: document.getElementById('buttons-primaryBackground').value,
+                    primaryText: document.getElementById('buttons-primaryText').value,
+                    secondaryBackground: document.getElementById('buttons-secondaryBackground').value,
+                    secondaryText: document.getElementById('buttons-secondaryText').value,
+                    borderRadius: document.getElementById('buttons-borderRadius').value + 'px',
+                    fontSize: document.getElementById('buttons-fontSize').value
+                },
+                customCSS: document.getElementById('customCSS').value
+            };
+        }
+
+        async function exportSettings() {
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization/export/json');
+                const data = await response.json();
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'eyejack-customizations.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification('Settings exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting settings:', error);
+                showNotification('Error exporting settings', 'error');
+            }
+        }
+
+        async function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all customizations to default values? This action cannot be undone.')) {
+                try {
+                    const response = await fetch('http://localhost:3001/api/v1/customization/reset', {
+                        method: 'POST'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showNotification('Settings reset to defaults!', 'success');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        showNotification('Error resetting settings', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error resetting settings:', error);
+                    showNotification('Error resetting settings', 'error');
+                }
+            }
+        }
+
+        async function applyCustomCSS() {
+            const customCSS = document.getElementById('customCSS').value;
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ customCSS })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Custom CSS applied successfully!', 'success');
+                } else {
+                    showNotification('Error applying custom CSS', 'error');
+                }
+            } catch (error) {
+                console.error('Error applying custom CSS:', error);
+                showNotification('Error applying custom CSS', 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Collections Management Functions - Simplified
+
+        async function addCollectionItem() {
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization/collections/items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: `Collection ${Date.now()}`,
+                        image: '',
+                        textColor: '#1f2937',
+                        backgroundColor: '#f8fafc'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ New collection slot added!', 'success');
+                    loadCollectionItems();
+                } else {
+                    showNotification('❌ Error adding collection', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding collection item:', error);
+                showNotification('❌ Error adding collection', 'error');
+            }
+        }
+
+        // Add image via URL
+        async function addImageUrlToCollection(itemId) {
+            const imageUrl = prompt('Enter image URL:');
+            if (!imageUrl) return;
+
+            try {
+                const response = await fetch(`http://localhost:3001/api/v1/customization/collections/items/${itemId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image: imageUrl
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ Image URL added!', 'success');
+                    loadCollectionItems();
+                } else {
+                    showNotification('❌ Error adding image URL', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding image URL:', error);
+                showNotification('❌ Error adding image URL', 'error');
+            }
+        }
+
+        // Upload image from file
+        function uploadImageToCollection(itemId) {
+            const fileInput = document.getElementById(`fileInput-${itemId}`);
+            fileInput.click();
+        }
+
+        // Handle file upload
+        async function handleFileUpload(itemId, fileInput) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showNotification('❌ Please select an image file', 'error');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('❌ Image too large (max 5MB)', 'error');
+                return;
+            }
+
+            try {
+                showNotification('📤 Uploading image...', 'info');
+
+                const formData = new FormData();
+                formData.append('image', file);
+
+                const uploadResponse = await fetch('http://localhost:3001/api/v1/upload/image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadResult = await uploadResponse.json();
+                
+                if (uploadResult.success) {
+                    // Update collection item with uploaded image URL
+                    const updateResponse = await fetch(`http://localhost:3001/api/v1/customization/collections/items/${itemId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            image: uploadResult.imageUrl
+                        })
+                    });
+
+                    const updateResult = await updateResponse.json();
+                    if (updateResult.success) {
+                        showNotification('✅ Image uploaded successfully!', 'success');
+                        loadCollectionItems();
+                    } else {
+                        showNotification('❌ Error updating collection', 'error');
+                    }
+                } else {
+                    showNotification('❌ Error uploading image', 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                showNotification('❌ Error uploading image', 'error');
+            }
+
+            // Clear file input
+            fileInput.value = '';
+        }
+
+        async function updateCollectionItem(itemId, field, value) {
+            try {
+                const response = await fetch(`http://localhost:3001/api/v1/customization/collections/items/${itemId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        [field]: value
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ Collection updated!', 'success');
+                } else {
+                    showNotification('❌ Error updating collection', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating collection item:', error);
+                showNotification('Error updating collection item', 'error');
+            }
+        }
+
+        async function removeCollectionItem(itemId) {
+            if (!confirm('Are you sure you want to remove this collection item?')) return;
+
+            try {
+                const response = await fetch(`http://localhost:3001/api/v1/customization/collections/items/${itemId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('✅ Collection removed!', 'success');
+                    loadCollectionItems();
+                } else {
+                    showNotification('❌ Error removing collection', 'error');
+                }
+            } catch (error) {
+                console.error('Error removing collection item:', error);
+                showNotification('Error removing collection item', 'error');
+            }
+        }
+
+        async function loadCollectionItems() {
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/customization');
+                const data = await response.json();
+                
+                if (data.success && data.data.collections && data.data.collections.items) {
+                    renderCollectionItems(data.data.collections.items);
+                }
+            } catch (error) {
+                console.error('Error loading collection items:', error);
+            }
+        }
+
+        function renderCollectionItems(items) {
+            const container = document.getElementById('collectionsItemsList');
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.cssText = 'border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+                
+                itemDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">🖼️</div>
+                            <span style="font-size: 16px; font-weight: 600; color: #1f2937;">Collection Image</span>
+                        </div>
+                        <button onclick="removeCollectionItem('${item.id}')" style="background: #ef4444; color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;">
+                            🗑️ Remove
+                        </button>
+                    </div>
+                    
+                    ${item.image && item.image !== '/api/placeholder/300/200' && item.image.trim() !== '' ? `
+                        <div style="margin-bottom: 16px;">
+                            <a href="${item.image}" target="_blank" style="display: block; text-decoration: none;">
+                                <img src="${item.image}" style="width: 100%; max-width: 300px; height: 180px; object-fit: cover; border-radius: 10px; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.display='none'">
+                            </a>
+                            <p style="margin: 8px 0 0 0; font-size: 12px; color: #6b7280;">👆 Click image to open in new tab</p>
+                        </div>
+                        <button onclick="updateCollectionItem('${item.id}', 'image', '')" style="background: #f59e0b; color: white; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: 12px; font-weight: 500; width: 100%;">
+                            🚫 Remove This Image
+                        </button>
+                    ` : `
+                        <div id="dropZone-${item.id}" style="padding: 40px 20px; text-align: center; background: #f8fafc; border-radius: 10px; border: 2px dashed #d1d5db; margin-bottom: 16px; transition: all 0.2s; cursor: pointer;" 
+                             onclick="uploadImageToCollection('${item.id}')"
+                             ondragover="handleDragOver(event, '${item.id}')"
+                             ondragleave="handleDragLeave(event, '${item.id}')"
+                             ondrop="handleDrop(event, '${item.id}')">
+                            <div style="font-size: 48px; margin-bottom: 12px;">📷</div>
+                            <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px; font-weight: 600;">No image added yet</p>
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px;">Click here or drag & drop an image</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                            <button onclick="uploadImageToCollection('${item.id}')" style="background: #3b82f6; color: white; border: none; border-radius: 6px; padding: 10px 16px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                                📁 Upload File
+                            </button>
+                            <button onclick="addImageUrlToCollection('${item.id}')" style="background: #10b981; color: white; border: none; border-radius: 6px; padding: 10px 16px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                                🔗 Add URL
+                            </button>
+                        </div>
+                        <input type="file" id="fileInput-${item.id}" accept="image/*" style="display: none;" onchange="handleFileUpload('${item.id}', this)">
+                    `}
+                `;
+                
+                container.appendChild(itemDiv);
+            });
+        }
+
+        // Drag and drop handlers
+        function handleDragOver(event, itemId) {
+            event.preventDefault();
+            const dropZone = document.getElementById(`dropZone-${itemId}`);
+            dropZone.style.backgroundColor = '#e0f2fe';
+            dropZone.style.borderColor = '#0284c7';
+            dropZone.style.transform = 'scale(1.02)';
+        }
+
+        function handleDragLeave(event, itemId) {
+            event.preventDefault();
+            const dropZone = document.getElementById(`dropZone-${itemId}`);
+            dropZone.style.backgroundColor = '#f8fafc';
+            dropZone.style.borderColor = '#d1d5db';
+            dropZone.style.transform = 'scale(1)';
+        }
+
+        function handleDrop(event, itemId) {
+            event.preventDefault();
+            const dropZone = document.getElementById(`dropZone-${itemId}`);
+            dropZone.style.backgroundColor = '#f8fafc';
+            dropZone.style.borderColor = '#d1d5db';
+            dropZone.style.transform = 'scale(1)';
+
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    // Create a fake file input to use existing handler
+                    const fakeInput = {
+                        files: [file],
+                        value: ''
+                    };
+                    handleFileUpload(itemId, fakeInput);
+                } else {
+                    showNotification('❌ Please drop an image file', 'error');
+                }
+            }
+        }
+
+        // Load collection items when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadCollectionItems, 1000); // Wait for connection
+        });
+    </script>
+</body>
+</html>

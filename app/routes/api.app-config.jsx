@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 import { PrismaClient } from "@prisma/client";
-import LiveRenderingWebSocketServer from "../websocket-server.js";
+// import LiveRenderingWebSocketServer from "../websocket-server.js"; // Removed - using new real-time system
 
 const prisma = new PrismaClient();
 
@@ -248,13 +248,9 @@ function getDefaultConfiguration() {
 
 async function broadcastConfigUpdate(shop, config) {
   try {
-    // Get WebSocket server instance and broadcast
-    const wsServer = LiveRenderingWebSocketServer.getInstance();
-    wsServer.broadcastConfigUpdate(shop, config);
-    
-    console.log(`✅ Configuration update broadcasted for shop: ${shop}`);
+    // WebSocket functionality disabled - live rendering system removed
+    console.log(`✅ Configuration saved for shop: ${shop} (broadcast disabled)`);
   } catch (error) {
-    console.error("❌ Error broadcasting config update:", error);
-    // Don't throw error - config save should succeed even if broadcast fails
+    console.error("❌ Error in config update:", error);
   }
 } 
