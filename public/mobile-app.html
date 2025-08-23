@@ -4600,6 +4600,101 @@
             });
             
             console.log('✅ Collection items updated successfully');
+            
+            // Start autoplay for collections
+            startCollectionsAutoplay();
+        }
+
+        // Collections Autoplay Functionality
+        let collectionsAutoplayInterval;
+        let currentCollectionIndex = 0;
+
+        function startCollectionsAutoplay() {
+            // Clear any existing interval
+            if (collectionsAutoplayInterval) {
+                clearInterval(collectionsAutoplayInterval);
+            }
+            
+            const collectionsContainer = document.querySelector('.collections-grid');
+            if (!collectionsContainer) {
+                console.log('❌ Collections grid not found for autoplay');
+                return;
+            }
+            
+            const collectionCards = collectionsContainer.querySelectorAll('.collection-card');
+            if (collectionCards.length === 0) {
+                console.log('❌ No collection cards found for autoplay');
+                return;
+            }
+            
+            console.log('🎬 Starting collections autoplay with', collectionCards.length, 'cards');
+            
+            // Start autoplay with 3-second interval
+            collectionsAutoplayInterval = setInterval(() => {
+                currentCollectionIndex = (currentCollectionIndex + 1) % collectionCards.length;
+                
+                // Calculate scroll position to show the current card
+                const cardWidth = collectionCards[0].offsetWidth;
+                const gap = 16; // Gap between cards
+                const scrollPosition = currentCollectionIndex * (cardWidth + gap);
+                
+                collectionsContainer.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
+                
+                console.log('🔄 Autoplay: Scrolled to collection', currentCollectionIndex + 1);
+            }, 3000); // 3 seconds interval
+        }
+
+        function stopCollectionsAutoplay() {
+            if (collectionsAutoplayInterval) {
+                clearInterval(collectionsAutoplayInterval);
+                collectionsAutoplayInterval = null;
+                console.log('⏹️ Collections autoplay stopped');
+            }
+        }
+
+        function resetCollectionsAutoplay() {
+            currentCollectionIndex = 0;
+            const collectionsContainer = document.querySelector('.collections-grid');
+            if (collectionsContainer) {
+                collectionsContainer.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            }
+            console.log('🔄 Collections autoplay reset to first card');
+        }
+
+        // Add event listeners for collections autoplay interaction
+        function setupCollectionsAutoplayListeners() {
+            const collectionsContainer = document.querySelector('.collections-grid');
+            if (!collectionsContainer) return;
+            
+            // Pause autoplay on user interaction
+            collectionsContainer.addEventListener('mouseenter', () => {
+                stopCollectionsAutoplay();
+                console.log('⏸️ Collections autoplay paused on hover');
+            });
+            
+            collectionsContainer.addEventListener('touchstart', () => {
+                stopCollectionsAutoplay();
+                console.log('⏸️ Collections autoplay paused on touch');
+            });
+            
+            // Resume autoplay when user stops interacting
+            collectionsContainer.addEventListener('mouseleave', () => {
+                startCollectionsAutoplay();
+                console.log('▶️ Collections autoplay resumed after hover');
+            });
+            
+            collectionsContainer.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    startCollectionsAutoplay();
+                    console.log('▶️ Collections autoplay resumed after touch');
+                }, 2000); // Resume after 2 seconds of no touch
+            });
         }
 
         function updateGlassesSections(glassesData) {
@@ -5419,6 +5514,11 @@
             
             // Load initial data
             loadInitialData();
+            
+            // Setup collections autoplay listeners
+            setTimeout(() => {
+                setupCollectionsAutoplayListeners();
+            }, 1000); // Wait for collections to load
         });
         
         // Load initial data from backend
