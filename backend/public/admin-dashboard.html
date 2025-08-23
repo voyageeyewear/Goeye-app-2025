@@ -706,6 +706,7 @@
                 <button class="tab-button" onclick="switchTab('collections')">📱 Collections</button>
                 <button class="tab-button" onclick="switchTab('glasses')">👓 Glasses Categories</button>
                 <button class="tab-button" onclick="switchTab('featured-products')">🎬 Featured Products</button>
+                <button class="tab-button" onclick="switchTab('mood-look')">😊 Mood Look</button>
                 <button class="tab-button" onclick="switchTab('products')">🛍️ Products</button>
                 <button class="tab-button" onclick="switchTab('buttons')">🔘 Buttons & Actions</button>
                 <button class="tab-button" onclick="switchTab('advanced')">⚙️ Advanced Settings</button>
@@ -1135,6 +1136,57 @@
         </div>
     </div>
 
+    <!-- Mood Look Tab -->
+    <div id="mood-look-tab" class="tab-content">
+        <div class="section-grid">
+            <!-- Mood Look Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">😊</span>
+                    <h3 class="card-title">Mood Look Settings</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" id="moodLookTitle" value="Today's mood" placeholder="Enter section title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Highlight</label>
+                    <input type="text" class="form-input" id="moodLookHighlight" value="Look" placeholder="Enter section highlight">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" class="form-input" id="moodLookSubtitle" value="Discover every look, for every style" placeholder="Enter section subtitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Section</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="moodLookEnabled" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="updateMoodLookSettings()">
+                    <span>💾</span>
+                    <span>Save Settings</span>
+                </button>
+            </div>
+
+            <!-- Mood Look Categories Management -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">📂</span>
+                    <h3 class="card-title">Mood Look Categories</h3>
+                </div>
+                <div id="moodLookCategoriesList">
+                    <!-- Dynamic categories will be loaded here -->
+                </div>
+                <button class="btn btn-primary" onclick="addMoodLookCategory()">
+                    <span>➕</span>
+                    <span>Add New Category</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Products Tab -->
             <div id="products-tab" class="tab-content">
                 <div class="section-grid">
@@ -1453,6 +1505,8 @@
                 loadCollectionItems();
             } else if (tabName === 'featured-products') {
                 loadFeaturedProductsData();
+            } else if (tabName === 'mood-look') {
+                loadMoodLookData();
             // } else if (tabName === 'highlights') {
             //     loadHighlightItems();
             }
@@ -3087,6 +3141,200 @@
             .catch(error => {
                 console.error('Error deleting product:', error);
                 showNotification('Error deleting product', 'error');
+            });
+        }
+
+        // Mood Look management functions
+        function loadMoodLookData() {
+            console.log('🔄 Loading mood look data...');
+            fetch('/api/customization/mood-look')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded mood look data:', data.data);
+                        populateMoodLookForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading mood look data:', error);
+                });
+        }
+
+        function populateMoodLookForm(moodData) {
+            // Populate form fields
+            document.getElementById('moodLookTitle').value = moodData.title || "Today's mood";
+            document.getElementById('moodLookHighlight').value = moodData.highlight || 'Look';
+            document.getElementById('moodLookSubtitle').value = moodData.subtitle || 'Discover every look, for every style';
+            document.getElementById('moodLookEnabled').checked = moodData.enabled !== false;
+            
+            // Render categories
+            renderMoodLookCategories(moodData.categories || []);
+        }
+
+        function renderMoodLookCategories(categories) {
+            const container = document.getElementById('moodLookCategoriesList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'highlight-item';
+                categoryDiv.innerHTML = `
+                    <div class="highlight-preview">
+                        <div class="highlight-info">
+                            <h4>${category.title}</h4>
+                            <p>Subtitle: ${category.subtitle}</p>
+                            <p>Looks: ${category.looks ? category.looks.length : 0}</p>
+                        </div>
+                    </div>
+                    <div class="highlight-controls">
+                        <button class="btn btn-secondary" onclick="editMoodLookCategory('${category.id}')">
+                            ✏️ Edit Category
+                        </button>
+                        <button class="btn btn-primary" onclick="manageMoodLookLooks('${category.id}')">
+                            👁️ Manage Looks
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMoodLookCategory('${category.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function updateMoodLookSettings() {
+            const title = document.getElementById('moodLookTitle').value;
+            const highlight = document.getElementById('moodLookHighlight').value;
+            const subtitle = document.getElementById('moodLookSubtitle').value;
+            const enabled = document.getElementById('moodLookEnabled').checked;
+
+            fetch('/api/customization/mood-look', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, highlight: highlight, subtitle: subtitle, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Mood look settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function addMoodLookCategory() {
+            const title = prompt('Enter category title:');
+            if (!title) return;
+
+            const subtitle = prompt('Enter category subtitle:', 'Explore All');
+            if (!subtitle) return;
+
+            fetch('/api/customization/mood-look/categories', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, subtitle: subtitle })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Category added successfully!', 'success');
+                    loadMoodLookData();
+                } else {
+                    showNotification('Error adding category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding category:', error);
+                showNotification('Error adding category', 'error');
+            });
+        }
+
+        function editMoodLookCategory(categoryId) {
+            const newTitle = prompt('Enter new category title:');
+            if (!newTitle) return;
+
+            const newSubtitle = prompt('Enter new category subtitle:', 'Explore All');
+            if (!newSubtitle) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: newTitle, subtitle: newSubtitle })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Category updated successfully!', 'success');
+                    loadMoodLookData();
+                } else {
+                    showNotification('Error updating category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating category:', error);
+                showNotification('Error updating category', 'error');
+            });
+        }
+
+        function deleteMoodLookCategory(categoryId) {
+            if (!confirm('Are you sure you want to delete this category?')) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Category deleted successfully!', 'success');
+                    loadMoodLookData();
+                } else {
+                    showNotification('Error deleting category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting category:', error);
+                showNotification('Error deleting category', 'error');
+            });
+        }
+
+        function manageMoodLookLooks(categoryId) {
+            // This would open a modal or navigate to a looks management interface
+            // For now, we'll show a simple prompt to add a look
+            const lookName = prompt('Enter look name:');
+            if (!lookName) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: lookName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Look added successfully!', 'success');
+                    loadMoodLookData();
+                } else {
+                    showNotification('Error adding look: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding look:', error);
+                showNotification('Error adding look', 'error');
             });
         }
     </script>

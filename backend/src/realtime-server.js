@@ -1023,6 +1023,351 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
                 data: appCustomizations.featuredProducts.products[productIndex]
             });
         });
+
+        // Mood Look API Endpoints
+        app.get('/api/customization/mood-look', (req, res) => {
+            res.json({
+                success: true,
+                data: appCustomizations.moodLook || {}
+            });
+        });
+
+        app.post('/api/customization/mood-look', (req, res) => {
+            const { title, highlight, subtitle, enabled } = req.body;
+
+            if (!appCustomizations.moodLook) {
+                appCustomizations.moodLook = {
+                    title: "Today's mood",
+                    highlight: "Look",
+                    subtitle: "Discover every look, for every style",
+                    enabled: true,
+                    categories: []
+                };
+            }
+
+            if (title !== undefined) appCustomizations.moodLook.title = title;
+            if (highlight !== undefined) appCustomizations.moodLook.highlight = highlight;
+            if (subtitle !== undefined) appCustomizations.moodLook.subtitle = subtitle;
+            if (enabled !== undefined) appCustomizations.moodLook.enabled = enabled;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Mood look settings updated successfully',
+                data: appCustomizations.moodLook
+            });
+        });
+
+        app.post('/api/customization/mood-look/categories', (req, res) => {
+            const { title, subtitle } = req.body;
+
+            if (!appCustomizations.moodLook) {
+                appCustomizations.moodLook = {
+                    title: "Today's mood",
+                    highlight: "Look",
+                    subtitle: "Discover every look, for every style",
+                    enabled: true,
+                    categories: []
+                };
+            }
+
+            const newCategory = {
+                id: `mood_${Date.now()}`,
+                title: title || 'Category',
+                subtitle: subtitle || 'Explore All',
+                looks: []
+            };
+
+            appCustomizations.moodLook.categories.push(newCategory);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Category added successfully',
+                data: newCategory
+            });
+        });
+
+        app.put('/api/customization/mood-look/categories/:id', (req, res) => {
+            const { id } = req.params;
+            const { title, subtitle } = req.body;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === id);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            if (title !== undefined) appCustomizations.moodLook.categories[categoryIndex].title = title;
+            if (subtitle !== undefined) appCustomizations.moodLook.categories[categoryIndex].subtitle = subtitle;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Category updated successfully',
+                data: appCustomizations.moodLook.categories[categoryIndex]
+            });
+        });
+
+        app.delete('/api/customization/mood-look/categories/:id', (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === id);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const deletedCategory = appCustomizations.moodLook.categories.splice(categoryIndex, 1)[0];
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Category deleted successfully',
+                data: deletedCategory
+            });
+        });
+
+        app.post('/api/customization/mood-look/categories/:categoryId/looks', (req, res) => {
+            const { categoryId } = req.params;
+            const { name } = req.body;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const newLook = {
+                id: `look_${Date.now()}`,
+                name: name || 'Look',
+                imageUrl: 'https://via.placeholder.com/200x200?text=Look',
+                order: appCustomizations.moodLook.categories[categoryIndex].looks.length + 1
+            };
+
+            appCustomizations.moodLook.categories[categoryIndex].looks.push(newLook);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Look added successfully',
+                data: newLook
+            });
+        });
+
+        app.put('/api/customization/mood-look/categories/:categoryId/looks/:lookId', (req, res) => {
+            const { categoryId, lookId } = req.params;
+            const { name, order } = req.body;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const lookIndex = appCustomizations.moodLook.categories[categoryIndex].looks.findIndex(look => look.id === lookId);
+
+            if (lookIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Look not found'
+                });
+            }
+
+            if (name !== undefined) appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex].name = name;
+            if (order !== undefined) appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex].order = order;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Look updated successfully',
+                data: appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex]
+            });
+        });
+
+        app.delete('/api/customization/mood-look/categories/:categoryId/looks/:lookId', (req, res) => {
+            const { categoryId, lookId } = req.params;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const lookIndex = appCustomizations.moodLook.categories[categoryIndex].looks.findIndex(look => look.id === lookId);
+
+            if (lookIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Look not found'
+                });
+            }
+
+            const deletedLook = appCustomizations.moodLook.categories[categoryIndex].looks.splice(lookIndex, 1)[0];
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Look deleted successfully',
+                data: deletedLook
+            });
+        });
+
+        app.post('/api/customization/mood-look/categories/:categoryId/looks/:lookId/upload', upload.single('image'), (req, res) => {
+            const { categoryId, lookId } = req.params;
+
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No file uploaded'
+                });
+            }
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const lookIndex = appCustomizations.moodLook.categories[categoryIndex].looks.findIndex(look => look.id === lookId);
+
+            if (lookIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Look not found'
+                });
+            }
+
+            const fileUrl = `/uploads/${req.file.filename}`;
+            appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex].imageUrl = fileUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Image uploaded successfully',
+                fileUrl: fileUrl,
+                data: appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex]
+            });
+        });
         
         // Serve uploaded files
         app.use('/uploads', express.static(uploadsDir));
