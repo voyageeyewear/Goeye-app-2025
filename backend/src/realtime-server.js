@@ -613,8 +613,419 @@ app.post('/api/customization/collections/items/:id/upload', upload.single('image
     });
 });
 
-// Serve uploaded files
-app.use('/uploads', express.static(uploadsDir));
+// Glasses API Endpoints
+app.get('/api/customization/glasses', (req, res) => {
+    res.json({
+        success: true,
+        data: appCustomizations.glasses || {}
+    });
+});
+
+app.get('/api/customization/glasses/:type', (req, res) => {
+    const { type } = req.params;
+    const glassesType = appCustomizations.glasses?.[type];
+    
+    if (!glassesType) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+    
+    res.json({
+        success: true,
+        data: glassesType
+    });
+});
+
+app.post('/api/customization/glasses/:type', (req, res) => {
+    const { type } = req.params;
+    const { title, enabled, categories } = req.body;
+    
+    if (!appCustomizations.glasses) {
+        appCustomizations.glasses = {};
+    }
+    
+    // Preserve existing categories if not provided
+    const existingCategories = appCustomizations.glasses[type]?.categories || [];
+    
+    appCustomizations.glasses[type] = {
+        title: title || appCustomizations.glasses[type]?.title || 'Glasses',
+        enabled: enabled !== undefined ? enabled : (appCustomizations.glasses[type]?.enabled !== false),
+        categories: categories || existingCategories
+    };
+    
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+    
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+    
+    res.json({
+        success: true,
+        message: `${type} glasses updated successfully`,
+        data: appCustomizations.glasses[type]
+    });
+});
+
+app.post('/api/customization/glasses/:type/categories', (req, res) => {
+    const { type } = req.params;
+    const { name, imageUrl, order } = req.body;
+    
+    if (!appCustomizations.glasses?.[type]) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+    
+    const newCategory = {
+        id: `${type}_${Date.now()}`,
+        name: name || 'Category',
+        imageUrl: imageUrl || '',
+        order: order || 1
+    };
+    
+    appCustomizations.glasses[type].categories.push(newCategory);
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+    
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+    
+    res.json({
+        success: true,
+        message: 'Category added successfully',
+        data: newCategory
+    });
+});
+
+app.put('/api/customization/glasses/:type/categories/:id', (req, res) => {
+    const { type, id } = req.params;
+    const { name, imageUrl, order } = req.body;
+    
+    if (!appCustomizations.glasses?.[type]) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+    
+    const categoryIndex = appCustomizations.glasses[type].categories.findIndex(cat => cat.id === id);
+    
+    if (categoryIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Category not found'
+        });
+    }
+    
+    if (name !== undefined) appCustomizations.glasses[type].categories[categoryIndex].name = name;
+    if (imageUrl !== undefined) appCustomizations.glasses[type].categories[categoryIndex].imageUrl = imageUrl;
+    if (order !== undefined) appCustomizations.glasses[type].categories[categoryIndex].order = order;
+    
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+    
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+    
+    res.json({
+        success: true,
+        message: 'Category updated successfully',
+        data: appCustomizations.glasses[type].categories[categoryIndex]
+    });
+});
+
+app.delete('/api/customization/glasses/:type/categories/:id', (req, res) => {
+    const { type, id } = req.params;
+    
+    if (!appCustomizations.glasses?.[type]) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+    
+    const categoryIndex = appCustomizations.glasses[type].categories.findIndex(cat => cat.id === id);
+    
+    if (categoryIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Category not found'
+        });
+    }
+    
+    const deletedCategory = appCustomizations.glasses[type].categories.splice(categoryIndex, 1)[0];
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+    
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+    
+    res.json({
+        success: true,
+        message: 'Category deleted successfully',
+        data: deletedCategory
+    });
+});
+
+app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single('image'), (req, res) => {
+    const { type, id } = req.params;
+    
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'No file uploaded'
+        });
+    }
+    
+    if (!appCustomizations.glasses?.[type]) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+    
+    const categoryIndex = appCustomizations.glasses[type].categories.findIndex(cat => cat.id === id);
+    
+    if (categoryIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Category not found'
+        });
+    }
+    
+    const fileUrl = `/uploads/${req.file.filename}`;
+    appCustomizations.glasses[type].categories[categoryIndex].imageUrl = fileUrl;
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+    
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+    
+    res.json({
+        success: true,
+        message: 'Image uploaded successfully',
+        fileUrl: fileUrl,
+        data: appCustomizations.glasses[type].categories[categoryIndex]
+    });
+        });
+        
+        // Featured Products API Endpoints
+        app.get('/api/customization/featured-products', (req, res) => {
+            res.json({
+                success: true,
+                data: appCustomizations.featuredProducts || {}
+            });
+        });
+        
+        app.post('/api/customization/featured-products', (req, res) => {
+            const { title, subtitle, enabled } = req.body;
+            
+            if (!appCustomizations.featuredProducts) {
+                appCustomizations.featuredProducts = {
+                    title: 'Featured Products',
+                    subtitle: 'Discover our products through video',
+                    enabled: true,
+                    products: []
+                };
+            }
+            
+            if (title !== undefined) appCustomizations.featuredProducts.title = title;
+            if (subtitle !== undefined) appCustomizations.featuredProducts.subtitle = subtitle;
+            if (enabled !== undefined) appCustomizations.featuredProducts.enabled = enabled;
+            
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'featuredProducts',
+                data: appCustomizations.featuredProducts
+            });
+            
+            res.json({
+                success: true,
+                message: 'Featured products settings updated successfully',
+                data: appCustomizations.featuredProducts
+            });
+        });
+        
+        app.post('/api/customization/featured-products/products', (req, res) => {
+            const { name, videoUrl, order } = req.body;
+            
+            if (!appCustomizations.featuredProducts) {
+                appCustomizations.featuredProducts = {
+                    title: 'Featured Products',
+                    subtitle: 'Discover our products through video',
+                    enabled: true,
+                    products: []
+                };
+            }
+            
+            const newProduct = {
+                id: `featured_${Date.now()}`,
+                name: name || 'Product',
+                videoUrl: videoUrl || '',
+                order: order || 1
+            };
+            
+            appCustomizations.featuredProducts.products.push(newProduct);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'featuredProducts',
+                data: appCustomizations.featuredProducts
+            });
+            
+            res.json({
+                success: true,
+                message: 'Product added successfully',
+                data: newProduct
+            });
+        });
+        
+        app.put('/api/customization/featured-products/products/:id', (req, res) => {
+            const { id } = req.params;
+            const { name, videoUrl, order } = req.body;
+            
+            if (!appCustomizations.featuredProducts?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Featured products not found'
+                });
+            }
+            
+            const productIndex = appCustomizations.featuredProducts.products.findIndex(product => product.id === id);
+            
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+            
+            if (name !== undefined) appCustomizations.featuredProducts.products[productIndex].name = name;
+            if (videoUrl !== undefined) appCustomizations.featuredProducts.products[productIndex].videoUrl = videoUrl;
+            if (order !== undefined) appCustomizations.featuredProducts.products[productIndex].order = order;
+            
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'featuredProducts',
+                data: appCustomizations.featuredProducts
+            });
+            
+            res.json({
+                success: true,
+                message: 'Product updated successfully',
+                data: appCustomizations.featuredProducts.products[productIndex]
+            });
+        });
+        
+        app.delete('/api/customization/featured-products/products/:id', (req, res) => {
+            const { id } = req.params;
+            
+            if (!appCustomizations.featuredProducts?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Featured products not found'
+                });
+            }
+            
+            const productIndex = appCustomizations.featuredProducts.products.findIndex(product => product.id === id);
+            
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+            
+            const deletedProduct = appCustomizations.featuredProducts.products.splice(productIndex, 1)[0];
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'featuredProducts',
+                data: appCustomizations.featuredProducts
+            });
+            
+            res.json({
+                success: true,
+                message: 'Product deleted successfully',
+                data: deletedProduct
+            });
+        });
+        
+        app.post('/api/customization/featured-products/products/:id/upload', upload.single('video'), (req, res) => {
+            const { id } = req.params;
+            
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No file uploaded'
+                });
+            }
+            
+            if (!appCustomizations.featuredProducts?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Featured products not found'
+                });
+            }
+            
+            const productIndex = appCustomizations.featuredProducts.products.findIndex(product => product.id === id);
+            
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+            
+            const fileUrl = `/uploads/${req.file.filename}`;
+            appCustomizations.featuredProducts.products[productIndex].videoUrl = fileUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'featuredProducts',
+                data: appCustomizations.featuredProducts
+            });
+            
+            res.json({
+                success: true,
+                message: 'Video uploaded successfully',
+                fileUrl: fileUrl,
+                data: appCustomizations.featuredProducts.products[productIndex]
+            });
+        });
+        
+        // Serve uploaded files
+        app.use('/uploads', express.static(uploadsDir));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

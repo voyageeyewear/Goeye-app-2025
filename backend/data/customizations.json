@@ -34,5 +34,92 @@
       }
     ]
   },
-  "lastUpdated": "2025-08-23T06:59:23.789Z"
+  "glasses": {
+    "eyeglasses": {
+      "title": "Custom Eyeglasses",
+      "enabled": true,
+      "categories": [
+        {
+          "id": "eyeglasses_men",
+          "name": "Men",
+          "imageUrl": "/uploads/image-1755933668698-191202982.png",
+          "order": 1
+        },
+        {
+          "id": "eyeglasses_women",
+          "name": "Women",
+          "imageUrl": "/uploads/image-1755933420390-870864351.jpg",
+          "order": 2
+        },
+        {
+          "id": "eyeglasses_kids",
+          "name": "Kids",
+          "imageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face",
+          "order": 3
+        },
+        {
+          "id": "eyeglasses_essentials",
+          "name": "Essentials",
+          "imageUrl": "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center",
+          "order": 4
+        }
+      ]
+    },
+    "sunglasses": {
+      "title": "Sunglasses",
+      "enabled": true,
+      "categories": [
+        {
+          "id": "sunglasses_men",
+          "name": "Men",
+          "imageUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
+          "order": 1
+        },
+        {
+          "id": "sunglasses_women",
+          "name": "Women",
+          "imageUrl": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=face",
+          "order": 2
+        },
+        {
+          "id": "sunglasses_kids",
+          "name": "Kids",
+          "imageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face",
+          "order": 3
+        },
+        {
+          "id": "sunglasses_essentials",
+          "name": "Essentials",
+          "imageUrl": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center",
+          "order": 4
+        }
+      ]
+    }
+  },
+  "featuredProducts": {
+    "title": "Featured Products",
+    "subtitle": "Discover our products through video",
+    "enabled": true,
+    "products": [
+      {
+        "id": "featured_1",
+        "name": "New",
+        "videoUrl": "/uploads/video-1755935501172-277904401.mp4",
+        "order": 1
+      },
+      {
+        "id": "featured_2",
+        "name": "COMMANDER",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "order": 2
+      },
+      {
+        "id": "featured_3",
+        "name": "ARISTO",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "order": 3
+      }
+    ]
+  },
+  "lastUpdated": "2025-08-23T07:53:44.328Z"
 }

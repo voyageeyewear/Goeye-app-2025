@@ -2648,56 +2648,56 @@
     <!-- Instagram Highlights -->
     <section class="highlights-section">
         <div class="highlights-container">
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('New Arrivals')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=200&fit=crop&crop=face" alt="New Arrivals" class="highlight-image">
                 </div>
                 <span class="highlight-label">New Arrivals</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Trending')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center" alt="Trending" class="highlight-image">
                 </div>
                 <span class="highlight-label">Trending</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Sale')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=200&h=200&fit=crop&crop=center" alt="Sale" class="highlight-image">
                 </div>
                 <span class="highlight-label">Sale</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Sunglasses')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1556306535-38febf6782e7?w=200&h=200&fit=crop&crop=center" alt="Sunglasses" class="highlight-image">
                 </div>
                 <span class="highlight-label">Sunglasses</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Eyeglasses')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center" alt="Eyeglasses" class="highlight-image">
                 </div>
                 <span class="highlight-label">Eyeglasses</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Premium')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200&h=200&fit=crop&crop=center" alt="Premium" class="highlight-image">
                 </div>
                 <span class="highlight-label">Premium</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Vintage')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center" alt="Vintage" class="highlight-image">
                 </div>
                 <span class="highlight-label">Vintage</span>
             </div>
             
-            <div class="highlight-item">
+            <div class="highlight-item" onclick="openStory('Sports')">
                 <div class="highlight-circle">
                     <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center" alt="Sports" class="highlight-image">
                 </div>
@@ -4510,11 +4510,17 @@
                 case 'slider':
                     updateSliderSettings(data.data);
                     break;
-                case 'highlights':
-                    updateHighlightItems(data.data.items || []);
-                    break;
+                // case 'highlights':
+                //     updateHighlightItems(data.data.items || []);
+                //     break;
                 case 'collections':
                     updateCollectionItems(data.data.items || []);
+                    break;
+                case 'glasses':
+                    updateGlassesSections(data.data);
+                    break;
+                case 'featuredProducts':
+                    updateFeaturedProductsSection(data.data);
                     break;
                 case 'productDisplay':
                     updateProductDisplay(data.data);
@@ -4591,61 +4597,61 @@
         }
 
         // Real-time update functions
-        function updateHighlightItems(items) {
-            console.log('🔄 Updating highlight items:', items);
-            console.log('📊 Number of highlight items:', items.length);
-            console.log('📊 Highlight items data:', JSON.stringify(items, null, 2));
-            
-            // Find the highlights container
-            const highlightsContainer = document.querySelector('.highlights-container');
-            if (!highlightsContainer) {
-                console.log('❌ Highlights container not found');
-                return;
-            }
-            
-            // Clear existing highlight items
-            const existingItems = highlightsContainer.querySelectorAll('.highlight-item');
-            existingItems.forEach(item => item.remove());
-            
-            // Add new items
-            items.forEach((item, index) => {
-                const highlightItem = document.createElement('div');
-                highlightItem.className = 'highlight-item';
-                
-                const highlightCircle = document.createElement('div');
-                highlightCircle.className = 'highlight-circle';
-                
-                const img = document.createElement('img');
-                // Fix image URL to use correct port
-                let imageUrl = item.imageUrl || item.videoUrl || 'https://via.placeholder.com/200x200?text=Highlight';
-                if (imageUrl.startsWith('/uploads/')) {
-                    imageUrl = 'http://localhost:3002' + imageUrl;
-                }
-                img.src = imageUrl;
-                img.alt = item.label || 'Highlight';
-                img.className = 'highlight-image';
-                
-                const label = document.createElement('span');
-                label.className = 'highlight-label';
-                label.textContent = item.label || 'Highlight';
-                
-                highlightCircle.appendChild(img);
-                highlightItem.appendChild(highlightCircle);
-                highlightItem.appendChild(label);
-                
-                // Add click handler if needed
-                if (item.stories && item.stories.length > 0) {
-                    highlightItem.style.cursor = 'pointer';
-                    highlightItem.addEventListener('click', () => {
-                        openStory(item.label, item.stories);
-                    });
-                }
-                
-                highlightsContainer.appendChild(highlightItem);
-            });
-            
-            console.log('✅ Highlight items updated successfully');
-        }
+        // function updateHighlightItems(items) {
+        //     console.log('🔄 Updating highlight items:', items);
+        //     console.log('📊 Number of highlight items:', items.length);
+        //     console.log('📊 Highlight items data:', JSON.stringify(items, null, 2));
+        //     
+        //     // Find the highlights container
+        //     const highlightsContainer = document.querySelector('.highlights-container');
+        //     if (!highlightsContainer) {
+        //         console.log('❌ Highlights container not found');
+        //         return;
+        //     }
+        //     
+        //     // Clear existing highlight items
+        //     const existingItems = highlightsContainer.querySelectorAll('.highlight-item');
+        //     existingItems.forEach(item => item.remove());
+        //     
+        //     // Add new items
+        //     items.forEach((item, index) => {
+        //         const highlightItem = document.createElement('div');
+        //         highlightItem.className = 'highlight-item';
+        //         
+        //         const highlightCircle = document.createElement('div');
+        //         highlightCircle.className = 'highlight-circle';
+        //         
+        //         const img = document.createElement('img');
+        //     // Fix image URL to use correct port
+        //         let imageUrl = item.imageUrl || item.videoUrl || 'https://via.placeholder.com/200x200?text=Highlight';
+        //         if (imageUrl.startsWith('/uploads/')) {
+        //             imageUrl = 'http://localhost:3002' + imageUrl;
+        //         }
+        //         img.src = imageUrl;
+        //         img.alt = item.label || 'Highlight';
+        //         img.className = 'highlight-image';
+        //         
+        //         const label = document.createElement('span');
+        //         label.className = 'highlight-label';
+        //         label.textContent = item.label || 'Highlight';
+        //         
+        //         highlightCircle.appendChild(img);
+        //         highlightItem.appendChild(highlightCircle);
+        //         highlightItem.appendChild(label);
+        //         
+        //     // Add click handler if needed
+        //         if (item.stories && item.stories.length > 0) {
+        //             highlightItem.style.cursor = 'pointer';
+        //             highlightItem.addEventListener('click', () => {
+        //                 openStory(item.label, item.stories);
+        //             });
+        //         }
+        //         
+        //         highlightsContainer.appendChild(highlightItem);
+        //     });
+        //     
+        //     console.log('✅ Highlight items updated successfully');
+        // }
 
         function updateCollectionItems(items) {
             console.log('🔄 Updating collection items:', items);
@@ -4691,6 +4697,177 @@
             });
             
             console.log('✅ Collection items updated successfully');
+        }
+
+        function updateGlassesSections(glassesData) {
+            console.log('🔄 Updating glasses sections:', glassesData);
+            console.log('📊 Glasses data:', JSON.stringify(glassesData, null, 2));
+            
+            // Update Eyeglasses section
+            if (glassesData.eyeglasses) {
+                updateGlassesSection('eyeglasses', glassesData.eyeglasses);
+            }
+            
+            // Update Sunglasses section
+            if (glassesData.sunglasses) {
+                updateGlassesSection('sunglasses', glassesData.sunglasses);
+            }
+            
+            console.log('✅ Glasses sections updated successfully');
+        }
+
+        function updateGlassesSection(type, sectionData) {
+            console.log(`🔄 Updating ${type} section:`, sectionData);
+            
+            // Find the section by looking for the title
+            const sections = document.querySelectorAll('.glasses-category-section');
+            let targetSection = null;
+            
+            for (let section of sections) {
+                const titleElement = section.querySelector('.glasses-section-title');
+                if (titleElement && titleElement.textContent.toLowerCase().includes(type.toLowerCase())) {
+                    targetSection = section;
+                    break;
+                }
+            }
+            
+            if (!targetSection) {
+                console.log(`❌ ${type} section not found`);
+                return;
+            }
+            
+            // Update section title
+            const titleElement = targetSection.querySelector('.glasses-section-title');
+            if (titleElement && sectionData.title) {
+                titleElement.textContent = sectionData.title;
+            }
+            
+            // Show/hide section based on enabled status
+            if (sectionData.enabled !== undefined) {
+                targetSection.style.display = sectionData.enabled ? 'block' : 'none';
+            }
+            
+            // Update categories
+            if (sectionData.categories && Array.isArray(sectionData.categories)) {
+                const categoriesGrid = targetSection.querySelector('.glasses-grid');
+                if (categoriesGrid) {
+                    // Clear existing categories
+                    const existingCategories = categoriesGrid.querySelectorAll('.glasses-category-card');
+                    existingCategories.forEach(cat => cat.remove());
+                    
+                    // Add new categories
+                    sectionData.categories.forEach(category => {
+                        const categoryCard = document.createElement('div');
+                        categoryCard.className = 'glasses-category-card';
+                        
+                        const imageContainer = document.createElement('div');
+                        imageContainer.className = 'glasses-image-container';
+                        
+                        const img = document.createElement('img');
+                        // Fix image URL to use correct port
+                        let imageUrl = category.imageUrl || 'https://via.placeholder.com/200x200?text=Category';
+                        if (imageUrl.startsWith('/uploads/')) {
+                            imageUrl = 'http://localhost:3002' + imageUrl;
+                        }
+                        img.src = imageUrl;
+                        img.alt = category.name || 'Category';
+                        img.className = 'glasses-category-image';
+                        
+                        const nameElement = document.createElement('div');
+                        nameElement.className = 'glasses-category-name';
+                        nameElement.textContent = category.name || 'Category';
+                        
+                        imageContainer.appendChild(img);
+                        categoryCard.appendChild(imageContainer);
+                        categoryCard.appendChild(nameElement);
+                        
+                        categoriesGrid.appendChild(categoryCard);
+                    });
+                }
+            }
+            
+            console.log(`✅ ${type} section updated successfully`);
+        }
+
+        function updateFeaturedProductsSection(featuredData) {
+            console.log('🔄 Updating featured products section:', featuredData);
+            
+            // Find the featured products section
+            const featuredSection = document.querySelector('.featured-products-section');
+            if (!featuredSection) {
+                console.log('❌ Featured products section not found');
+                return;
+            }
+            
+            // Update section title
+            const titleElement = featuredSection.querySelector('.featured-title');
+            if (titleElement && featuredData.title) {
+                titleElement.textContent = featuredData.title;
+            }
+            
+            // Update section subtitle
+            const subtitleElement = featuredSection.querySelector('.featured-subtitle');
+            if (subtitleElement && featuredData.subtitle) {
+                subtitleElement.textContent = featuredData.subtitle;
+            }
+            
+            // Show/hide section based on enabled status
+            if (featuredData.enabled !== undefined) {
+                featuredSection.style.display = featuredData.enabled ? 'block' : 'none';
+            }
+            
+            // Update products
+            if (featuredData.products && Array.isArray(featuredData.products)) {
+                const carousel = featuredSection.querySelector('.featured-carousel');
+                if (carousel) {
+                    // Clear existing products
+                    const existingProducts = carousel.querySelectorAll('.featured-product-card');
+                    existingProducts.forEach(product => product.remove());
+                    
+                    // Add new products
+                    featuredData.products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'featured-product-card';
+                        
+                        const videoContainer = document.createElement('div');
+                        videoContainer.className = 'product-video-container';
+                        
+                        const video = document.createElement('video');
+                        video.className = 'product-video';
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.loop = true;
+                        video.playsinline = true;
+                        
+                        // Fix video URL to use correct port
+                        let videoUrl = product.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+                        if (videoUrl.startsWith('/uploads/')) {
+                            videoUrl = 'http://localhost:3002' + videoUrl;
+                        }
+                        
+                        const source = document.createElement('source');
+                        source.src = videoUrl;
+                        source.type = 'video/mp4';
+                        
+                        const overlay = document.createElement('div');
+                        overlay.className = 'product-overlay';
+                        
+                        const productName = document.createElement('h3');
+                        productName.className = 'product-name';
+                        productName.textContent = product.name || 'Product';
+                        
+                        video.appendChild(source);
+                        videoContainer.appendChild(video);
+                        videoContainer.appendChild(overlay);
+                        overlay.appendChild(productName);
+                        productCard.appendChild(videoContainer);
+                        
+                        carousel.appendChild(productCard);
+                    });
+                }
+            }
+            
+            console.log('✅ Featured products section updated successfully');
         }
 
         function updateHeaderStyles(data) {
@@ -4891,7 +5068,58 @@
                     showConnectionStatus(false);
                 }
             }, 2000);
+            
+            // Load initial data
+            loadInitialData();
         });
+        
+        // Load initial data from backend
+        async function loadInitialData() {
+            try {
+                console.log('🔄 Loading initial data from backend...');
+                
+                // Load glasses data
+                const glassesResponse = await fetch('http://localhost:3002/api/customization/glasses');
+                const glassesData = await glassesResponse.json();
+                
+                if (glassesData.success && glassesData.data) {
+                    console.log('📦 Loaded glasses data:', glassesData.data);
+                    updateGlassesSections(glassesData.data);
+                }
+                
+                // Load collections data
+                const collectionsResponse = await fetch('http://localhost:3002/api/customization/collections');
+                const collectionsData = await collectionsResponse.json();
+                
+                if (collectionsData.success && collectionsData.data && collectionsData.data.items) {
+                    console.log('📦 Loaded collections data:', collectionsData.data);
+                    updateCollectionItems(collectionsData.data.items);
+                }
+                
+                // Load highlights data (DISABLED)
+                // const highlightsResponse = await fetch('http://localhost:3002/api/customization/highlights');
+                // const highlightsData = await highlightsResponse.json();
+                // 
+                // if (highlightsData.success && highlightsData.data && highlightsData.data.items) {
+                //     console.log('📦 Loaded highlights data:', highlightsData.data);
+                //     updateHighlightItems(highlightsData.data.items);
+                // }
+                
+                // Load featured products data
+                const featuredProductsResponse = await fetch('http://localhost:3002/api/customization/featured-products');
+                const featuredProductsData = await featuredProductsResponse.json();
+                
+                if (featuredProductsData.success && featuredProductsData.data) {
+                    console.log('📦 Loaded featured products data:', featuredProductsData.data);
+                    updateFeaturedProductsSection(featuredProductsData.data);
+                }
+                
+                console.log('✅ Initial data loaded successfully');
+                
+            } catch (error) {
+                console.error('❌ Error loading initial data:', error);
+            }
+        }
 
         // Reconnection logic
         socket.on('connect_error', function(error) {

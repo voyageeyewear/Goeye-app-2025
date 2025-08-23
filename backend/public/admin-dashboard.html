@@ -702,8 +702,10 @@
                 <button class="tab-button active" onclick="switchTab('header')">🏠 Header & Branding</button>
                 <button class="tab-button" onclick="switchTab('theme')">🎨 Theme & Colors</button>
                 <button class="tab-button" onclick="switchTab('banners')">📢 Banners & Sliders</button>
-                <button class="tab-button" onclick="switchTab('highlights')">✨ Highlights</button>
+                <!-- <button class="tab-button" onclick="switchTab('highlights')">✨ Highlights</button> -->
                 <button class="tab-button" onclick="switchTab('collections')">📱 Collections</button>
+                <button class="tab-button" onclick="switchTab('glasses')">👓 Glasses Categories</button>
+                <button class="tab-button" onclick="switchTab('featured-products')">🎬 Featured Products</button>
                 <button class="tab-button" onclick="switchTab('products')">🛍️ Products</button>
                 <button class="tab-button" onclick="switchTab('buttons')">🔘 Buttons & Actions</button>
                 <button class="tab-button" onclick="switchTab('advanced')">⚙️ Advanced Settings</button>
@@ -939,10 +941,9 @@
                 </div>
             </div>
 
-            <!-- Highlights Tab -->
-            <div id="highlights-tab" class="tab-content">
+            <!-- Highlights Tab (DISABLED) -->
+            <!-- <div id="highlights-tab" class="tab-content">
                 <div class="section-grid">
-                    <!-- Stories Management Section -->
                     <div class="customization-card">
                         <div class="card-header">
                             <span class="card-icon">📖</span>
@@ -980,7 +981,6 @@
                         <div id="storyResponse" class="response-area" style="display: none;"></div>
                     </div>
 
-                    <!-- Stories Display Section -->
                     <div class="customization-card">
                         <div class="card-header">
                             <span class="card-icon">🎬</span>
@@ -992,17 +992,15 @@
                     </div>
                 </div>
 
-                <!-- Original Highlights Section -->
                 <div class="customization-card">
                     <div class="card-header">
                         <span class="card-icon">✨</span>
                         <h3 class="card-title">Instagram-Style Highlights</h3>
                     </div>
                     <div id="highlightsItemsList">
-                        <!-- Dynamic highlight items will be loaded here -->
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
 
@@ -1023,7 +1021,121 @@
                 </div>
             </div>
 
-            <!-- Products Tab -->
+            <!-- Glasses Categories Tab -->
+            <div id="glasses-tab" class="tab-content">
+                <div class="section-grid">
+                    <!-- Eyeglasses Section -->
+                    <div class="customization-card">
+                        <div class="card-header">
+                            <span class="card-icon">👓</span>
+                            <h3 class="card-title">Eyeglasses Management</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Section Title</label>
+                            <input type="text" class="form-input" id="eyeglassesTitle" value="Eyeglasses" placeholder="Enter section title">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Enable Section</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="eyeglassesEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="eyeglassesCategoriesList">
+                            <!-- Dynamic eyeglasses categories will be loaded here -->
+                        </div>
+                        <button class="btn btn-primary" onclick="addEyeglassesCategory()">
+                            <span>➕</span>
+                            <span>Add Category</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="updateEyeglassesSection()">
+                            <span>💾</span>
+                            <span>Save Eyeglasses Settings</span>
+                        </button>
+                    </div>
+
+                    <!-- Sunglasses Section -->
+                    <div class="customization-card">
+                        <div class="card-header">
+                            <span class="card-icon">🕶️</span>
+                            <h3 class="card-title">Sunglasses Management</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Section Title</label>
+                            <input type="text" class="form-input" id="sunglassesTitle" value="Sunglasses" placeholder="Enter section title">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Enable Section</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="sunglassesEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="sunglassesCategoriesList">
+                            <!-- Dynamic sunglasses categories will be loaded here -->
+                        </div>
+                        <button class="btn btn-primary" onclick="addSunglassesCategory()">
+                            <span>➕</span>
+                            <span>Add Category</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="updateSunglassesSection()">
+                            <span>💾</span>
+                            <span>Save Sunglasses Settings</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products Tab -->
+    <div id="featured-products-tab" class="tab-content">
+        <div class="section-grid">
+            <!-- Featured Products Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">🎬</span>
+                    <h3 class="card-title">Featured Products Settings</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" id="featuredProductsTitle" value="Featured Products" placeholder="Enter section title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" class="form-input" id="featuredProductsSubtitle" value="Discover our products through video" placeholder="Enter section subtitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Section</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="featuredProductsEnabled" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="updateFeaturedProductsSettings()">
+                    <span>💾</span>
+                    <span>Save Settings</span>
+                </button>
+            </div>
+
+            <!-- Featured Products Management -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">📹</span>
+                    <h3 class="card-title">Featured Products Management</h3>
+                </div>
+                <div id="featuredProductsList">
+                    <!-- Dynamic featured products will be loaded here -->
+                </div>
+                <button class="btn btn-primary" onclick="addFeaturedProduct()">
+                    <span>➕</span>
+                    <span>Add New Product</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Tab -->
             <div id="products-tab" class="tab-content">
                 <div class="section-grid">
                     <div class="customization-card">
@@ -1333,6 +1445,17 @@
             
             // Add active class to clicked button
             event.target.classList.add('active');
+            
+            // Load specific data based on tab
+            if (tabName === 'glasses') {
+                loadGlassesData();
+            } else if (tabName === 'collections') {
+                loadCollectionItems();
+            } else if (tabName === 'featured-products') {
+                loadFeaturedProductsData();
+            // } else if (tabName === 'highlights') {
+            //     loadHighlightItems();
+            }
         }
 
         // Notification system
@@ -1396,7 +1519,7 @@
 
             // Load initial data
             setTimeout(loadCollectionItems, 1000);
-            setTimeout(loadHighlightItems, 1000);
+            // setTimeout(loadHighlightItems, 1000); // DISABLED
             
             // Show collections tab by default after loading
             setTimeout(() => {
@@ -1883,7 +2006,8 @@
             }
         }
 
-        // Highlights management functions
+        // Highlights management functions (DISABLED)
+        /*
         function loadHighlightItems() {
             console.log('🔄 Loading highlight items...');
             fetch('/api/customization/highlights')
@@ -2282,6 +2406,7 @@
                 showNotification('Error deleting story', 'error');
             });
         }
+        */
 
         // Collections management functions
         function loadCollectionItems() {
@@ -2493,6 +2618,475 @@
             .catch(error => {
                 console.error('Error deleting collection:', error);
                 showNotification('Error deleting collection', 'error');
+            });
+        }
+
+        // Glasses management functions
+        function loadGlassesData() {
+            console.log('🔄 Loading glasses data...');
+            fetch('/api/customization/glasses')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded glasses data:', data.data);
+                        populateGlassesForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading glasses data:', error);
+                });
+        }
+
+        function populateGlassesForm(glassesData) {
+            // Populate Eyeglasses form
+            if (glassesData.eyeglasses) {
+                document.getElementById('eyeglassesTitle').value = glassesData.eyeglasses.title || 'Eyeglasses';
+                document.getElementById('eyeglassesEnabled').checked = glassesData.eyeglasses.enabled !== false;
+                renderGlassesCategories('eyeglasses', glassesData.eyeglasses.categories || []);
+            }
+
+            // Populate Sunglasses form
+            if (glassesData.sunglasses) {
+                document.getElementById('sunglassesTitle').value = glassesData.sunglasses.title || 'Sunglasses';
+                document.getElementById('sunglassesEnabled').checked = glassesData.sunglasses.enabled !== false;
+                renderGlassesCategories('sunglasses', glassesData.sunglasses.categories || []);
+            }
+        }
+
+        function renderGlassesCategories(type, categories) {
+            const container = document.getElementById(`${type}CategoriesList`);
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'highlight-item';
+                categoryDiv.innerHTML = `
+                    <div class="highlight-preview">
+                        <img src="${category.imageUrl || '/placeholder-image.jpg'}" class="highlight-media" alt="${category.name}" style="border-radius: 8px;">
+                        <div class="highlight-info">
+                            <h4>${category.name}</h4>
+                            <p>Order: ${category.order}</p>
+                        </div>
+                    </div>
+                    <div class="highlight-controls">
+                        <button class="btn btn-primary" onclick="uploadGlassesCategoryImage('${type}', '${category.id}')">
+                            📁 Upload Image
+                        </button>
+                        <button class="btn btn-secondary" onclick="editGlassesCategory('${type}', '${category.id}')">
+                            ✏️ Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteGlassesCategory('${type}', '${category.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function addEyeglassesCategory() {
+            const name = prompt('Enter category name:');
+            if (!name) return;
+
+            fetch('/api/customization/glasses/eyeglasses/categories', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Eyeglasses category added successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Error adding category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding category:', error);
+                showNotification('Error adding category', 'error');
+            });
+        }
+
+        function addSunglassesCategory() {
+            const name = prompt('Enter category name:');
+            if (!name) return;
+
+            fetch('/api/customization/glasses/sunglasses/categories', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Sunglasses category added successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Error adding category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding category:', error);
+                showNotification('Error adding category', 'error');
+            });
+        }
+
+        function updateEyeglassesSection() {
+            const title = document.getElementById('eyeglassesTitle').value;
+            const enabled = document.getElementById('eyeglassesEnabled').checked;
+
+            fetch('/api/customization/glasses/eyeglasses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Eyeglasses settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function updateSunglassesSection() {
+            const title = document.getElementById('sunglassesTitle').value;
+            const enabled = document.getElementById('sunglassesEnabled').checked;
+
+            fetch('/api/customization/glasses/sunglasses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Sunglasses settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function editGlassesCategory(type, categoryId) {
+            const newName = prompt('Enter new category name:');
+            if (!newName) return;
+
+            fetch(`/api/customization/glasses/${type}/categories/${categoryId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Category updated successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Error updating category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating category:', error);
+                showNotification('Error updating category', 'error');
+            });
+        }
+
+        function uploadGlassesCategoryImage(type, categoryId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleGlassesImageUpload(file, type, categoryId);
+                }
+            };
+            input.click();
+        }
+
+        function handleGlassesImageUpload(file, type, categoryId) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            
+            if (!validTypes.includes(file.type)) {
+                showNotification('Invalid file type. Please select a valid image file.', 'error');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('File too large. Maximum size is 5MB.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch(`/api/customization/glasses/${type}/categories/${categoryId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Image uploaded successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Upload failed: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                showNotification('Upload failed', 'error');
+            });
+        }
+
+        function deleteGlassesCategory(type, categoryId) {
+            if (!confirm('Are you sure you want to delete this category?')) return;
+
+            fetch(`/api/customization/glasses/${type}/categories/${categoryId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Category deleted successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Error deleting category: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting category:', error);
+                showNotification('Error deleting category', 'error');
+            });
+        }
+
+        // Featured Products management functions
+        function loadFeaturedProductsData() {
+            console.log('🔄 Loading featured products data...');
+            fetch('/api/customization/featured-products')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded featured products data:', data.data);
+                        populateFeaturedProductsForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading featured products data:', error);
+                });
+        }
+
+        function populateFeaturedProductsForm(featuredData) {
+            // Populate form fields
+            document.getElementById('featuredProductsTitle').value = featuredData.title || 'Featured Products';
+            document.getElementById('featuredProductsSubtitle').value = featuredData.subtitle || 'Discover our products through video';
+            document.getElementById('featuredProductsEnabled').checked = featuredData.enabled !== false;
+            
+            // Render products
+            renderFeaturedProducts(featuredData.products || []);
+        }
+
+        function renderFeaturedProducts(products) {
+            const container = document.getElementById('featuredProductsList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'highlight-item';
+                productDiv.innerHTML = `
+                    <div class="highlight-preview">
+                        <video src="${product.videoUrl || '/placeholder-video.mp4'}" class="highlight-media" muted loop style="border-radius: 8px; width: 100px; height: 100px; object-fit: cover;">
+                        </video>
+                        <div class="highlight-info">
+                            <h4>${product.name}</h4>
+                            <p>Order: ${product.order}</p>
+                        </div>
+                    </div>
+                    <div class="highlight-controls">
+                        <button class="btn btn-primary" onclick="uploadFeaturedProductVideo('${product.id}')">
+                            📁 Upload Video
+                        </button>
+                        <button class="btn btn-secondary" onclick="editFeaturedProduct('${product.id}')">
+                            ✏️ Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteFeaturedProduct('${product.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(productDiv);
+            });
+        }
+
+        function addFeaturedProduct() {
+            const name = prompt('Enter product name:');
+            if (!name) return;
+
+            fetch('/api/customization/featured-products/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Featured product added successfully!', 'success');
+                    loadFeaturedProductsData();
+                } else {
+                    showNotification('Error adding product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product:', error);
+                showNotification('Error adding product', 'error');
+            });
+        }
+
+        function updateFeaturedProductsSettings() {
+            const title = document.getElementById('featuredProductsTitle').value;
+            const subtitle = document.getElementById('featuredProductsSubtitle').value;
+            const enabled = document.getElementById('featuredProductsEnabled').checked;
+
+            fetch('/api/customization/featured-products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, subtitle: subtitle, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Featured products settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function editFeaturedProduct(productId) {
+            const newName = prompt('Enter new product name:');
+            if (!newName) return;
+
+            fetch(`/api/customization/featured-products/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product updated successfully!', 'success');
+                    loadFeaturedProductsData();
+                } else {
+                    showNotification('Error updating product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating product:', error);
+                showNotification('Error updating product', 'error');
+            });
+        }
+
+        function uploadFeaturedProductVideo(productId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleFeaturedProductVideoUpload(file, productId);
+                }
+            };
+            input.click();
+        }
+
+        function handleFeaturedProductVideoUpload(file, productId) {
+            const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+            
+            if (!validTypes.includes(file.type)) {
+                showNotification('Invalid file type. Please select a valid video file.', 'error');
+                return;
+            }
+
+            if (file.size > 50 * 1024 * 1024) {
+                showNotification('File too large. Maximum size is 50MB.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            fetch(`/api/customization/featured-products/products/${productId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Video uploaded successfully!', 'success');
+                    loadFeaturedProductsData();
+                } else {
+                    showNotification('Upload failed: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                showNotification('Upload failed', 'error');
+            });
+        }
+
+        function deleteFeaturedProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            fetch(`/api/customization/featured-products/products/${productId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product deleted successfully!', 'success');
+                    loadFeaturedProductsData();
+                } else {
+                    showNotification('Error deleting product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting product:', error);
+                showNotification('Error deleting product', 'error');
             });
         }
     </script>
