@@ -1,0 +1,38 @@
+{
+  "header": {
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "logoUrl": "",
+    "title": "Eyejack"
+  },
+  "theme": {
+    "primaryColor": "#3b82f6",
+    "secondaryColor": "#8b5cf6",
+    "accentColor": "#10b981",
+    "backgroundColor": "#ffffff"
+  },
+  "highlights": {
+    "items": [
+      {
+        "id": "highlight_1755930069614",
+        "label": "New",
+        "imageUrl": "",
+        "videoUrl": "",
+        "mediaType": "image",
+        "order": 1
+      }
+    ]
+  },
+  "collections": {
+    "items": [
+      {
+        "id": "collection_1755932030225",
+        "title": "New",
+        "imageUrl": "/uploads/image-1755932035014-511956654.jpg",
+        "clickUrl": "",
+        "order": 3
+      }
+    ]
+  },
+  "lastUpdated": "2025-08-23T06:59:23.789Z"
+}

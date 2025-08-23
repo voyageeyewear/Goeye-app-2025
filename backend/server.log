@@ -1,27 +1,303 @@
-node:events:485
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::3003
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at Object.<anonymous> (/Users/dhruv/Desktop/Go--eye-app/Eyejack-mobile-app/backend/src/realtime-server.js:460:8)
-    at Module._compile (node:internal/modules/cjs/loader:1692:14)
-    at Object..js (node:internal/modules/cjs/loader:1824:10)
-    at Module.load (node:internal/modules/cjs/loader:1427:32)
-    at Module._load (node:internal/modules/cjs/load🔄 SIGTERM received, shutting down gracefully
-✅ Server closed
-nel:322:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -48,
-  syscall: 'listen',
-  address: '::',
-  port: 3003
+📂 Data loaded successfully
+🚀 Real-time Eyejack Backend Started Successfully!
+📍 Server running on: http://localhost:3002
+🌐 Backend endpoint: http://localhost:3002/backend
+🔌 WebSocket endpoint: ws://localhost:3002
+🏥 Health check: http://localhost:3002/health
+📊 Analytics API: http://localhost:3002/api/v1/analytics
+🛒 Products API: http://localhost:3002/api/v1/products
+📦 Orders API: http://localhost:3002/api/v1/orders
+🌍 Environment: development
+🎯 Real-time Features:
+   ✅ WebSocket connections
+   ✅ Live data synchronization
+   ✅ Event-driven updates
+   ✅ Multi-client broadcasting
+   ✅ Connection management
+   
+✅ MongoDB Connected: localhost
+🔗 Client connected: zsvH7N-2hrBSxN9LAAAB
+👤 Client authenticated: admin123 (admin)
+❌ Client disconnected: zsvH7N-2hrBSxN9LAAAB (transport close)
+🔗 Client connected: ENkU8oAjdYH4_AkDAAAD
+👤 Client authenticated: admin123 (admin)
+🔗 Client connected: I4u8u6g-B3miu2UxAAAF
+👤 Client authenticated: user123 (customer)
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
 }
-
-Node.js v24.4.1
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: I4u8u6g-B3miu2UxAAAF (transport close)
+🔗 Client connected: fRLeShTt738-QNUGAAAH
+👤 Client authenticated: user123 (customer)
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: fRLeShTt738-QNUGAAAH (transport close)
+🔗 Client connected: PUf1-F0AD55cl3OsAAAJ
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: ENkU8oAjdYH4_AkDAAAD (transport close)
+🔗 Client connected: H28H8IlYI1QWRXnsAAAL
+👤 Client authenticated: admin123 (admin)
+💾 Data saved successfully
+💾 Data saved successfully
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+🔗 Client connected: bbeXBpq6dH4PCB88AAAN
+👤 Client authenticated: admin123 (admin)
+🔄 Customization update received: {
+  section: 'announcement',
+  data: {
+    enabled: true,
+    text: '🎉 LIVE UPDATE TEST - Banner Changed!',
+    backgroundColor: '#ff6b35',
+    textColor: '#ffffff'
+  }
+}
+❌ Client disconnected: bbeXBpq6dH4PCB88AAAN (client namespace disconnect)
+❌ Client disconnected: PUf1-F0AD55cl3OsAAAJ (transport close)
+🔗 Client connected: 4quC4ZLMawlrswEnAAAP
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: H28H8IlYI1QWRXnsAAAL (transport close)
+🔗 Client connected: iwj4DbPImHcgievOAAAR
+👤 Client authenticated: admin123 (admin)
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+💾 Data saved successfully
+💾 Data saved successfully
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: 4quC4ZLMawlrswEnAAAP (transport close)
+🔗 Client connected: uGJA6BfOUSPESGrbAAAT
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: uGJA6BfOUSPESGrbAAAT (transport close)
+🔗 Client connected: 4-19QOVLY9K6MJ9VAAAV
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: 4-19QOVLY9K6MJ9VAAAV (transport close)
+🔗 Client connected: _cpebCvNY9IVUqHAAAAX
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: iwj4DbPImHcgievOAAAR (transport close)
+🔗 Client connected: sKQftShAE7F2vfmvAAAZ
+👤 Client authenticated: admin123 (admin)
+🔗 Client connected: ZYHVgYyhfrgiGtpSAAAb
+👤 Client authenticated: admin123 (admin)
+🔄 Customization update received: {
+  section: 'collections',
+  data: { items: [ [Object], [Object], [Object] ] }
+}
+💾 Data saved successfully
+❌ Client disconnected: ZYHVgYyhfrgiGtpSAAAb (client namespace disconnect)
+❌ Client disconnected: sKQftShAE7F2vfmvAAAZ (transport close)
+🔗 Client connected: 0mFpDlV38fwblwxQAAAd
+👤 Client authenticated: admin123 (admin)
+❌ Client disconnected: 0mFpDlV38fwblwxQAAAd (transport close)
+🔗 Client connected: dyNh9aOd5Z7rvS6OAAAf
+👤 Client authenticated: admin123 (admin)
+❌ Client disconnected: dyNh9aOd5Z7rvS6OAAAf (transport close)
+🔗 Client connected: vODMJBsUZukeKiZzAAAh
+👤 Client authenticated: admin123 (admin)
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: vODMJBsUZukeKiZzAAAh (transport close)
+🔗 Client connected: y73LZPwFMMUPA-vjAAAj
+👤 Client authenticated: admin123 (admin)
+❌ Client disconnected: _cpebCvNY9IVUqHAAAAX (transport close)
+🔗 Client connected: BqvCxDx2nuUdDo4EAAAl
+👤 Client authenticated: user123 (customer)
+💾 Data saved successfully
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: BqvCxDx2nuUdDo4EAAAl (transport close)
+🔗 Client connected: wwmnRKajodeZ6Um3AAAn
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: y73LZPwFMMUPA-vjAAAj (transport close)
+🔗 Client connected: j8OIBx1kOpn0zmE_AAAp
+👤 Client authenticated: admin123 (admin)
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: j8OIBx1kOpn0zmE_AAAp (transport close)
+🔗 Client connected: vnisJUkXj7VWobADAAAr
+👤 Client authenticated: admin123 (admin)
+❌ Client disconnected: wwmnRKajodeZ6Um3AAAn (transport close)
+🔗 Client connected: AmoMCwIWdoI8U4LkAAAt
+👤 Client authenticated: user123 (customer)
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'header',
+  data: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    title: 'Eyejack'
+  }
+}
+💾 Data saved successfully
+🔄 Customization update received: {
+  section: 'theme',
+  data: {
+    primaryColor: '#3b82f6',
+    secondaryColor: '#8b5cf6',
+    accentColor: '#10b981',
+    backgroundColor: '#ffffff'
+  }
+}
+💾 Data saved successfully
+❌ Client disconnected: AmoMCwIWdoI8U4LkAAAt (transport close)
+🔗 Client connected: C2rzvMDf3WOpkCTlAAAv
+👤 Client authenticated: user123 (customer)

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Collections Update</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Test Collections Update</h1>
+    <button onclick="updateCollections()">Update Collections</button>
+    <div id="status"></div>
+
+    <script>
+        const socket = io();
+        
+        socket.on('connect', () => {
+            console.log('Connected to server');
+            document.getElementById('status').innerHTML = 'Connected to server';
+            
+            // Authenticate as admin
+            socket.emit('authenticate', {
+                userId: 'admin123',
+                userType: 'admin'
+            });
+        });
+
+        socket.on('authenticated', (data) => {
+            console.log('Authenticated as:', data.userType);
+            document.getElementById('status').innerHTML = 'Authenticated as: ' + data.userType;
+        });
+
+        function updateCollections() {
+            console.log('Sending collections update...');
+            document.getElementById('status').innerHTML = 'Sending collections update...';
+            
+            socket.emit('customization:update', {
+                section: 'collections',
+                data: {
+                    items: [
+                        {
+                            id: 'collection_test_1',
+                            title: 'Test Collection 1',
+                            imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop&crop=center',
+                            clickUrl: 'https://example.com/test1',
+                            order: 1
+                        },
+                        {
+                            id: 'collection_test_2',
+                            title: 'Test Collection 2',
+                            imageUrl: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=600&h=400&fit=crop&crop=center',
+                            clickUrl: 'https://example.com/test2',
+                            order: 2
+                        }
+                    ]
+                }
+            });
+            
+            document.getElementById('status').innerHTML = 'Collections update sent!';
+        }
+    </script>
+</body>
+</html>

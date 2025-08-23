@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eyejack Mobile App - Complete</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Real-time Backend Integration -->
-    <script src="eyejack-realtime-client.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -1304,6 +1300,111 @@
             color: white;
         }
 
+        /* Multi-Story Progress Bar */
+        .story-progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 20px;
+            display: flex;
+            gap: 4px;
+            z-index: 15;
+            background: rgba(0,0,0,0.2);
+            min-height: 20px;
+        }
+
+        .story-progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 2px;
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 20px;
+        }
+
+        .story-progress-fill {
+            height: 100%;
+            background: #ffffff;
+            width: 0%;
+            transition: width 0.05s linear;
+            border-radius: 2px;
+            box-shadow: 0 0 4px rgba(255,255,255,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Active progress bar animation */
+        .story-progress-fill.active {
+            background: linear-gradient(90deg, #ffffff, #e0e0e0, #ffffff);
+            background-size: 200% 100%;
+            animation: progressGlow 1s ease-in-out infinite;
+        }
+
+        @keyframes progressGlow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Override old progress bar styles */
+        .story-progress {
+            display: none;
+        }
+
+        /* Story Navigation */
+        .story-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            z-index: 10;
+        }
+
+        .story-nav-left {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .story-nav-right {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        /* Story Counter */
+        .story-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            z-index: 20;
+        }
+
+
+
         .story-header {
             display: flex;
             align-items: center;
@@ -2542,6 +2643,8 @@
         </div>
     </div>
 
+
+
     <!-- Instagram Highlights -->
     <section class="highlights-section">
         <div class="highlights-container">
@@ -2606,9 +2709,17 @@
     <!-- Story Viewer Modal -->
     <div class="story-viewer" id="storyViewer">
         <div class="story-content" id="storyContent">
-            <div class="story-progress">
-                <div class="story-progress-bar" id="storyProgressBar"></div>
+            <!-- Multi-Story Progress Bar -->
+            <div class="story-progress-container" id="storyProgressContainer">
+                <!-- Progress bars will be dynamically generated -->
             </div>
+            
+            <!-- Story Counter -->
+            <div class="story-counter" id="storyCounter">1/3</div>
+            
+
+            
+            <!-- Story Header -->
             <div class="story-header">
                 <img src="" alt="Profile" class="story-profile-pic" id="storyProfilePic">
                 <div class="story-profile-info">
@@ -2617,6 +2728,8 @@
                 </div>
                 <button class="story-close" onclick="closeStory()">×</button>
             </div>
+            
+            <!-- Story Body -->
             <div class="story-body">
                 <div class="story-title" id="storyTitle">New Arrivals</div>
                 <div class="story-description" id="storyDescription">Discover our latest collection of premium eyewear</div>
@@ -2624,6 +2737,12 @@
                     <button class="view-product-btn" onclick="viewProduct()">View Product</button>
                     <button class="story-heart">♡</button>
                 </div>
+            </div>
+            
+            <!-- Story Navigation -->
+            <div class="story-nav">
+                <div class="story-nav-left" onclick="previousStory()"></div>
+                <div class="story-nav-right" onclick="nextStory()"></div>
             </div>
         </div>
     </div>
@@ -3641,53 +3760,175 @@
             const storyData = {
                 'New Arrivals': {
                     title: 'New Arrivals',
-                    description: 'Discover our latest collection of premium eyewear designed for modern lifestyle',
                     profileImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=200&fit=crop&crop=face',
-                    backgroundImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'New Arrivals',
+                            description: 'Discover our latest collection of premium eyewear designed for modern lifestyle',
+                            backgroundImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop New Arrivals'
+                        },
+                        {
+                            title: 'Spring Collection',
+                            description: 'Fresh styles for the new season with vibrant colors and modern designs',
+                            backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Explore Spring'
+                        },
+                        {
+                            title: 'Limited Edition',
+                            description: 'Exclusive frames available only for a limited time. Don\'t miss out!',
+                            backgroundImage: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Limited'
+                        }
+                    ]
                 },
                 'Trending': {
                     title: 'Trending Now',
-                    description: 'The most popular styles that everyone is talking about this season',
                     profileImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Trending Now',
+                            description: 'The most popular styles that everyone is talking about this season',
+                            backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Trending'
+                        },
+                        {
+                            title: 'Celebrity Favorites',
+                            description: 'See what the stars are wearing and get the same look',
+                            backgroundImage: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Get the Look'
+                        }
+                    ]
                 },
                 'Sale': {
                     title: 'Special Sale',
-                    description: 'Up to 50% off on selected premium frames. Limited time offer!',
                     profileImage: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Special Sale',
+                            description: 'Up to 50% off on selected premium frames. Limited time offer!',
+                            backgroundImage: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Sale'
+                        },
+                        {
+                            title: 'Flash Deals',
+                            description: '24-hour flash deals on premium eyewear. Act fast!',
+                            backgroundImage: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Flash Deals'
+                        },
+                        {
+                            title: 'Clearance',
+                            description: 'Final sale items with unbeatable prices. No returns.',
+                            backgroundImage: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Clearance'
+                        }
+                    ]
                 },
                 'Sunglasses': {
                     title: 'Sunglasses Collection',
-                    description: 'Protect your eyes in style with our premium sunglasses collection',
                     profileImage: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Sunglasses Collection',
+                            description: 'Protect your eyes in style with our premium sunglasses collection',
+                            backgroundImage: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Sunglasses'
+                        },
+                        {
+                            title: 'UV Protection',
+                            description: '100% UV protection with polarized lenses for crystal clear vision',
+                            backgroundImage: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Learn More'
+                        }
+                    ]
                 },
                 'Eyeglasses': {
                     title: 'Eyeglasses Collection',
-                    description: 'Clear vision meets perfect style in our prescription eyewear range',
                     profileImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Eyeglasses Collection',
+                            description: 'Clear vision meets perfect style in our prescription eyewear range',
+                            backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Eyeglasses'
+                        },
+                        {
+                            title: 'Prescription Guide',
+                            description: 'Learn how to find your perfect prescription and frame size',
+                            backgroundImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Get Guide'
+                        }
+                    ]
                 },
                 'Premium': {
                     title: 'Premium Collection',
-                    description: 'Luxury frames crafted with the finest materials and attention to detail',
                     profileImage: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Premium Collection',
+                            description: 'Luxury frames crafted with the finest materials and attention to detail',
+                            backgroundImage: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Premium'
+                        },
+                        {
+                            title: 'Handcrafted',
+                            description: 'Each frame is handcrafted by master artisans using premium materials',
+                            backgroundImage: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Learn Process'
+                        },
+                        {
+                            title: 'Exclusive Designs',
+                            description: 'Limited edition designs that set you apart from the crowd',
+                            backgroundImage: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Exclusive'
+                        }
+                    ]
                 },
                 'Vintage': {
                     title: 'Vintage Collection',
-                    description: 'Classic designs that never go out of style, reimagined for today',
                     profileImage: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Vintage Collection',
+                            description: 'Classic designs that never go out of style, reimagined for today',
+                            backgroundImage: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Vintage'
+                        },
+                        {
+                            title: 'Retro Revival',
+                            description: 'Bringing back the best styles from the 60s, 70s, and 80s',
+                            backgroundImage: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Retro Styles'
+                        }
+                    ]
                 },
                 'Sports': {
                     title: 'Sports Collection',
-                    description: 'High-performance eyewear designed for active lifestyles and sports',
                     profileImage: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center',
-                    backgroundImage: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&h=1200&fit=crop&crop=center'
+                    stories: [
+                        {
+                            title: 'Sports Collection',
+                            description: 'High-performance eyewear designed for active lifestyles and sports',
+                            backgroundImage: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Shop Sports'
+                        },
+                        {
+                            title: 'Performance Tech',
+                            description: 'Advanced technology for maximum comfort and performance',
+                            backgroundImage: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=800&h=1200&fit=crop&crop=center',
+                            actionText: 'Tech Specs'
+                        }
+                    ]
                 }
             };
+
+            // Multi-story variables
+            let currentStoryIndex = 0;
+            let currentStoryData = null;
+            let storyProgressInterval = null;
+            let isStoryPaused = false;
+            let storyStartTime = 0;
+            let storyDuration = 5000; // 5 seconds
 
             const highlightItems = document.querySelectorAll('.highlight-item');
             highlightItems.forEach(item => {
@@ -3709,57 +3950,245 @@
             // Story viewer functions
             function openStory(category) {
                 const story = storyData[category];
-                if (!story) return;
+                if (!story) {
+                    console.error('No story data found for category:', category);
+                    return;
+                }
+
+                console.log('Opening story for category:', category);
+                console.log('Story data:', story);
+
+                // Set current story data
+                currentStoryData = story;
+                currentStoryIndex = 0;
 
                 const storyViewer = document.getElementById('storyViewer');
                 const storyContent = document.getElementById('storyContent');
-                const storyTitle = document.getElementById('storyTitle');
-                const storyDescription = document.getElementById('storyDescription');
                 const storyProfilePic = document.getElementById('storyProfilePic');
-                const storyProgressBar = document.getElementById('storyProgressBar');
+                const storyProfileName = document.getElementById('storyProfileName');
 
-                // Update story content
-                storyTitle.textContent = story.title;
-                storyDescription.textContent = story.description;
+                if (!storyViewer || !storyContent || !storyProfilePic || !storyProfileName) {
+                    console.error('Required story elements not found');
+                    return;
+                }
+
+                // Update profile info
                 storyProfilePic.src = story.profileImage;
-                
-                // Set background image
-                storyContent.style.backgroundImage = `url(${story.backgroundImage})`;
+                storyProfileName.textContent = story.title;
+
+                // Generate progress bars
+                generateProgressBars(story.stories.length);
 
                 // Show story viewer
                 storyViewer.classList.add('active');
 
-                // Start progress bar animation
-                storyProgressBar.style.width = '0%';
-                setTimeout(() => {
-                    storyProgressBar.style.width = '100%';
-                }, 100);
+                // Load first story
+                loadStory(0);
+            }
 
-                // Auto close after 5 seconds
-                setTimeout(() => {
-                    closeStory();
-                }, 5000);
+            function generateProgressBars(storyCount) {
+                const container = document.getElementById('storyProgressContainer');
+                if (!container) {
+                    console.error('Progress container not found!');
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                console.log('Generating progress bars for', storyCount, 'stories');
+                
+                for (let i = 0; i < storyCount; i++) {
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'story-progress-bar';
+                    progressBar.innerHTML = '<div class="story-progress-fill" id="progress-' + i + '"></div>';
+                    container.appendChild(progressBar);
+                }
+                
+                console.log('Generated', container.children.length, 'progress bars');
+                
+                // Test if progress bars are visible
+                const testBar = container.querySelector('.story-progress-bar');
+                if (testBar) {
+                    console.log('Progress bar created successfully:', testBar);
+                    console.log('Progress bar styles:', window.getComputedStyle(testBar));
+                }
+            }
+
+            function loadStory(storyIndex) {
+                if (!currentStoryData || !currentStoryData.stories[storyIndex]) return;
+
+                const story = currentStoryData.stories[storyIndex];
+                const storyContent = document.getElementById('storyContent');
+                const storyTitle = document.getElementById('storyTitle');
+                const storyDescription = document.getElementById('storyDescription');
+                const storyCounter = document.getElementById('storyCounter');
+                const viewProductBtn = document.querySelector('.view-product-btn');
+
+                console.log('Loading story', storyIndex, ':', story.title);
+
+                // Update story content
+                storyTitle.textContent = story.title;
+                storyDescription.textContent = story.description;
+                viewProductBtn.textContent = story.actionText;
+                
+                // Set background image
+                storyContent.style.backgroundImage = `url(${story.backgroundImage})`;
+
+                // Update counter
+                storyCounter.textContent = `${storyIndex + 1}/${currentStoryData.stories.length}`;
+
+                // Reset all progress bars
+                const progressBars = document.querySelectorAll('.story-progress-fill');
+                console.log('Found', progressBars.length, 'progress bars');
+                
+                progressBars.forEach((bar, index) => {
+                    // Remove active class from all bars
+                    bar.classList.remove('active');
+                    
+                    if (index < storyIndex) {
+                        bar.style.width = '100%';
+                        console.log('Setting progress bar', index, 'to 100%');
+                    } else if (index === storyIndex) {
+                        bar.style.width = '0%';
+                        bar.classList.add('active'); // Add active class to current bar
+                        console.log('Starting animation for progress bar', index);
+                        startProgressAnimation(bar, storyIndex);
+                    } else {
+                        bar.style.width = '0%';
+                        console.log('Setting progress bar', index, 'to 0%');
+                    }
+                });
+            }
+
+            function startProgressAnimation(progressBar, storyIndex) {
+                // Clear any existing interval
+                if (storyProgressInterval) {
+                    clearInterval(storyProgressInterval);
+                }
+
+                storyStartTime = Date.now();
+                isStoryPaused = false;
+
+                console.log('Starting progress animation for story', storyIndex, '- Duration: 5 seconds');
+
+                // Use setInterval for precise 5-second timing
+                storyProgressInterval = setInterval(() => {
+                    if (isStoryPaused) return;
+
+                    const elapsed = Date.now() - storyStartTime;
+                    const progress = Math.min((elapsed / storyDuration) * 100, 100);
+                    
+                    // Update progress bar width smoothly from 0% to 100%
+                    progressBar.style.width = progress + '%';
+                    
+                    // Log progress every second
+                    if (Math.floor(elapsed / 1000) !== Math.floor((elapsed - 100) / 1000)) {
+                        console.log(`Story ${storyIndex + 1}: ${Math.floor(elapsed / 1000)}s / 5s (${progress.toFixed(1)}%)`);
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(storyProgressInterval);
+                        console.log(`Story ${storyIndex + 1} complete after exactly 5 seconds`);
+                        
+                        // Auto advance to next story
+                        if (storyIndex < currentStoryData.stories.length - 1) {
+                            setTimeout(() => {
+                                nextStory();
+                            }, 200);
+                        } else {
+                            // Close story when all stories are complete
+                            setTimeout(() => {
+                                closeStory();
+                            }, 500);
+                        }
+                    }
+                }, 50); // Update every 50ms for smooth animation
             }
 
             window.closeStory = function() {
                 const storyViewer = document.getElementById('storyViewer');
-                const storyProgressBar = document.getElementById('storyProgressBar');
+                
+                // Clear progress interval
+                if (storyProgressInterval) {
+                    clearInterval(storyProgressInterval);
+                }
+                
+                // Reset variables
+                currentStoryIndex = 0;
+                currentStoryData = null;
+                isStoryPaused = false;
                 
                 storyViewer.classList.remove('active');
-                storyProgressBar.style.width = '0%';
             };
 
-            // Close story when clicking outside
-            document.getElementById('storyViewer').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeStory();
+            // Pause story when user touches/holds
+            function pauseStory() {
+                isStoryPaused = true;
+                console.log('Story paused');
+            }
+
+            // Resume story when user releases
+            function resumeStory() {
+                if (isStoryPaused) {
+                    isStoryPaused = false;
+                    
+                    // Calculate how much time has already passed based on current progress
+                    const currentProgressBar = document.querySelector('.story-progress-fill.active');
+                    if (currentProgressBar) {
+                        const currentWidth = parseFloat(currentProgressBar.style.width) || 0;
+                        const elapsedTime = (currentWidth / 100) * storyDuration;
+                        storyStartTime = Date.now() - elapsedTime;
+                        console.log(`Story resumed at ${currentWidth.toFixed(1)}% (${elapsedTime.toFixed(0)}ms elapsed)`);
+                    }
                 }
-            });
+            }
+
+            window.nextStory = function() {
+                if (currentStoryData && currentStoryIndex < currentStoryData.stories.length - 1) {
+                    currentStoryIndex++;
+                    loadStory(currentStoryIndex);
+                }
+            };
+
+            window.previousStory = function() {
+                if (currentStoryData && currentStoryIndex > 0) {
+                    currentStoryIndex--;
+                    loadStory(currentStoryIndex);
+                }
+            };
+
+            // Story interaction events
+            const storyViewer = document.getElementById('storyViewer');
+            
+            if (storyViewer) {
+                // Close story when clicking outside
+                storyViewer.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeStory();
+                    }
+                });
+
+                // Pause on touch/mouse down
+                storyViewer.addEventListener('mousedown', pauseStory);
+                storyViewer.addEventListener('touchstart', pauseStory);
+
+                // Resume on touch/mouse up
+                storyViewer.addEventListener('mouseup', resumeStory);
+                storyViewer.addEventListener('touchend', resumeStory);
+
+                // Resume on mouse leave
+                storyViewer.addEventListener('mouseleave', resumeStory);
+            } else {
+                console.error('Story viewer element not found!');
+            }
+
+
 
             // View Product function
             window.viewProduct = function() {
                 const currentTitle = document.getElementById('storyTitle').textContent;
-                alert(`Viewing ${currentTitle} products...`);
+                const actionText = document.querySelector('.view-product-btn').textContent;
+                alert(`Action: ${actionText} for ${currentTitle}`);
                 closeStory();
             };
 
@@ -4014,978 +4443,475 @@
                 }
             `;
             document.head.appendChild(style);
+        });
+    </script>
 
-            // Helper functions for real-time UI updates
-            function showConnectionStatus(message, type) {
-                const statusDiv = document.createElement('div');
-                statusDiv.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 12px 16px;
-                    border-radius: 8px;
-                    color: white;
-                    font-weight: 500;
-                    z-index: 10000;
-                    font-size: 14px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                `;
-                statusDiv.textContent = message;
-                document.body.appendChild(statusDiv);
-                
-                setTimeout(() => {
-                    statusDiv.remove();
-                }, 3000);
-            }
+    <!-- Socket.IO for Real-time Backend Connection -->
+    <script src="http://localhost:3002/socket.io/socket.io.js"></script>
+    <script>
+        // Real-time Backend Connection
+        console.log('🔌 Connecting to backend...');
+        const socket = io('http://localhost:3002');
+        let isBackendConnected = false;
 
-            function showNotification(message, type) {
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 80px;
-                    right: 20px;
-                    padding: 12px 16px;
-                    border-radius: 8px;
-                    color: white;
-                    font-weight: 500;
-                    z-index: 10000;
-                    font-size: 14px;
-                    max-width: 300px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                    transform: translateX(100%);
-                    transition: transform 0.3s ease;
-                `;
-                notification.textContent = message;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.transform = 'translateX(0)';
-                }, 100);
-                
-                setTimeout(() => {
-                    notification.style.transform = 'translateX(100%)';
-                    setTimeout(() => notification.remove(), 300);
-                }, 4000);
-            }
+        // Connection event handlers
+        socket.on('connect', function() {
+            console.log('✅ Connected to backend successfully!');
+            isBackendConnected = true;
+            
+            // Authenticate as customer
+            socket.emit('authenticate', {
+                userId: 'user123',
+                userType: 'customer'
+            });
 
-            function updateProductsInUI(products) {
-                // Update product displays in the UI
-                console.log('Updating products in UI:', products);
-                // This would update the actual product cards in your UI
-                // For now, just log the update
-            }
+            // Show connection status
+            showConnectionStatus(true);
+        });
 
-            function updatePriceInUI(priceData) {
-                // Update specific product price in UI
-                console.log('Updating price in UI:', priceData);
-                // This would find and update the specific product price
-                // For now, just log the update
-            }
+        socket.on('disconnect', function() {
+            console.log('❌ Disconnected from backend');
+            isBackendConnected = false;
+            showConnectionStatus(false);
+        });
 
-            // Customization functions
-            function applyCustomizations(customizations) {
-                console.log('Applying full customizations:', customizations);
-                
-                // Apply app title
-                if (customizations.appTitle) {
-                    const titleElements = document.querySelectorAll('.logo-text, .app-title');
-                    titleElements.forEach(el => {
-                        if (el) el.textContent = customizations.appTitle;
-                    });
-                }
+        socket.on('authenticated', function(data) {
+            console.log('👤 Authenticated as:', data.userType);
+        });
 
-                // Apply header color
-                if (customizations.headerColor) {
-                    const header = document.querySelector('.header');
-                    if (header) {
-                        header.style.backgroundColor = customizations.headerColor;
-                    }
-                }
-
-                // Apply theme colors
-                if (customizations.backgroundColor) {
-                    document.body.style.backgroundColor = customizations.backgroundColor;
-                }
-
-                if (customizations.textColor) {
-                    document.body.style.color = customizations.textColor;
-                }
-
-                // Apply banner settings
-                const banner = document.querySelector('.announcement-bar');
-                if (banner) {
-                    if (customizations.showBanner === false) {
-                        banner.style.display = 'none';
-                    } else {
-                        banner.style.display = 'block';
-                        if (customizations.bannerText) {
-                            const bannerContent = banner.querySelector('.announcement-content');
-                            if (bannerContent) {
-                                bannerContent.textContent = customizations.bannerText;
-                            }
-                        }
-                        if (customizations.bannerColor) {
-                            banner.style.background = customizations.bannerColor;
-                        }
-                    }
-                }
-
-                // Apply product settings
-                const productCards = document.querySelectorAll('.product-card, .category-card');
-                productCards.forEach(card => {
-                    if (customizations.productRadius) {
-                        card.style.borderRadius = customizations.productRadius;
-                    }
-                });
-
-                // Show/hide prices
-                if (customizations.showPrices === false) {
-                    const prices = document.querySelectorAll('.price, .product-price');
-                    prices.forEach(price => price.style.display = 'none');
-                } else {
-                    const prices = document.querySelectorAll('.price, .product-price');
-                    prices.forEach(price => price.style.display = 'block');
-                }
-
-                // Show/hide ratings
-                if (customizations.showRatings === false) {
-                    const ratings = document.querySelectorAll('.rating, .product-rating');
-                    ratings.forEach(rating => rating.style.display = 'none');
-                } else {
-                    const ratings = document.querySelectorAll('.rating, .product-rating');
-                    ratings.forEach(rating => rating.style.display = 'block');
-                }
-
-                // Apply primary color to buttons and accents
-                if (customizations.primaryColor) {
-                    const buttons = document.querySelectorAll('.btn-primary, .shop-now-btn');
-                    buttons.forEach(btn => {
-                        btn.style.backgroundColor = customizations.primaryColor;
-                    });
-                }
-            }
-
-            function applyPreviewChange(previewData) {
-                console.log('Applying preview change:', previewData);
-                
-                switch (previewData.type) {
-                    case 'title':
-                        const titleElements = document.querySelectorAll('.logo-text, .app-title');
-                        titleElements.forEach(el => {
-                            if (el) el.textContent = previewData.value;
-                        });
-                        break;
-                        
-                    case 'bannerText':
-                        const bannerContent = document.querySelector('.announcement-content');
-                        if (bannerContent) {
-                            bannerContent.textContent = previewData.value;
-                        }
-                        break;
-                        
-                    case 'showBanner':
-                        const banner = document.querySelector('.announcement-bar');
-                        if (banner) {
-                            banner.style.display = previewData.value ? 'block' : 'none';
-                        }
-                        break;
-                }
-            }
-
-            // Comprehensive customization functions
-            function applyFullCustomization(customizations) {
-                console.log('Applying full customization:', customizations);
-                
-                if (customizations.header) applyHeaderCustomization(customizations.header);
-                if (customizations.theme) applyThemeCustomization(customizations.theme);
-                if (customizations.banner) applyBannerCustomization(customizations.banner);
-                if (customizations.navigation) applyNavigationCustomization(customizations.navigation);
-                if (customizations.products) applyProductCustomization(customizations.products);
-                if (customizations.buttons) applyButtonCustomization(customizations.buttons);
-                if (customizations.typography) applyTypographyCustomization(customizations.typography);
-                if (customizations.layout) applyLayoutCustomization(customizations.layout);
-                if (customizations.collections) applyCollectionsCustomization(customizations.collections);
-                if (customizations.highlights) applyHighlightsCustomization(customizations.highlights);
-                if (customizations.customCSS) applyCustomCSS(customizations.customCSS);
-            }
-
-            function applyCustomizationSection(section, data) {
-                console.log(`Applying ${section} customization:`, data);
-                
-                switch (section) {
-                    case 'header':
-                        applyHeaderCustomization(data);
-                        break;
-                    case 'theme':
-                        applyThemeCustomization(data);
-                        break;
-                    case 'banner':
-                        applyBannerCustomization(data);
-                        break;
-                    case 'navigation':
-                        applyNavigationCustomization(data);
-                        break;
-                    case 'products':
-                        applyProductCustomization(data);
-                        break;
-                    case 'buttons':
-                        applyButtonCustomization(data);
-                        break;
-                    case 'typography':
-                        applyTypographyCustomization(data);
-                        break;
-                    case 'layout':
-                        applyLayoutCustomization(data);
-                        break;
-                    case 'collections':
-                        applyCollectionsCustomization(data);
-                        break;
-                    case 'highlights':
-                        applyHighlightsCustomization(data);
-                        break;
-                    default:
-                        console.warn(`Unknown customization section: ${section}`);
-                }
-            }
-
-            function applyHeaderCustomization(headerData) {
-                const header = document.querySelector('.header');
-                if (header && headerData.backgroundColor) {
-                    header.style.backgroundColor = headerData.backgroundColor;
-                }
-                
-                if (headerData.textColor) {
-                    const headerElements = document.querySelectorAll('.header, .header *');
-                    headerElements.forEach(el => {
-                        el.style.color = headerData.textColor;
-                    });
-                }
-                
-                if (headerData.logoText) {
-                    const logoElements = document.querySelectorAll('.logo-text');
-                    logoElements.forEach(el => {
-                        if (el) el.textContent = headerData.logoText;
-                    });
-                }
-                
-                if (headerData.fontFamily) {
-                    const headerText = document.querySelectorAll('.header, .header *');
-                    headerText.forEach(el => {
-                        el.style.fontFamily = headerData.fontFamily;
-                    });
-                }
-                
-                if (headerData.fontSize) {
-                    const logoElements = document.querySelectorAll('.logo-text');
-                    logoElements.forEach(el => {
-                        el.style.fontSize = headerData.fontSize;
-                    });
-                }
-                
-                if (headerData.height) {
-                    if (header) header.style.height = headerData.height;
-                }
-            }
-
-            function applyThemeCustomization(themeData) {
-                if (themeData.backgroundColor) {
-                    document.body.style.backgroundColor = themeData.backgroundColor;
-                }
-                
-                if (themeData.textColor) {
-                    document.body.style.color = themeData.textColor;
-                }
-                
-                if (themeData.primaryColor) {
-                    const primaryElements = document.querySelectorAll('.btn-primary, .shop-now-btn, .nav-item.active');
-                    primaryElements.forEach(el => {
-                        el.style.backgroundColor = themeData.primaryColor;
-                    });
-                }
-                
-                if (themeData.secondaryColor) {
-                    const secondaryElements = document.querySelectorAll('.btn-secondary');
-                    secondaryElements.forEach(el => {
-                        el.style.backgroundColor = themeData.secondaryColor;
-                    });
-                }
-                
-                if (themeData.accentColor) {
-                    const accentElements = document.querySelectorAll('.accent-color');
-                    accentElements.forEach(el => {
-                        el.style.color = themeData.accentColor;
-                    });
-                }
-                
-                if (themeData.borderRadius) {
-                    const roundedElements = document.querySelectorAll('.category-card, .product-card, .btn');
-                    roundedElements.forEach(el => {
-                        el.style.borderRadius = themeData.borderRadius;
-                    });
-                }
-                
-                if (themeData.fontFamily) {
-                    document.body.style.fontFamily = themeData.fontFamily;
-                }
-                
-                if (themeData.darkMode) {
-                    document.body.classList.toggle('dark-mode', themeData.darkMode);
-                }
-            }
-
-            function applyBannerCustomization(bannerData) {
-                const banner = document.querySelector('.announcement-bar');
-                if (!banner) return;
-                
-                if (bannerData.show === false) {
-                    banner.style.display = 'none';
-                    return;
-                } else {
-                    banner.style.display = 'block';
-                }
-                
-                if (bannerData.backgroundColor) {
-                    banner.style.background = bannerData.backgroundColor;
-                }
-                
-                if (bannerData.textColor) {
-                    banner.style.color = bannerData.textColor;
-                }
-                
-                if (bannerData.text) {
-                    const bannerContent = banner.querySelector('.announcement-content');
-                    if (bannerContent) {
-                        bannerContent.textContent = bannerData.text;
-                    }
-                }
-                
-                if (bannerData.fontSize) {
-                    banner.style.fontSize = bannerData.fontSize;
-                }
-                
-                if (bannerData.fontWeight) {
-                    banner.style.fontWeight = bannerData.fontWeight;
-                }
-            }
-
-            function applyNavigationCustomization(navData) {
-                const navigation = document.querySelector('.bottom-nav');
-                if (!navigation) return;
-                
-                if (navData.backgroundColor) {
-                    navigation.style.backgroundColor = navData.backgroundColor;
-                }
-                
-                if (navData.textColor) {
-                    const navItems = navigation.querySelectorAll('.nav-item');
-                    navItems.forEach(item => {
-                        item.style.color = navData.textColor;
-                    });
-                }
-                
-                if (navData.activeColor) {
-                    const activeItems = navigation.querySelectorAll('.nav-item.active');
-                    activeItems.forEach(item => {
-                        item.style.color = navData.activeColor;
-                    });
-                }
-                
-                if (navData.borderColor) {
-                    navigation.style.borderTopColor = navData.borderColor;
-                }
-                
-                if (navData.fontSize) {
-                    const navItems = navigation.querySelectorAll('.nav-item');
-                    navItems.forEach(item => {
-                        item.style.fontSize = navData.fontSize;
-                    });
-                }
-            }
-
-            function applyProductCustomization(productData) {
-                if (productData.showPrices === false) {
-                    const prices = document.querySelectorAll('.price, .product-price');
-                    prices.forEach(price => price.style.display = 'none');
-                } else {
-                    const prices = document.querySelectorAll('.price, .product-price');
-                    prices.forEach(price => price.style.display = 'block');
-                }
-                
-                if (productData.showRatings === false) {
-                    const ratings = document.querySelectorAll('.rating, .product-rating');
-                    ratings.forEach(rating => rating.style.display = 'none');
-                } else {
-                    const ratings = document.querySelectorAll('.rating, .product-rating');
-                    ratings.forEach(rating => rating.style.display = 'block');
-                }
-                
-                if (productData.showDiscounts === false) {
-                    const discounts = document.querySelectorAll('.discount, .sale-badge');
-                    discounts.forEach(discount => discount.style.display = 'none');
-                } else {
-                    const discounts = document.querySelectorAll('.discount, .sale-badge');
-                    discounts.forEach(discount => discount.style.display = 'block');
-                }
-                
-                if (productData.cardBorderRadius) {
-                    const productCards = document.querySelectorAll('.product-card, .category-card');
-                    productCards.forEach(card => {
-                        card.style.borderRadius = productData.cardBorderRadius;
-                    });
-                }
-                
-                if (productData.cardShadow) {
-                    const productCards = document.querySelectorAll('.product-card, .category-card');
-                    productCards.forEach(card => {
-                        card.style.boxShadow = productData.cardShadow;
-                    });
-                }
-                
-                if (productData.titleFontSize) {
-                    const titles = document.querySelectorAll('.product-title, .category-title');
-                    titles.forEach(title => {
-                        title.style.fontSize = productData.titleFontSize;
-                    });
-                }
-                
-                if (productData.priceFontSize) {
-                    const prices = document.querySelectorAll('.price, .product-price');
-                    prices.forEach(price => {
-                        price.style.fontSize = productData.priceFontSize;
-                    });
-                }
-            }
-
-            function applyButtonCustomization(buttonData) {
-                if (buttonData.primaryBackground) {
-                    const primaryBtns = document.querySelectorAll('.btn-primary, .shop-now-btn');
-                    primaryBtns.forEach(btn => {
-                        btn.style.backgroundColor = buttonData.primaryBackground;
-                    });
-                }
-                
-                if (buttonData.primaryText) {
-                    const primaryBtns = document.querySelectorAll('.btn-primary, .shop-now-btn');
-                    primaryBtns.forEach(btn => {
-                        btn.style.color = buttonData.primaryText;
-                    });
-                }
-                
-                if (buttonData.secondaryBackground) {
-                    const secondaryBtns = document.querySelectorAll('.btn-secondary');
-                    secondaryBtns.forEach(btn => {
-                        btn.style.backgroundColor = buttonData.secondaryBackground;
-                    });
-                }
-                
-                if (buttonData.secondaryText) {
-                    const secondaryBtns = document.querySelectorAll('.btn-secondary');
-                    secondaryBtns.forEach(btn => {
-                        btn.style.color = buttonData.secondaryText;
-                    });
-                }
-                
-                if (buttonData.borderRadius) {
-                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
-                    allBtns.forEach(btn => {
-                        btn.style.borderRadius = buttonData.borderRadius;
-                    });
-                }
-                
-                if (buttonData.fontSize) {
-                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
-                    allBtns.forEach(btn => {
-                        btn.style.fontSize = buttonData.fontSize;
-                    });
-                }
-                
-                if (buttonData.fontWeight) {
-                    const allBtns = document.querySelectorAll('.btn, .shop-now-btn, button');
-                    allBtns.forEach(btn => {
-                        btn.style.fontWeight = buttonData.fontWeight;
-                    });
-                }
-            }
-
-            function applyTypographyCustomization(typographyData) {
-                if (typographyData.headingFont) {
-                    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-                    headings.forEach(heading => {
-                        heading.style.fontFamily = typographyData.headingFont;
-                    });
-                }
-                
-                if (typographyData.bodyFont) {
-                    document.body.style.fontFamily = typographyData.bodyFont;
-                }
-                
-                if (typographyData.h1Size) {
-                    const h1s = document.querySelectorAll('h1');
-                    h1s.forEach(h1 => h1.style.fontSize = typographyData.h1Size);
-                }
-                
-                if (typographyData.h2Size) {
-                    const h2s = document.querySelectorAll('h2');
-                    h2s.forEach(h2 => h2.style.fontSize = typographyData.h2Size);
-                }
-                
-                if (typographyData.h3Size) {
-                    const h3s = document.querySelectorAll('h3');
-                    h3s.forEach(h3 => h3.style.fontSize = typographyData.h3Size);
-                }
-                
-                if (typographyData.bodySize) {
-                    const bodyElements = document.querySelectorAll('p, span, div');
-                    bodyElements.forEach(el => {
-                        if (!el.style.fontSize) {
-                            el.style.fontSize = typographyData.bodySize;
-                        }
-                    });
-                }
-            }
-
-            function applyLayoutCustomization(layoutData) {
-                if (layoutData.containerMaxWidth) {
-                    const containers = document.querySelectorAll('.container, .main-content');
-                    containers.forEach(container => {
-                        container.style.maxWidth = layoutData.containerMaxWidth;
-                    });
-                }
-                
-                if (layoutData.sectionPadding) {
-                    const sections = document.querySelectorAll('section, .section');
-                    sections.forEach(section => {
-                        section.style.padding = layoutData.sectionPadding;
-                    });
-                }
-                
-                if (layoutData.gridGap) {
-                    const grids = document.querySelectorAll('.grid, .product-grid, .category-grid');
-                    grids.forEach(grid => {
-                        grid.style.gap = layoutData.gridGap;
-                    });
-                }
-                
-                if (layoutData.borderRadius) {
-                    const elements = document.querySelectorAll('.card, .product-card, .category-card');
-                    elements.forEach(el => {
-                        el.style.borderRadius = layoutData.borderRadius;
-                    });
-                }
-            }
-
-            function applyCollectionsCustomization(collectionsData) {
-                if (!collectionsData) {
-                    console.log('❌ No collections data provided');
-                    return;
-                }
-                
-                console.log('🎨 Applying collections customization:', collectionsData);
-                console.log('🔍 Looking for collections section...');
-                
-                // Find collections section
-                const collectionsSection = document.querySelector('.collections-section');
-                if (!collectionsSection) {
-                    console.log('❌ Collections section not found!');
-                    return;
-                }
-                console.log('✅ Found collections section:', collectionsSection);
-                
-                // Show/hide section
-                if (collectionsData.hasOwnProperty('show')) {
-                    collectionsSection.style.display = collectionsData.show ? 'block' : 'none';
-                }
-                
-                // Apply section background
-                if (collectionsData.backgroundColor) {
-                    collectionsSection.style.backgroundColor = collectionsData.backgroundColor;
-                }
-                
-                // Apply section padding
-                if (collectionsData.padding) {
-                    collectionsSection.style.padding = collectionsData.padding;
-                }
-                
-                // Update section title
-                const titleElement = collectionsSection.querySelector('h2, .section-title');
-                if (titleElement && collectionsData.title) {
-                    titleElement.textContent = collectionsData.title;
-                    
-                    if (collectionsData.titleColor) {
-                        titleElement.style.color = collectionsData.titleColor;
-                    }
-                    if (collectionsData.titleSize) {
-                        titleElement.style.fontSize = collectionsData.titleSize;
-                    }
-                    if (collectionsData.titleFont) {
-                        titleElement.style.fontFamily = collectionsData.titleFont;
-                    }
-                }
-                
-                // Apply grid layout
-                const collectionsGrid = collectionsSection.querySelector('.collections-grid');
-                if (collectionsGrid) {
-                    if (collectionsData.itemsPerRow) {
-                        collectionsGrid.style.gridTemplateColumns = `repeat(${collectionsData.itemsPerRow}, 1fr)`;
-                    }
-                    if (collectionsData.spacing) {
-                        collectionsGrid.style.gap = collectionsData.spacing;
-                    }
-                }
-                
-                // Update collection items
-                if (collectionsData.items && Array.isArray(collectionsData.items)) {
-                    updateCollectionItems(collectionsData.items, collectionsData);
-                }
-                
-                // Apply card styling to all collection cards
-                const collectionCards = collectionsSection.querySelectorAll('.collection-card');
-                collectionCards.forEach(card => {
-                    if (collectionsData.cardBackgroundColor) {
-                        card.style.backgroundColor = collectionsData.cardBackgroundColor;
-                    }
-                    if (collectionsData.cardBorderRadius) {
-                        card.style.borderRadius = collectionsData.cardBorderRadius;
-                    }
-                    if (collectionsData.cardShadow) {
-                        card.style.boxShadow = collectionsData.cardShadow;
-                    }
-                    
-                    // Apply text styling
-                    const cardText = card.querySelector('.collection-title, h3, p');
-                    if (cardText) {
-                        if (collectionsData.textColor) {
-                            cardText.style.color = collectionsData.textColor;
-                        }
-                        if (collectionsData.textSize) {
-                            cardText.style.fontSize = collectionsData.textSize;
-                        }
-                        if (collectionsData.textFont) {
-                            cardText.style.fontFamily = collectionsData.textFont;
-                        }
-                    }
-                    
-                    // Handle image visibility
-                    const cardImage = card.querySelector('img, .collection-image');
-                    if (cardImage) {
-                        cardImage.style.display = collectionsData.showImages ? 'block' : 'none';
-                        
-                        if (collectionsData.imageAspectRatio) {
-                            const [width, height] = collectionsData.imageAspectRatio.split(':');
-                            cardImage.style.aspectRatio = `${width}/${height}`;
-                        }
-                    }
-                });
-            }
-
-            function updateCollectionItems(items, collectionsData) {
-                console.log('🔄 Updating collection items:', items);
-                const collectionsGrid = document.querySelector('.collections-grid');
-                if (!collectionsGrid) {
-                    console.log('❌ Collections grid not found!');
-                    return;
-                }
-                console.log('✅ Found collections grid:', collectionsGrid);
-                
-                // Clear existing items
-                collectionsGrid.innerHTML = '';
-                
-                // Add new items
-                items.forEach(item => {
-                    if (!item.show) return; // Skip hidden items
-                    
-                    const cardElement = document.createElement('div');
-                    cardElement.className = 'collection-card';
-                    cardElement.style.backgroundColor = item.backgroundColor || collectionsData.cardBackgroundColor || '#f8fafc';
-                    cardElement.style.borderRadius = collectionsData.cardBorderRadius || '12px';
-                    cardElement.style.boxShadow = collectionsData.cardShadow || '0 4px 6px rgba(0,0,0,0.1)';
-                    cardElement.style.overflow = 'hidden';
-                    cardElement.style.cursor = 'pointer';
-                    cardElement.style.transition = 'transform 0.2s ease';
-                    
-                    let cardHTML = '';
-                    
-                    // Add image if enabled and image exists (not placeholder)
-                    if (collectionsData.showImages && item.image && item.image !== '/api/placeholder/300/200' && item.image.trim() !== '') {
-                        const [width, height] = (collectionsData.imageAspectRatio || '16:9').split(':');
-                        cardHTML += `
-                            <div class="collection-image" style="
-                                width: 100%;
-                                aspect-ratio: ${width}/${height};
-                                background-image: url('${item.image}');
-                                background-size: cover;
-                                background-position: center;
-                            "></div>
-                        `;
-                    }
-                    
-                    // Add title
-                    cardHTML += `
-                        <div class="collection-content" style="padding: 16px;">
-                            <h3 class="collection-title" style="
-                                margin: 0;
-                                color: ${item.textColor || collectionsData.textColor || '#1f2937'};
-                                font-size: ${collectionsData.textSize || '16px'};
-                                font-family: ${collectionsData.textFont || 'Inter, sans-serif'};
-                                font-weight: 600;
-                            ">${item.title}</h3>
-                        </div>
-                    `;
-                    
-                    cardElement.innerHTML = cardHTML;
-                    
-                    // Add hover effect
-                    cardElement.addEventListener('mouseenter', () => {
-                        cardElement.style.transform = 'translateY(-4px)';
-                    });
-                    cardElement.addEventListener('mouseleave', () => {
-                        cardElement.style.transform = 'translateY(0)';
-                    });
-                    
-                    collectionsGrid.appendChild(cardElement);
-                });
-            }
-
-            function applyHighlightsCustomization(highlightsData) {
-                if (!highlightsData) {
-                    console.log('❌ No highlights data provided');
-                    return;
-                }
-                
-                console.log('🎨 Applying highlights customization:', highlightsData);
-                
-                // Find highlights section
-                const highlightsSection = document.querySelector('.highlights-section');
-                if (!highlightsSection) {
-                    console.log('❌ Highlights section not found!');
-                    return;
-                }
-                console.log('✅ Found highlights section:', highlightsSection);
-                
-                // Show/hide section
-                if (highlightsData.hasOwnProperty('show')) {
-                    highlightsSection.style.display = highlightsData.show ? 'block' : 'none';
-                }
-                
-                // Apply section styling
-                if (highlightsData.backgroundColor) {
-                    highlightsSection.style.backgroundColor = highlightsData.backgroundColor;
-                }
-                
-                if (highlightsData.borderColor) {
-                    highlightsSection.style.borderBottomColor = highlightsData.borderColor;
-                }
-                
-                if (highlightsData.padding) {
-                    highlightsSection.style.padding = highlightsData.padding;
-                }
-                
-                // Update highlights items
-                if (highlightsData.items && Array.isArray(highlightsData.items)) {
-                    updateHighlightItems(highlightsData.items, highlightsData);
-                }
-            }
-
-            function updateHighlightItems(items, highlightsData) {
-                console.log('🔄 Updating highlight items:', items);
-                
-                const container = document.querySelector('.highlights-container');
-                if (!container) {
-                    console.log('❌ Highlights container not found!');
-                    return;
-                }
-                
-                // Clear existing highlights
-                container.innerHTML = '';
-                
-                // Sort items by order
-                const sortedItems = items.sort((a, b) => (a.order || 0) - (b.order || 0));
-                
-                // Create highlight items
-                sortedItems.forEach(item => {
-                    if (item.imageUrl && item.imageUrl !== '' && item.label) {
-                        const highlightDiv = document.createElement('div');
-                        highlightDiv.className = 'highlight-item';
-                        highlightDiv.style.cursor = 'pointer';
-                        
-                        const circleSize = highlightsData.circleSize || '75px';
-                        const labelColor = highlightsData.labelColor || '#374151';
-                        const labelSize = highlightsData.labelSize || '12px';
-                        const labelFont = highlightsData.labelFont || 'Inter, sans-serif';
-                        
-                        // Create gradient from colors array
-                        let gradientColors = '#f09433, #e6683c, #dc2743, #cc2366, #bc1888';
-                        if (highlightsData.gradientColors && Array.isArray(highlightsData.gradientColors)) {
-                            gradientColors = highlightsData.gradientColors.join(', ');
-                        }
-                        
-                        highlightDiv.innerHTML = `
-                            <div class="highlight-circle" style="width: ${circleSize}; height: ${circleSize}; background: linear-gradient(45deg, ${gradientColors});">
-                                <img src="${item.imageUrl}" alt="${item.label}" class="highlight-image" 
-                                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                            </div>
-                            <span class="highlight-label" style="color: ${labelColor}; font-size: ${labelSize}; font-family: ${labelFont};">${item.label}</span>
-                        `;
-                        
-                        // Add click handler for story viewer
-                        highlightDiv.addEventListener('click', function() {
-                            const label = item.label;
-                            
-                            // Add click animation
-                            const circle = this.querySelector('.highlight-circle');
-                            circle.style.transform = 'scale(0.95)';
-                            setTimeout(() => {
-                                circle.style.transform = 'scale(1)';
-                            }, 150);
-                            
-                            // Open story viewer (if exists)
-                            if (typeof openStoryViewer === 'function') {
-                                openStoryViewer(label);
-                            } else {
-                                console.log(`Opening story for: ${label}`);
-                            }
-                        });
-                        
-                        container.appendChild(highlightDiv);
-                    }
-                });
-                
-                console.log(`✅ Created ${sortedItems.length} highlight items`);
-            }
-
-            function applyCustomCSS(cssText) {
-                // Remove existing custom CSS
-                const existingStyle = document.getElementById('custom-css-style');
-                if (existingStyle) {
-                    existingStyle.remove();
-                }
-                
-                // Add new custom CSS
-                if (cssText && cssText.trim()) {
-                    const style = document.createElement('style');
-                    style.id = 'custom-css-style';
-                    style.textContent = cssText;
-                    document.head.appendChild(style);
-                }
-            }
-
-            // Load current customizations from backend
-            async function loadCurrentCustomizations() {
-                try {
-                    console.log('🔄 Loading current customizations...');
-                    const response = await fetch('http://localhost:3001/api/v1/customization');
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        console.log('✅ Loaded customizations:', data.data);
-                        console.log('🎨 Collections data:', data.data.collections);
-                        applyFullCustomization(data.data);
-                        showNotification('Customizations loaded!', 'info');
-                    } else {
-                        console.error('❌ Failed to load customizations:', data);
-                    }
-                } catch (error) {
-                    console.error('❌ Error loading customizations:', error);
-                }
-            }
-
-            // Real-time Backend Integration
-            if (window.EyejackRealtime) {
-                console.log('🔗 Initializing real-time connection...');
-                
-                // Subscribe to product updates and customization events
-                window.EyejackRealtime.subscribe(['products', 'orders', 'analytics', 'customization']);
-                
-                // Handle connection events
-                window.EyejackRealtime.on('connected', () => {
-                    console.log('✅ Real-time connection established!');
-                    // Show connection status in UI
-                    showConnectionStatus('Connected to live backend', 'success');
-                    
-                    // Load current customizations when connected
-                    loadCurrentCustomizations();
-                });
-
-                window.EyejackRealtime.on('disconnected', () => {
-                    console.log('❌ Real-time connection lost');
-                    showConnectionStatus('Connection lost', 'error');
-                });
-
-                // Handle product updates
-                window.EyejackRealtime.on('products:updated', (data) => {
-                    console.log('📦 Products updated:', data);
-                    updateProductsInUI(data);
-                });
-
-                window.EyejackRealtime.on('product:added', (product) => {
-                    console.log('🆕 New product added:', product);
-                    showNotification(`New product: ${product.name}`, 'info');
-                });
-
-                window.EyejackRealtime.on('price:changed', (data) => {
-                    console.log('💰 Price changed:', data);
-                    updatePriceInUI(data);
-                    showNotification(`Price updated for ${data.name}`, 'info');
-                });
-
-                // Handle order events
-                window.EyejackRealtime.on('order:added', (order) => {
-                    console.log('🛒 New order:', order);
-                    showNotification(`Order #${order.id} placed!`, 'success');
-                });
-
-                // Handle app customization from dashboard
-                window.EyejackRealtime.on('app:customize', (customizations) => {
-                    console.log('🎨 Applying customizations:', customizations);
-                    applyCustomizations(customizations);
-                    showNotification('App customized from dashboard!', 'info');
-                });
-
-                // Handle real-time preview changes
-                window.EyejackRealtime.on('app:preview', (previewData) => {
-                    console.log('👀 Preview change:', previewData);
-                    applyPreviewChange(previewData);
-                });
-
-                // Handle comprehensive customization updates
-                window.EyejackRealtime.on('customization:updated', (data) => {
-                    console.log('🎨 Section customization updated:', data);
-                    console.log('🎨 Applying section:', data.section, 'with data:', data.data);
-                    applyCustomizationSection(data.section, data.data);
-                    showNotification(`${data.section} updated!`, 'info');
-                });
-
-                window.EyejackRealtime.on('customization:bulk-updated', (data) => {
-                    console.log('🎨 Bulk customization update:', data);
-                    applyFullCustomization(data.data);
-                    showNotification('App fully customized!', 'success');
-                });
-
-                window.EyejackRealtime.on('customization:reset', (data) => {
-                    console.log('🔄 Customizations reset:', data);
-                    applyFullCustomization(data.data);
-                    showNotification('App reset to defaults!', 'info');
-                });
-
-                window.EyejackRealtime.on('customization:imported', (data) => {
-                    console.log('📥 Customizations imported:', data);
-                    applyFullCustomization(data.data);
-                    showNotification('New customizations imported!', 'success');
-                });
-
-                // Authenticate user (mock user for demo)
-                setTimeout(() => {
-                    window.EyejackRealtime.authenticate('user123', 'customer');
-                }, 1000);
-
-                // Request initial data
-                setTimeout(() => {
-                    window.EyejackRealtime.getProducts();
-                }, 2000);
+        // Listen for real-time customization updates
+        socket.on('customization:updated', function(data) {
+            console.log('🔄 Received customization update:', data);
+            console.log('📊 Update section:', data.section);
+            console.log('📊 Update data:', data.data);
+            
+            switch(data.section) {
+                case 'header':
+                    updateHeaderStyles(data.data);
+                    break;
+                case 'logo':
+                    updateLogoSettings(data.data);
+                    break;
+                case 'navigation':
+                    updateNavigationSettings(data.data);
+                    break;
+                case 'theme':
+                    updateThemeColors(data.data);
+                    break;
+                case 'darkMode':
+                    updateDarkModeSettings(data.data);
+                    break;
+                case 'typography':
+                    updateTypographySettings(data.data);
+                    break;
+                case 'announcement':
+                    updateAnnouncementBar(data.data);
+                    break;
+                case 'slider':
+                    updateSliderSettings(data.data);
+                    break;
+                case 'highlights':
+                    updateHighlightItems(data.data.items || []);
+                    break;
+                case 'collections':
+                    updateCollectionItems(data.data.items || []);
+                    break;
+                case 'productDisplay':
+                    updateProductDisplay(data.data);
+                    break;
+                case 'categories':
+                    updateCategoriesSettings(data.data);
+                    break;
+                case 'buttonStyles':
+                    updateButtonStyles(data.data);
+                    break;
+                case 'bottomNav':
+                    updateBottomNavigation(data.data);
+                    break;
+                case 'performance':
+                    updatePerformanceSettings(data.data);
+                    break;
+                default:
+                    console.log('Unknown customization section:', data.section);
             }
         });
+
+        // Show connection status indicator
+        function showConnectionStatus(connected) {
+            // Remove existing status indicator
+            const existingStatus = document.querySelector('.connection-status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+
+            // Create new status indicator
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'connection-status';
+            statusDiv.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.3s ease;
+                ${connected ? 
+                    'background: #10b981; color: white;' : 
+                    'background: #ef4444; color: white;'
+                }
+            `;
+
+            const dot = document.createElement('div');
+            dot.style.cssText = `
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: white;
+                ${connected ? 'animation: pulse 2s infinite;' : ''}
+            `;
+
+            statusDiv.appendChild(dot);
+            statusDiv.appendChild(document.createTextNode(connected ? 'Live' : 'Offline'));
+            document.body.appendChild(statusDiv);
+
+            // Auto-hide after 3 seconds if connected
+            if (connected) {
+                setTimeout(() => {
+                    if (statusDiv.parentNode) {
+                        statusDiv.style.opacity = '0.7';
+                        statusDiv.style.transform = 'scale(0.9)';
+                    }
+                }, 3000);
+            }
+        }
+
+        // Real-time update functions
+        function updateHighlightItems(items) {
+            console.log('🔄 Updating highlight items:', items);
+            console.log('📊 Number of highlight items:', items.length);
+            console.log('📊 Highlight items data:', JSON.stringify(items, null, 2));
+            
+            // Find the highlights container
+            const highlightsContainer = document.querySelector('.highlights-container');
+            if (!highlightsContainer) {
+                console.log('❌ Highlights container not found');
+                return;
+            }
+            
+            // Clear existing highlight items
+            const existingItems = highlightsContainer.querySelectorAll('.highlight-item');
+            existingItems.forEach(item => item.remove());
+            
+            // Add new items
+            items.forEach((item, index) => {
+                const highlightItem = document.createElement('div');
+                highlightItem.className = 'highlight-item';
+                
+                const highlightCircle = document.createElement('div');
+                highlightCircle.className = 'highlight-circle';
+                
+                const img = document.createElement('img');
+                // Fix image URL to use correct port
+                let imageUrl = item.imageUrl || item.videoUrl || 'https://via.placeholder.com/200x200?text=Highlight';
+                if (imageUrl.startsWith('/uploads/')) {
+                    imageUrl = 'http://localhost:3002' + imageUrl;
+                }
+                img.src = imageUrl;
+                img.alt = item.label || 'Highlight';
+                img.className = 'highlight-image';
+                
+                const label = document.createElement('span');
+                label.className = 'highlight-label';
+                label.textContent = item.label || 'Highlight';
+                
+                highlightCircle.appendChild(img);
+                highlightItem.appendChild(highlightCircle);
+                highlightItem.appendChild(label);
+                
+                // Add click handler if needed
+                if (item.stories && item.stories.length > 0) {
+                    highlightItem.style.cursor = 'pointer';
+                    highlightItem.addEventListener('click', () => {
+                        openStory(item.label, item.stories);
+                    });
+                }
+                
+                highlightsContainer.appendChild(highlightItem);
+            });
+            
+            console.log('✅ Highlight items updated successfully');
+        }
+
+        function updateCollectionItems(items) {
+            console.log('🔄 Updating collection items:', items);
+            console.log('📊 Number of items:', items.length);
+            console.log('📊 Items data:', JSON.stringify(items, null, 2));
+            
+            // Find the collections container (specifically the collections-grid)
+            const collectionsContainer = document.querySelector('.collections-grid');
+            if (!collectionsContainer) {
+                console.log('❌ Collections grid container not found');
+                return;
+            }
+            
+            // Clear existing collection cards
+            const existingItems = collectionsContainer.querySelectorAll('.collection-card');
+            existingItems.forEach(item => item.remove());
+            
+            // Add new items
+            items.forEach((item, index) => {
+                const collectionItem = document.createElement('div');
+                collectionItem.className = 'collection-card';
+                
+                const img = document.createElement('img');
+                // Fix image URL to use correct port
+                let imageUrl = item.imageUrl || 'https://via.placeholder.com/600x400?text=Collection';
+                if (imageUrl.startsWith('/uploads/')) {
+                    imageUrl = 'http://localhost:3002' + imageUrl;
+                }
+                img.src = imageUrl;
+                img.alt = item.title || 'Collection';
+                img.className = 'collection-image';
+                
+                // Add click handler if URL is provided
+                if (item.clickUrl) {
+                    collectionItem.style.cursor = 'pointer';
+                    collectionItem.addEventListener('click', () => {
+                        window.open(item.clickUrl, '_blank');
+                    });
+                }
+                
+                collectionItem.appendChild(img);
+                collectionsContainer.appendChild(collectionItem);
+            });
+            
+            console.log('✅ Collection items updated successfully');
+        }
+
+        function updateHeaderStyles(data) {
+            const header = document.querySelector('.header');
+            if (header && data) {
+                if (data.backgroundColor) {
+                    header.style.backgroundColor = data.backgroundColor;
+                }
+                if (data.textColor) {
+                    header.style.color = data.textColor;
+                    // Update all text elements in header
+                    const textElements = header.querySelectorAll('*');
+                    textElements.forEach(el => {
+                        el.style.color = data.textColor;
+                    });
+                }
+                if (data.title) {
+                    const titleElement = header.querySelector('.app-title, h1');
+                    if (titleElement) {
+                        titleElement.textContent = data.title;
+                    }
+                }
+                console.log('✅ Header updated:', data);
+            }
+        }
+
+        function updateLogoSettings(data) {
+            const logo = document.querySelector('.logo, .header-logo');
+            if (logo && data) {
+                if (data.logoUrl) {
+                    logo.src = data.logoUrl;
+                }
+                if (data.logoSize) {
+                    logo.style.width = data.logoSize + 'px';
+                    logo.style.height = data.logoSize + 'px';
+                }
+                logo.style.display = data.showLogo ? 'block' : 'none';
+                console.log('✅ Logo updated:', data);
+            }
+        }
+
+        function updateNavigationSettings(data) {
+            const searchInput = document.querySelector('.search-input');
+            const searchBar = document.querySelector('.search-container');
+            const cartIcon = document.querySelector('.cart-icon, .header-cart');
+
+            if (searchInput && data.searchPlaceholder) {
+                searchInput.placeholder = data.searchPlaceholder;
+            }
+            if (searchBar) {
+                searchBar.style.display = data.showSearch ? 'flex' : 'none';
+            }
+            if (cartIcon) {
+                cartIcon.style.display = data.showCart ? 'block' : 'none';
+            }
+            console.log('✅ Navigation updated:', data);
+        }
+
+        function updateThemeColors(data) {
+            if (data) {
+                // Update CSS custom properties for theme colors
+                const root = document.documentElement;
+                if (data.primaryColor) {
+                    root.style.setProperty('--primary-color', data.primaryColor);
+                }
+                if (data.secondaryColor) {
+                    root.style.setProperty('--secondary-color', data.secondaryColor);
+                }
+                if (data.accentColor) {
+                    root.style.setProperty('--accent-color', data.accentColor);
+                }
+                if (data.backgroundColor) {
+                    document.body.style.backgroundColor = data.backgroundColor;
+                }
+                console.log('✅ Theme colors updated:', data);
+            }
+        }
+
+        function updateDarkModeSettings(data) {
+            if (data && data.enabled) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            console.log('✅ Dark mode updated:', data);
+        }
+
+        function updateTypographySettings(data) {
+            if (data) {
+                if (data.fontFamily) {
+                    document.body.style.fontFamily = data.fontFamily;
+                }
+                if (data.fontSize) {
+                    document.body.style.fontSize = data.fontSize + 'px';
+                }
+                console.log('✅ Typography updated:', data);
+            }
+        }
+
+        function updateAnnouncementBar(data) {
+            const announcementBar = document.querySelector('.announcement-bar');
+            if (announcementBar && data) {
+                announcementBar.style.display = data.enabled ? 'block' : 'none';
+                if (data.text) {
+                    const textElement = announcementBar.querySelector('.announcement-content');
+                    if (textElement) {
+                        textElement.textContent = data.text;
+                    }
+                }
+                if (data.backgroundColor) {
+                    announcementBar.style.background = data.backgroundColor;
+                }
+                if (data.textColor) {
+                    announcementBar.style.color = data.textColor;
+                }
+                console.log('✅ Announcement bar updated:', data);
+            }
+        }
+
+        function updateSliderSettings(data) {
+            // Update slider autoplay and other settings
+            if (data) {
+                console.log('✅ Slider settings updated:', data);
+                // Implementation for slider updates would go here
+            }
+        }
+
+        function updateProductDisplay(data) {
+            if (data) {
+                // Update product grid layout
+                const productGrid = document.querySelector('.products-grid');
+                if (productGrid && data.productsPerRow) {
+                    productGrid.style.gridTemplateColumns = `repeat(${data.productsPerRow}, 1fr)`;
+                }
+                console.log('✅ Product display updated:', data);
+            }
+        }
+
+        function updateCategoriesSettings(data) {
+            const categoriesSection = document.querySelector('.categories-section');
+            if (categoriesSection && data) {
+                categoriesSection.style.display = data.enabled ? 'block' : 'none';
+                console.log('✅ Categories updated:', data);
+            }
+        }
+
+        function updateButtonStyles(data) {
+            if (data) {
+                const buttons = document.querySelectorAll('.btn, button');
+                buttons.forEach(button => {
+                    if (data.primaryColor) {
+                        button.style.backgroundColor = data.primaryColor;
+                    }
+                    if (data.textColor) {
+                        button.style.color = data.textColor;
+                    }
+                    if (data.style === 'rounded') {
+                        button.style.borderRadius = '8px';
+                    } else if (data.style === 'pill') {
+                        button.style.borderRadius = '25px';
+                    } else if (data.style === 'square') {
+                        button.style.borderRadius = '0px';
+                    }
+                });
+                console.log('✅ Button styles updated:', data);
+            }
+        }
+
+        function updateBottomNavigation(data) {
+            const bottomNav = document.querySelector('.bottom-nav');
+            if (bottomNav && data) {
+                bottomNav.style.display = data.enabled ? 'flex' : 'none';
+                if (data.selectedColor || data.unselectedColor) {
+                    const navItems = bottomNav.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        const isActive = item.classList.contains('active');
+                        item.style.color = isActive ? data.selectedColor : data.unselectedColor;
+                    });
+                }
+                console.log('✅ Bottom navigation updated:', data);
+            }
+        }
+
+        function updatePerformanceSettings(data) {
+            if (data) {
+                // Update lazy loading and other performance settings
+                console.log('✅ Performance settings updated:', data);
+            }
+        }
+
+        // Initialize connection on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📱 Mobile app loaded, connecting to backend...');
+            
+            // Show initial connection status
+            setTimeout(() => {
+                if (!isBackendConnected) {
+                    showConnectionStatus(false);
+                }
+            }, 2000);
+        });
+
+        // Reconnection logic
+        socket.on('connect_error', function(error) {
+            console.error('❌ Connection error:', error);
+            showConnectionStatus(false);
+        });
+
+        socket.on('reconnect', function(attemptNumber) {
+            console.log('🔄 Reconnected after', attemptNumber, 'attempts');
+            showConnectionStatus(true);
+        });
+
+        // Export functions for debugging
+        window.backendConnection = {
+            socket: socket,
+            isConnected: () => isBackendConnected,
+            testConnection: () => {
+                socket.emit('test', { message: 'Hello from frontend!' });
+            }
+        };
     </script>
 </body>
 </html>
