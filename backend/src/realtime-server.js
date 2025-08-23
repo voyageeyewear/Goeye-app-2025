@@ -1476,6 +1476,52 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
             });
         });
 
+        // Update exclusive product video URL
+        app.put('/api/customization/exclusive/products/:id/video-url', (req, res) => {
+            const { id } = req.params;
+            const { videoUrl } = req.body;
+
+            if (!videoUrl) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Video URL is required'
+                });
+            }
+
+            if (!appCustomizations.exclusive?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Exclusive products not found'
+                });
+            }
+
+            const productIndex = appCustomizations.exclusive.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            // Update the video URL
+            appCustomizations.exclusive.products[productIndex].videoUrl = videoUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+
+            res.json({
+                success: true,
+                message: 'Video URL updated successfully',
+                data: appCustomizations.exclusive.products[productIndex]
+            });
+        });
+
         // Mood Look API Endpoints
         app.get('/api/customization/mood-look', (req, res) => {
             res.json({

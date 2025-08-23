@@ -3694,6 +3694,9 @@
                         <button class="btn btn-primary" onclick="uploadExclusiveVideo('${product.id}')">
                             📁 Upload Video
                         </button>
+                        <button class="btn btn-info" onclick="uploadExclusiveVideoURL('${product.id}')">
+                            🔗 Upload Video URL
+                        </button>
                         <button class="btn btn-secondary" onclick="editExclusiveProduct('${product.id}')">
                             ✏️ Edit Order
                         </button>
@@ -3829,6 +3832,32 @@
             .catch(error => {
                 console.error('Upload error:', error);
                 showNotification('Upload failed', 'error');
+            });
+        }
+
+        function uploadExclusiveVideoURL(productId) {
+            const videoUrl = prompt('Enter video URL:');
+            if (!videoUrl) return;
+
+            fetch(`/api/customization/exclusive/products/${productId}/video-url`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ videoUrl: videoUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Video URL updated successfully!', 'success');
+                    loadExclusiveData();
+                } else {
+                    showNotification('Error updating video URL: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating video URL:', error);
+                showNotification('Error updating video URL', 'error');
             });
         }
 

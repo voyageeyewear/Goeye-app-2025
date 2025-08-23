@@ -1,6 +1,6 @@
 {
   "header": {
-    "backgroundColor": "#ff0000",
+    "backgroundColor": "#ffffff",
     "textColor": "#000000",
     "logoUrl": "",
     "title": "Eyejack"
@@ -44,6 +44,13 @@
         "imageUrl": "https://goeye.in/cdn/shop/files/air_banner_1.jpg?v=1750422574&width=440",
         "clickUrl": "",
         "order": 2
+      },
+      {
+        "id": "collection_1755951651865",
+        "title": "https://goeye.in/cdn/shop/files/post_copy_2.png?v=1752491310&width=440",
+        "imageUrl": "https://goeye.in/cdn/shop/files/post_copy_2.png?v=1752491310&width=440",
+        "clickUrl": "",
+        "order": 3
       }
     ]
   },
@@ -280,35 +287,35 @@
     "products": [
       {
         "id": "exclusive_1",
-        "videoUrl": "/uploads/video-1755944518154-570780039.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/final_pilot.gif?v=1753091621?retry=1",
         "order": 1
       },
       {
         "id": "exclusive_2",
-        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/final_zflex.gif?v=1753091074?retry=1",
         "order": 2
       },
       {
         "id": "exclusive_3",
-        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/final_active_6167b5e5-e8e3-4b0a-baac-343e6bc39908.gif?v=1753091784?retry=1",
         "order": 3
       },
       {
         "id": "exclusive_4",
-        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/final_glam.gif?v=1753091775?retry=1",
         "order": 4
       },
       {
         "id": "exclusive_5",
-        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/final_clipon.gif?v=1753097212?retry=1",
         "order": 5
       },
       {
         "id": "exclusive_6",
-        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+        "videoUrl": "https://goeye.in/cdn/shop/files/air.gif?v=1753097292?retry=1",
         "order": 6
       }
     ]
   },
-  "lastUpdated": "2025-08-23T11:03:39.616Z"
+  "lastUpdated": "2025-08-23T12:21:14.869Z"
 }
