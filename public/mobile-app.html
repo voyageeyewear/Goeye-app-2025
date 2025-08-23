@@ -23,8 +23,8 @@
 
         /* Flash Sale Announcement Bar */
         .announcement-bar {
-            background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
-            color: white;
+            /* background: linear-gradient(90deg, #f97316 0%, #ea580c 100%); */
+            /* color: white; */
             padding: 12px 16px;
             text-align: center;
             font-weight: 600;
@@ -209,6 +209,133 @@
             font-weight: 500;
             cursor: pointer;
         }
+
+        /* Brand Modal Styles - Exact match to image */
+        .brand-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .brand-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .brand-modal-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .brand-modal.active .brand-modal-container {
+            transform: translateY(0);
+        }
+
+        .brand-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .brand-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        .brand-modal-close {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: #111827;
+            transition: color 0.2s ease;
+        }
+
+        .brand-modal-close:hover {
+            color: #6b7280;
+        }
+
+        .brand-modal-content {
+            padding: 20px 16px;
+        }
+
+        .brand-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .brand-logo {
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .brand-info {
+            flex: 1;
+        }
+
+        .brand-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .brand-price {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin: 0 0 4px 0;
+        }
+
+        .brand-discount {
+            font-size: 0.9rem;
+            color: #3b82f6;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .brand-arrow {
+            color: #9ca3af;
+            transition: color 0.2s ease;
+        }
+
+        .brand-card:hover .brand-arrow {
+            color: #3b82f6;
+        }
+
+
 
         .insider-crown {
             position: absolute;
@@ -2358,7 +2485,7 @@
 
         /* Glasses Category Sections */
         .glasses-category-section {
-            padding: 24px 16px;
+            padding: 5px 16px;
             background: white;
         }
 
@@ -2385,10 +2512,7 @@
             border: none;
         }
 
-        .glasses-category-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
+
 
         .glasses-image-container {
             width: 85px;
@@ -2531,6 +2655,7 @@
         </div>
         <div class="logo">oe</div>
         <div class="header-right">
+
             <button class="header-icon" onclick="openWishlist()">
                 <svg class="svg-icon" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -2739,6 +2864,63 @@
             <div class="story-nav">
                 <div class="story-nav-left" onclick="previousStory()"></div>
                 <div class="story-nav-right" onclick="nextStory()"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Brand Selection Modal -->
+    <div id="brandModal" class="brand-modal">
+        <div class="brand-modal-container">
+            <div class="brand-modal-header">
+                <h2 class="brand-modal-title" id="brandModalTitle">Men</h2>
+                <button class="brand-modal-close" onclick="closeBrandModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="brand-modal-content">
+                <div class="brand-card" onclick="selectBrand('voyage')">
+                    <div class="brand-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <path d="M10 15L20 5L30 15L20 25L10 15Z" fill="#D4A574"/>
+                            <text x="20" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#D4A574">VOYAGE EYEWEAR</text>
+                        </svg>
+                    </div>
+                    <div class="brand-info">
+                        <h3 class="brand-name">Voyage Eyewear</h3>
+                        <p class="brand-price">Starts at ₹799</p>
+                        <p class="brand-discount">Get Extra ₹100 Off</p>
+                    </div>
+                    <div class="brand-arrow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="brand-card" onclick="selectBrand('eyejack')">
+                    <div class="brand-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="15" fill="#90EE90"/>
+                            <text x="20" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#90EE90">EYEJACK</text>
+                        </svg>
+                    </div>
+                    <div class="brand-info">
+                        <h3 class="brand-name">Eyejack Eyewear</h3>
+                        <p class="brand-price">Starts at ₹599</p>
+                        <p class="brand-discount">Extra ₹100 Off</p>
+                    </div>
+                    <div class="brand-arrow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -3510,6 +3692,75 @@
             }
         }
 
+
+
+        // Brand Modal Functions - Global scope
+        function openBrandModal(categoryName) {
+            console.log('Opening modal for:', categoryName);
+            const brandModal = document.getElementById('brandModal');
+            const brandTitle = document.getElementById('brandModalTitle');
+            if (brandModal && brandTitle) {
+                brandTitle.textContent = categoryName;
+                brandModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('Modal opened successfully');
+            } else {
+                console.error('Modal elements not found');
+            }
+        }
+
+        function closeBrandModal() {
+            console.log('Closing modal');
+            const brandModal = document.getElementById('brandModal');
+            if (brandModal) {
+                brandModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                console.log('Modal closed successfully');
+            }
+        }
+
+        function selectBrand(brand) {
+            console.log('Selected brand:', brand);
+            alert(`You selected ${brand === 'voyage' ? 'Voyage Eyewear' : 'Eyejack Eyewear'}`);
+            closeBrandModal();
+        }
+
+        // Add click event listeners to glasses category cards with better error handling
+        function addGlassesCardListeners() {
+            console.log('Adding glasses card listeners...');
+            const glassesCards = document.querySelectorAll('.glasses-category-card');
+            console.log('Found', glassesCards.length, 'glasses category cards');
+            
+            glassesCards.forEach((card, index) => {
+                console.log(`Adding listener to card ${index + 1}:`, card);
+                
+                // Remove any existing listeners
+                card.removeEventListener('click', card.glassesCardHandler);
+                
+                // Create new handler
+                card.glassesCardHandler = function(e) {
+                    console.log('Card clicked!', e);
+                    const categoryName = this.querySelector('.glasses-category-name');
+                    if (categoryName) {
+                        console.log('Category name:', categoryName.textContent);
+                        openBrandModal(categoryName.textContent);
+                    } else {
+                        console.error('Category name element not found');
+                    }
+                };
+                
+                // Add the listener
+                card.addEventListener('click', card.glassesCardHandler);
+                console.log(`Listener added to card ${index + 1}`);
+            });
+        }
+
+        // Make functions globally accessible
+        window.openBrandModal = openBrandModal;
+        window.closeBrandModal = closeBrandModal;
+        window.selectBrand = selectBrand;
+        window.addGlassesCardListeners = addGlassesCardListeners;
+
         // Clean app - DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function() {
             // Featured Products Video Handling
@@ -4109,6 +4360,19 @@
                     closeProfile();
                     closeWishlist();
                     closeCart();
+                    closeBrandModal();
+                }
+            });
+
+            // Call the global function to add listeners
+            addGlassesCardListeners();
+            setTimeout(addGlassesCardListeners, 100);
+            setTimeout(addGlassesCardListeners, 500);
+
+            // Close brand modal when clicking outside
+            document.getElementById('brandModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeBrandModal();
                 }
             });
 

@@ -1,6 +1,6 @@
 {
   "header": {
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#ff0000",
     "textColor": "#000000",
     "logoUrl": "",
     "title": "Eyejack"
@@ -10,6 +10,12 @@
     "secondaryColor": "#8b5cf6",
     "accentColor": "#10b981",
     "backgroundColor": "#ffffff"
+  },
+  "announcement": {
+    "enabled": true,
+    "text": "🎉 Welcome to our store!",
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000"
   },
   "highlights": {
     "items": [
@@ -43,7 +49,7 @@
   },
   "glasses": {
     "eyeglasses": {
-      "title": "Custom Eyeglasses",
+      "title": "Eyeglasses",
       "enabled": true,
       "categories": [
         {
@@ -304,5 +310,5 @@
       }
     ]
   },
-  "lastUpdated": "2025-08-23T10:32:05.282Z"
+  "lastUpdated": "2025-08-23T11:03:39.616Z"
 }

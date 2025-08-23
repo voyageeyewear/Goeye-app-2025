@@ -184,6 +184,47 @@ app.get('/api/customization', (req, res) => {
     });
 });
 
+// Announcement API
+app.get('/api/customization/announcement', (req, res) => {
+    res.json({
+        success: true,
+        data: appCustomizations.announcement || {}
+    });
+});
+
+app.post('/api/customization/announcement', (req, res) => {
+    const { enabled, text, backgroundColor, textColor } = req.body;
+
+    if (!appCustomizations.announcement) {
+        appCustomizations.announcement = {
+            enabled: true,
+            text: "🎉 Welcome to our store! Free shipping on orders over ₹50!",
+            backgroundColor: "#2563eb",
+            textColor: "#ffffff"
+        };
+    }
+
+    if (enabled !== undefined) appCustomizations.announcement.enabled = enabled;
+    if (text !== undefined) appCustomizations.announcement.text = text;
+    if (backgroundColor !== undefined) appCustomizations.announcement.backgroundColor = backgroundColor;
+    if (textColor !== undefined) appCustomizations.announcement.textColor = textColor;
+
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'announcement',
+        data: appCustomizations.announcement
+    });
+
+    res.json({
+        success: true,
+        message: 'Announcement updated successfully',
+        data: appCustomizations.announcement
+    });
+});
+
 // Highlights API
 app.get('/api/customization/highlights', (req, res) => {
     res.json({
