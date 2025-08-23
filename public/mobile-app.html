@@ -335,6 +335,176 @@
             color: #3b82f6;
         }
 
+        /* Video Modal Styles - Exact match to image */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fef3c7;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-modal-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 10001;
+        }
+
+        .video-control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(55, 65, 81, 0.8);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .video-control-btn:hover {
+            background: rgba(55, 65, 81, 1);
+            transform: scale(1.1);
+        }
+
+        .video-player-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-navigation {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 10001;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+
+
+        .product-info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .product-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .product-type {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin: 0 0 2px 0;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin: 0 0 8px 0;
+        }
+
+        .product-pricing {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .original-price {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
 
 
         .insider-crown {
@@ -2656,6 +2826,10 @@
         <div class="logo">oe</div>
         <div class="header-right">
 
+
+            <button class="header-icon" onclick="getVideoDataFromPage()" style="background: #ff6600; color: white; padding: 4px 8px; border: none; border-radius: 4px; margin-right: 8px; font-size: 10px;">
+                Debug
+            </button>
             <button class="header-icon" onclick="openWishlist()">
                 <svg class="svg-icon" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -2919,6 +3093,64 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="9,18 15,12 9,6"></polyline>
                         </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-container">
+            <!-- Top Controls -->
+            <div class="video-top-controls">
+                <button class="video-control-btn" onclick="toggleVideoSound()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                    </svg>
+                </button>
+                <button class="video-control-btn" onclick="closeVideoModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Video Player -->
+            <div class="video-player-container">
+                <video id="modalVideo" class="modal-video" autoplay loop muted>
+                    <source src="" type="video/mp4">
+                </video>
+                
+                <!-- Video Navigation -->
+                <div class="video-navigation">
+                    <button class="nav-btn nav-prev" onclick="previousVideo()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="nav-btn nav-next" onclick="nextVideo()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Info Overlay -->
+            <div class="product-info-overlay">
+                <div class="product-thumbnail">
+                    <img id="productThumbnail" src="" alt="Product" class="thumbnail-image">
+                </div>
+                <div class="product-details">
+                    <h3 id="productName" class="product-name">Ricker | Black & Golden</h3>
+                    <p id="productType" class="product-type">Wayfarer</p>
+                    <p id="productCategory" class="product-category">Eyeglasses for Men</p>
+                    <div class="product-pricing">
+                        <span id="currentPrice" class="current-price">₹1299.00</span>
+                        <span id="originalPrice" class="original-price">₹3000.00</span>
                     </div>
                 </div>
             </div>
@@ -3755,11 +3987,206 @@
             });
         }
 
+        // Add click event listeners to product videos with better error handling
+        function addVideoListeners() {
+            console.log('Adding video listeners...');
+            const productVideos = document.querySelectorAll('.product-video');
+            console.log('Found', productVideos.length, 'product videos');
+            
+            productVideos.forEach((video, index) => {
+                console.log(`Adding listener to video ${index + 1}:`, video);
+                
+                // Remove any existing listeners
+                video.removeEventListener('click', video.videoClickHandler);
+                
+                // Create new handler
+                video.videoClickHandler = function(e) {
+                    console.log('Video clicked!', e);
+                    console.log('Opening video modal for index:', index);
+                    openVideoModal(index);
+                };
+                
+                // Add the listener
+                video.addEventListener('click', video.videoClickHandler);
+                console.log(`Listener added to video ${index + 1}`);
+            });
+        }
+
+        // Video Modal Functions
+        let currentVideoIndex = 0;
+        let videoData = [];
+
+        // Function to get video data from actual videos on the page
+        function getVideoDataFromPage() {
+            const productVideos = document.querySelectorAll('.product-video');
+            videoData = [];
+            
+            console.log('Found', productVideos.length, 'product videos on page');
+            
+            productVideos.forEach((video, index) => {
+                // Get video source - try multiple methods
+                let videoSrc = '';
+                const sourceElement = video.querySelector('source');
+                
+                // Try to get the actual video source
+                if (sourceElement) {
+                    videoSrc = sourceElement.src || sourceElement.getAttribute('src') || '';
+                }
+                
+                if (!videoSrc && video.src) {
+                    videoSrc = video.src;
+                }
+                
+                // If still no source, try to get from currentSrc
+                if (!videoSrc && video.currentSrc) {
+                    videoSrc = video.currentSrc;
+                }
+                
+                // Get product name
+                const productCard = video.closest('.featured-product-card');
+                const productNameElement = productCard?.querySelector('.product-name');
+                const productName = productNameElement ? productNameElement.textContent.trim() : `Product ${index + 1}`;
+                
+                console.log(`Video ${index + 1}:`, {
+                    videoSrc: videoSrc,
+                    productName: productName,
+                    hasSource: !!sourceElement,
+                    hasVideoSrc: !!video.src,
+                    currentSrc: video.currentSrc,
+                    sourceSrc: sourceElement ? sourceElement.src : 'no source element'
+                });
+                
+                // Only add if we have a valid video source
+                if (videoSrc) {
+                    // Create thumbnail from video frame or use default
+                    const thumbnail = `https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop&crop=center&v=${index}`;
+                    
+                    videoData.push({
+                        videoSrc: videoSrc,
+                        thumbnail: thumbnail,
+                        name: `${productName} | Premium Collection`,
+                        type: "Premium",
+                        category: "Eyewear Collection",
+                        currentPrice: "₹1299.00",
+                        originalPrice: "₹3000.00"
+                    });
+                } else {
+                    console.warn(`No video source found for video ${index + 1}`);
+                }
+            });
+            
+            console.log('Final video data:', videoData);
+        }
+
+        function openVideoModal(videoIndex = 0) {
+            console.log('Opening video modal for index:', videoIndex);
+            
+            // Always reload video data from page to ensure we have the latest
+            getVideoDataFromPage();
+            
+            currentVideoIndex = videoIndex;
+            const videoModal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            const productThumbnail = document.getElementById('productThumbnail');
+            const productName = document.getElementById('productName');
+            const productType = document.getElementById('productType');
+            const productCategory = document.getElementById('productCategory');
+            const currentPrice = document.getElementById('currentPrice');
+            const originalPrice = document.getElementById('originalPrice');
+
+            if (videoModal && modalVideo && videoData[videoIndex]) {
+                const video = videoData[videoIndex];
+                console.log('Setting modal video to:', video.videoSrc);
+                console.log('Video data for index', videoIndex, ':', video);
+                
+                modalVideo.src = video.videoSrc;
+                productThumbnail.src = video.thumbnail;
+                productName.textContent = video.name;
+                productType.textContent = video.type;
+                productCategory.textContent = video.category;
+                currentPrice.textContent = video.currentPrice;
+                originalPrice.textContent = video.originalPrice;
+
+                videoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Ensure video loads and plays
+                modalVideo.load();
+                modalVideo.play().catch(e => console.log('Video play error:', e));
+                console.log('Video modal opened successfully with video:', video.videoSrc);
+            } else {
+                console.error('Video modal elements not found or video data not available');
+                console.log('Available video data:', videoData);
+                console.log('Requested index:', videoIndex);
+            }
+        }
+
+        function closeVideoModal() {
+            console.log('Closing video modal');
+            const videoModal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            if (videoModal && modalVideo) {
+                videoModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+                console.log('Video modal closed successfully');
+            }
+        }
+
+        function toggleVideoSound() {
+            const modalVideo = document.getElementById('modalVideo');
+            const soundButton = document.querySelector('.video-control-btn svg');
+            
+            if (modalVideo) {
+                modalVideo.muted = !modalVideo.muted;
+                console.log('Video sound toggled:', !modalVideo.muted);
+                
+                // Update the sound icon
+                if (soundButton) {
+                    if (modalVideo.muted) {
+                        // Show muted icon
+                        soundButton.innerHTML = `
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                            <line x1="23" y1="9" x2="17" y2="15"/>
+                            <line x1="17" y1="9" x2="23" y2="15"/>
+                        `;
+                    } else {
+                        // Show unmuted icon
+                        soundButton.innerHTML = `
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        `;
+                    }
+                }
+            }
+        }
+
+        function previousVideo() {
+            if (currentVideoIndex > 0) {
+                openVideoModal(currentVideoIndex - 1);
+            }
+        }
+
+        function nextVideo() {
+            if (currentVideoIndex < videoData.length - 1) {
+                openVideoModal(currentVideoIndex + 1);
+            }
+        }
+
         // Make functions globally accessible
         window.openBrandModal = openBrandModal;
         window.closeBrandModal = closeBrandModal;
         window.selectBrand = selectBrand;
         window.addGlassesCardListeners = addGlassesCardListeners;
+        window.addVideoListeners = addVideoListeners;
+        window.getVideoDataFromPage = getVideoDataFromPage;
+        window.openVideoModal = openVideoModal;
+        window.closeVideoModal = closeVideoModal;
+        window.toggleVideoSound = toggleVideoSound;
+        window.previousVideo = previousVideo;
+        window.nextVideo = nextVideo;
 
         // Clean app - DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function() {
@@ -4361,6 +4788,7 @@
                     closeWishlist();
                     closeCart();
                     closeBrandModal();
+                    closeVideoModal();
                 }
             });
 
@@ -4369,10 +4797,55 @@
             setTimeout(addGlassesCardListeners, 100);
             setTimeout(addGlassesCardListeners, 500);
 
+            // Call video listeners
+            addVideoListeners();
+            setTimeout(addVideoListeners, 100);
+            setTimeout(addVideoListeners, 500);
+
+            // Load video data from page
+            getVideoDataFromPage();
+
             // Close brand modal when clicking outside
             document.getElementById('brandModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeBrandModal();
+                }
+            });
+
+            // Add click event listeners to product videos with better error handling
+            function addVideoListeners() {
+                console.log('Adding video listeners...');
+                const productVideos = document.querySelectorAll('.product-video');
+                console.log('Found', productVideos.length, 'product videos');
+                
+                productVideos.forEach((video, index) => {
+                    console.log(`Adding listener to video ${index + 1}:`, video);
+                    
+                    // Remove any existing listeners
+                    video.removeEventListener('click', video.videoClickHandler);
+                    
+                    // Create new handler
+                    video.videoClickHandler = function(e) {
+                        console.log('Video clicked!', e);
+                        console.log('Opening video modal for index:', index);
+                        openVideoModal(index);
+                    };
+                    
+                    // Add the listener
+                    video.addEventListener('click', video.videoClickHandler);
+                    console.log(`Listener added to video ${index + 1}`);
+                });
+            }
+
+            // Call immediately and also after a short delay to ensure DOM is ready
+            addVideoListeners();
+            setTimeout(addVideoListeners, 100);
+            setTimeout(addVideoListeners, 500);
+
+            // Close video modal when clicking outside
+            document.getElementById('videoModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVideoModal();
                 }
             });
 
