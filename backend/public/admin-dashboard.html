@@ -680,6 +680,89 @@
             font-size: 11px;
             border-radius: 4px;
         }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .looks-list {
+            margin-bottom: 30px;
+        }
+
+        .add-look-form {
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+        }
+
+        .add-look-form h4 {
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .look-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .look-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -706,7 +789,10 @@
                 <button class="tab-button" onclick="switchTab('collections')">📱 Collections</button>
                 <button class="tab-button" onclick="switchTab('glasses')">👓 Glasses Categories</button>
                 <button class="tab-button" onclick="switchTab('featured-products')">🎬 Featured Products</button>
+                <button class="tab-button" onclick="switchTab('new-arrivals')">🆕 New Arrivals</button>
+                <button class="tab-button" onclick="switchTab('exclusive')">⭐ Exclusive</button>
                 <button class="tab-button" onclick="switchTab('mood-look')">😊 Mood Look</button>
+                <button class="tab-button" onclick="switchTab('most-loved')">❤️ Most Loved</button>
                 <button class="tab-button" onclick="switchTab('products')">🛍️ Products</button>
                 <button class="tab-button" onclick="switchTab('buttons')">🔘 Buttons & Actions</button>
                 <button class="tab-button" onclick="switchTab('advanced')">⚙️ Advanced Settings</button>
@@ -1136,6 +1222,104 @@
         </div>
     </div>
 
+    <!-- New Arrivals Tab -->
+    <div id="new-arrivals-tab" class="tab-content">
+        <div class="section-grid">
+            <!-- New Arrivals Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">🆕</span>
+                    <h3 class="card-title">New Arrivals Settings</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" id="newArrivalsTitle" value="New Arrivals" placeholder="Enter section title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" class="form-input" id="newArrivalsSubtitle" value="Discover our latest products through video" placeholder="Enter section subtitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Section</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="newArrivalsEnabled" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="updateNewArrivalsSettings()">
+                    <span>💾</span>
+                    <span>Save Settings</span>
+                </button>
+            </div>
+
+            <!-- New Arrivals Management -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">📹</span>
+                    <h3 class="card-title">New Arrivals Management</h3>
+                </div>
+                <div id="newArrivalsList">
+                    <!-- Dynamic new arrivals will be loaded here -->
+                </div>
+                <button class="btn btn-primary" onclick="addNewArrival()">
+                    <span>➕</span>
+                    <span>Add New Product</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exclusive Tab -->
+    <div id="exclusive-tab" class="tab-content">
+        <div class="section-grid">
+            <!-- Exclusive Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">⭐</span>
+                    <h3 class="card-title">Exclusive Settings</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" id="exclusiveTitle" value="Exclusively at GOEYE" placeholder="Enter section title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" class="form-input" id="exclusiveSubtitle" value="Get the perfect vision and style" placeholder="Enter section subtitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Border Color</label>
+                    <input type="color" class="form-input" id="exclusiveBorderColor" value="#fd7f6f">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Section</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="exclusiveEnabled" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="updateExclusiveSettings()">
+                    <span>💾</span>
+                    <span>Save Settings</span>
+                </button>
+            </div>
+
+            <!-- Exclusive Products Management -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">📹</span>
+                    <h3 class="card-title">Exclusive Products Management</h3>
+                </div>
+                <div id="exclusiveList">
+                    <!-- Dynamic exclusive products will be loaded here -->
+                </div>
+                <button class="btn btn-primary" onclick="addExclusiveProduct()">
+                    <span>➕</span>
+                    <span>Add New Product</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Mood Look Tab -->
     <div id="mood-look-tab" class="tab-content">
         <div class="section-grid">
@@ -1187,7 +1371,111 @@
         </div>
     </div>
 
-    <!-- Products Tab -->
+    <!-- Most Loved Tab -->
+    <div id="most-loved-tab" class="tab-content">
+        <div class="section-grid">
+            <!-- Most Loved Settings -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">❤️</span>
+                    <h3 class="card-title">Most Loved Settings</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" class="form-input" id="mostLovedTitle" value="Most Loved" placeholder="Enter section title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title Font Size</label>
+                    <input type="text" class="form-input" id="mostLovedTitleFontSize" value="1.8rem" placeholder="e.g., 1.8rem, 24px">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title Font Color</label>
+                    <input type="color" class="form-input" id="mostLovedTitleFontColor" value="#2d3748">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title Font Family</label>
+                    <select class="form-input" id="mostLovedTitleFontFamily">
+                        <option value="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">System Default</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Helvetica, sans-serif">Helvetica</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Times New Roman, serif">Times New Roman</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" class="form-input" id="mostLovedSubtitle" value="Customers favourite listed every 15 days" placeholder="Enter section subtitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subtitle Font Size</label>
+                    <input type="text" class="form-input" id="mostLovedSubtitleFontSize" value="1rem" placeholder="e.g., 1rem, 16px">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subtitle Font Color</label>
+                    <input type="color" class="form-input" id="mostLovedSubtitleFontColor" value="#718096">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subtitle Font Family</label>
+                    <select class="form-input" id="mostLovedSubtitleFontFamily">
+                        <option value="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">System Default</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Helvetica, sans-serif">Helvetica</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Times New Roman, serif">Times New Roman</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Show Carousel Dots</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="mostLovedShowDots" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Autoplay</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="mostLovedAutoplay" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Autoplay Interval (milliseconds)</label>
+                    <input type="number" class="form-input" id="mostLovedAutoplayInterval" value="3000" min="1000" max="10000" step="500">
+                    <small style="color: #666;">1000ms = 1 second. Recommended: 3000-5000ms</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Enable Section</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="mostLovedEnabled" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="updateMostLovedSettings()">
+                    <span>💾</span>
+                    <span>Save Settings</span>
+                </button>
+            </div>
+
+            <!-- Most Loved Products Management -->
+            <div class="customization-card">
+                <div class="card-header">
+                    <span class="card-icon">📦</span>
+                    <h3 class="card-title">Most Loved Products</h3>
+                </div>
+                <div id="mostLovedProductsList">
+                    <!-- Dynamic products will be loaded here -->
+                </div>
+                <button class="btn btn-primary" onclick="addMostLovedProduct()">
+                    <span>➕</span>
+                    <span>Add New Product</span>
+                </button>
+            </div>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
             <div id="products-tab" class="tab-content">
                 <div class="section-grid">
                     <div class="customization-card">
@@ -1505,8 +1793,14 @@
                 loadCollectionItems();
             } else if (tabName === 'featured-products') {
                 loadFeaturedProductsData();
+            } else if (tabName === 'new-arrivals') {
+                loadNewArrivalsData();
+            } else if (tabName === 'exclusive') {
+                loadExclusiveData();
             } else if (tabName === 'mood-look') {
                 loadMoodLookData();
+            } else if (tabName === 'most-loved') {
+                loadMostLovedData();
             // } else if (tabName === 'highlights') {
             //     loadHighlightItems();
             }
@@ -3096,8 +3390,8 @@
                 return;
             }
 
-            if (file.size > 50 * 1024 * 1024) {
-                showNotification('File too large. Maximum size is 50MB.', 'error');
+            if (file.size > 100 * 1024 * 1024) {
+                showNotification('File too large. Maximum size is 100MB.', 'error');
                 return;
             }
 
@@ -3134,6 +3428,421 @@
                 if (data.success) {
                     showNotification('Product deleted successfully!', 'success');
                     loadFeaturedProductsData();
+                } else {
+                    showNotification('Error deleting product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting product:', error);
+                showNotification('Error deleting product', 'error');
+            });
+        }
+
+        // New Arrivals management functions
+        function loadNewArrivalsData() {
+            console.log('🔄 Loading new arrivals data...');
+            fetch('/api/customization/new-arrivals')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded new arrivals data:', data.data);
+                        populateNewArrivalsForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading new arrivals data:', error);
+                });
+        }
+
+        function populateNewArrivalsForm(newArrivalsData) {
+            // Populate form fields
+            document.getElementById('newArrivalsTitle').value = newArrivalsData.title || 'New Arrivals';
+            document.getElementById('newArrivalsSubtitle').value = newArrivalsData.subtitle || 'Discover our latest products through video';
+            document.getElementById('newArrivalsEnabled').checked = newArrivalsData.enabled !== false;
+            
+            // Render products
+            renderNewArrivals(newArrivalsData.products || []);
+        }
+
+        function renderNewArrivals(products) {
+            const container = document.getElementById('newArrivalsList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'highlight-item';
+                productDiv.innerHTML = `
+                    <div class="highlight-preview">
+                        <video src="${product.videoUrl || '/placeholder-video.mp4'}" class="highlight-media" muted loop style="border-radius: 8px; width: 100px; height: 100px; object-fit: cover;">
+                        </video>
+                        <div class="highlight-info">
+                            <h4>${product.name}</h4>
+                            <p>Order: ${product.order}</p>
+                        </div>
+                    </div>
+                    <div class="highlight-controls">
+                        <button class="btn btn-primary" onclick="uploadNewArrivalVideo('${product.id}')">
+                            📁 Upload Video
+                        </button>
+                        <button class="btn btn-secondary" onclick="editNewArrival('${product.id}')">
+                            ✏️ Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteNewArrival('${product.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(productDiv);
+            });
+        }
+
+        function addNewArrival() {
+            const name = prompt('Enter product name:');
+            if (!name) return;
+
+            fetch('/api/customization/new-arrivals/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('New arrival product added successfully!', 'success');
+                    loadNewArrivalsData();
+                } else {
+                    showNotification('Error adding product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product:', error);
+                showNotification('Error adding product', 'error');
+            });
+        }
+
+        function updateNewArrivalsSettings() {
+            const title = document.getElementById('newArrivalsTitle').value;
+            const subtitle = document.getElementById('newArrivalsSubtitle').value;
+            const enabled = document.getElementById('newArrivalsEnabled').checked;
+
+            fetch('/api/customization/new-arrivals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, subtitle: subtitle, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('New arrivals settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function editNewArrival(productId) {
+            const newName = prompt('Enter new product name:');
+            if (!newName) return;
+
+            fetch(`/api/customization/new-arrivals/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product updated successfully!', 'success');
+                    loadNewArrivalsData();
+                } else {
+                    showNotification('Error updating product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating product:', error);
+                showNotification('Error updating product', 'error');
+            });
+        }
+
+        function uploadNewArrivalVideo(productId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleNewArrivalVideoUpload(file, productId);
+                }
+            };
+            input.click();
+        }
+
+        function handleNewArrivalVideoUpload(file, productId) {
+            const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+            
+            if (!validTypes.includes(file.type)) {
+                showNotification('Invalid file type. Please select a valid video file.', 'error');
+                return;
+            }
+
+            if (file.size > 100 * 1024 * 1024) {
+                showNotification('File too large. Maximum size is 100MB.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            fetch(`/api/customization/new-arrivals/products/${productId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Video uploaded successfully!', 'success');
+                    loadNewArrivalsData();
+                } else {
+                    showNotification('Upload failed: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                showNotification('Upload failed', 'error');
+            });
+        }
+
+        function deleteNewArrival(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            fetch(`/api/customization/new-arrivals/products/${productId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product deleted successfully!', 'success');
+                    loadNewArrivalsData();
+                } else {
+                    showNotification('Error deleting product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting product:', error);
+                showNotification('Error deleting product', 'error');
+            });
+        }
+
+        // Exclusive management functions
+        function loadExclusiveData() {
+            console.log('🔄 Loading exclusive data...');
+            fetch('/api/customization/exclusive')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded exclusive data:', data.data);
+                        populateExclusiveForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading exclusive data:', error);
+                });
+        }
+
+        function populateExclusiveForm(exclusiveData) {
+            // Populate form fields
+            document.getElementById('exclusiveTitle').value = exclusiveData.title || 'Exclusively at GOEYE';
+            document.getElementById('exclusiveSubtitle').value = exclusiveData.subtitle || 'Get the perfect vision and style';
+            document.getElementById('exclusiveBorderColor').value = exclusiveData.borderColor || '#fd7f6f';
+            document.getElementById('exclusiveEnabled').checked = exclusiveData.enabled !== false;
+            
+            // Render products
+            renderExclusiveProducts(exclusiveData.products || []);
+        }
+
+        function renderExclusiveProducts(products) {
+            const container = document.getElementById('exclusiveList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'highlight-item';
+                productDiv.innerHTML = `
+                    <div class="highlight-preview">
+                        <video src="${product.videoUrl || '/placeholder-video.mp4'}" class="highlight-media" muted loop style="border-radius: 8px; width: 100px; height: 100px; object-fit: cover;">
+                        </video>
+                        <div class="highlight-info">
+                            <h4>Product ${product.order}</h4>
+                            <p>Order: ${product.order}</p>
+                        </div>
+                    </div>
+                    <div class="highlight-controls">
+                        <button class="btn btn-primary" onclick="uploadExclusiveVideo('${product.id}')">
+                            📁 Upload Video
+                        </button>
+                        <button class="btn btn-secondary" onclick="editExclusiveProduct('${product.id}')">
+                            ✏️ Edit Order
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteExclusiveProduct('${product.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(productDiv);
+            });
+        }
+
+        function addExclusiveProduct() {
+            const videoUrl = prompt('Enter video URL (or leave empty for default):');
+            if (videoUrl === null) return;
+
+            fetch('/api/customization/exclusive/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ videoUrl: videoUrl || undefined })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Exclusive product added successfully!', 'success');
+                    loadExclusiveData();
+                } else {
+                    showNotification('Error adding product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product:', error);
+                showNotification('Error adding product', 'error');
+            });
+        }
+
+        function updateExclusiveSettings() {
+            const title = document.getElementById('exclusiveTitle').value;
+            const subtitle = document.getElementById('exclusiveSubtitle').value;
+            const borderColor = document.getElementById('exclusiveBorderColor').value;
+            const enabled = document.getElementById('exclusiveEnabled').checked;
+
+            fetch('/api/customization/exclusive', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, subtitle: subtitle, borderColor: borderColor, enabled: enabled })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Exclusive settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function editExclusiveProduct(productId) {
+            const newOrder = prompt('Enter new order number:');
+            if (!newOrder || isNaN(newOrder)) return;
+
+            fetch(`/api/customization/exclusive/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ order: parseInt(newOrder) })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product order updated successfully!', 'success');
+                    loadExclusiveData();
+                } else {
+                    showNotification('Error updating product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating product:', error);
+                showNotification('Error updating product', 'error');
+            });
+        }
+
+        function uploadExclusiveVideo(productId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleExclusiveVideoUpload(file, productId);
+                }
+            };
+            input.click();
+        }
+
+        function handleExclusiveVideoUpload(file, productId) {
+            const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+            if (!validTypes.includes(file.type)) {
+                showNotification('Invalid file type. Please select a valid video file.', 'error');
+                return;
+            }
+
+            if (file.size > 100 * 1024 * 1024) {
+                showNotification('File too large. Maximum size is 100MB.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            fetch(`/api/customization/exclusive/products/${productId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Video uploaded successfully!', 'success');
+                    loadExclusiveData();
+                } else {
+                    showNotification('Upload failed: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                showNotification('Upload failed', 'error');
+            });
+        }
+
+        function deleteExclusiveProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            fetch(`/api/customization/exclusive/products/${productId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product deleted successfully!', 'success');
+                    loadExclusiveData();
                 } else {
                     showNotification('Error deleting product: ' + data.message, 'error');
                 }
@@ -3311,23 +4020,148 @@
         }
 
         function manageMoodLookLooks(categoryId) {
-            // This would open a modal or navigate to a looks management interface
-            // For now, we'll show a simple prompt to add a look
-            const lookName = prompt('Enter look name:');
-            if (!lookName) return;
+            // Open the looks management modal
+            openLooksModal(categoryId);
+        }
+
+        function openLooksModal(categoryId) {
+            // Create modal HTML
+            const modalHTML = `
+                <div id="looksModal" class="modal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Manage Looks</h3>
+                            <span class="close" onclick="closeLooksModal()">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="bulk-actions" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                                <h4 style="margin-bottom: 10px;">Bulk Actions</h4>
+                                <button class="btn btn-warning" onclick="bulkUpdateImages('${categoryId}')">🔄 Update All Selected Images</button>
+                                <p style="margin-top: 8px; font-size: 0.9rem; color: #666;">Select multiple images above and click this button to update them all at once.</p>
+                            </div>
+                            <div class="looks-list" id="looksList">
+                                <!-- Looks will be loaded here -->
+                            </div>
+                            <div class="add-look-form">
+                                <h4>Add New Look</h4>
+                                <input type="text" id="newLookName" placeholder="Look name" style="width: 100%; margin-bottom: 10px; padding: 8px;">
+                                <div style="margin-bottom: 10px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Upload Image:</label>
+                                    <input type="file" id="newLookImage" accept="image/*" style="width: 100%; margin-bottom: 10px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Or Use Image URL:</label>
+                                    <input type="url" id="newLookImageUrl" placeholder="https://example.com/image.jpg" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                </div>
+                                <button class="btn btn-primary" onclick="addNewLook('${categoryId}')">Add Look</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Load existing looks
+            loadLooksForCategory(categoryId);
+        }
+
+        function closeLooksModal() {
+            const modal = document.getElementById('looksModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function loadLooksForCategory(categoryId) {
+            fetch(`/api/customization/mood-look/categories/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.looks) {
+                        renderLooksList(data.data.looks, categoryId);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading looks:', error);
+                    showNotification('Error loading looks', 'error');
+                });
+        }
+
+        function renderLooksList(looks, categoryId) {
+            const looksList = document.getElementById('looksList');
+            if (!looksList) return;
+
+            looksList.innerHTML = '';
+            
+            looks.forEach(look => {
+                const lookDiv = document.createElement('div');
+                lookDiv.className = 'look-item';
+                lookDiv.style.cssText = 'border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px;';
+                
+                lookDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${look.imageUrl || 'https://via.placeholder.com/100x120?text=No+Image'}" 
+                             alt="${look.name}" 
+                             style="width: 100px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 10px 0;">${look.name}</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                                <input type="file" id="image_${look.id}" accept="image/*" style="flex: 1; min-width: 150px;">
+                                <button class="btn btn-primary" onclick="updateLookImage('${categoryId}', '${look.id}')">Update Image</button>
+                                <button class="btn btn-secondary" onclick="editLookName('${categoryId}', '${look.id}')">Edit Name</button>
+                                <button class="btn btn-info" onclick="duplicateLook('${categoryId}', '${look.id}')">Duplicate</button>
+                                <button class="btn btn-danger" onclick="deleteLook('${categoryId}', '${look.id}')">Delete</button>
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <input type="url" id="imageUrl_${look.id}" placeholder="Or enter image URL" style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <button class="btn btn-success" onclick="updateLookImageUrl('${categoryId}', '${look.id}')">Update from URL</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                looksList.appendChild(lookDiv);
+            });
+        }
+
+        function addNewLook(categoryId) {
+            const name = document.getElementById('newLookName').value;
+            const imageFile = document.getElementById('newLookImage').files[0];
+            const imageUrl = document.getElementById('newLookImageUrl').value;
+            
+            if (!name) {
+                showNotification('Please enter a look name', 'error');
+                return;
+            }
+
+            if (!imageFile && !imageUrl) {
+                showNotification('Please provide either an image file or image URL', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            if (imageUrl) {
+                formData.append('imageUrl', imageUrl);
+            }
 
             fetch(`/api/customization/mood-look/categories/${categoryId}/looks`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name: lookName })
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     showNotification('Look added successfully!', 'success');
-                    loadMoodLookData();
+                    document.getElementById('newLookName').value = '';
+                    document.getElementById('newLookImage').value = '';
+                    document.getElementById('newLookImageUrl').value = '';
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
                 } else {
                     showNotification('Error adding look: ' + data.message, 'error');
                 }
@@ -3335,6 +4169,471 @@
             .catch(error => {
                 console.error('Error adding look:', error);
                 showNotification('Error adding look', 'error');
+            });
+        }
+
+        function updateLookImage(categoryId, lookId) {
+            const imageFile = document.getElementById(`image_${lookId}`).files[0];
+            
+            if (!imageFile) {
+                showNotification('Please select an image', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Image updated successfully!', 'success');
+                    document.getElementById(`image_${lookId}`).value = '';
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
+                } else {
+                    showNotification('Error updating image: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating image:', error);
+                showNotification('Error updating image', 'error');
+            });
+        }
+
+        function updateLookImageUrl(categoryId, lookId) {
+            const imageUrl = document.getElementById(`imageUrl_${lookId}`).value;
+            
+            if (!imageUrl) {
+                showNotification('Please enter an image URL', 'error');
+                return;
+            }
+
+            // Validate URL format
+            try {
+                new URL(imageUrl);
+            } catch (e) {
+                showNotification('Please enter a valid URL', 'error');
+                return;
+            }
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookId}/update-url`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Image URL updated successfully!', 'success');
+                    document.getElementById(`imageUrl_${lookId}`).value = '';
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
+                } else {
+                    showNotification('Error updating image URL: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating image URL:', error);
+                showNotification('Error updating image URL', 'error');
+            });
+        }
+
+        function editLookName(categoryId, lookId) {
+            const newName = prompt('Enter new look name:');
+            if (!newName) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Look name updated successfully!', 'success');
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
+                } else {
+                    showNotification('Error updating look name: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating look name:', error);
+                showNotification('Error updating look name', 'error');
+            });
+        }
+
+        function duplicateLook(categoryId, lookId) {
+            const newName = prompt('Enter name for the duplicated look:');
+            if (!newName) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookId}/duplicate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Look duplicated successfully!', 'success');
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
+                } else {
+                    showNotification('Error duplicating look: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error duplicating look:', error);
+                showNotification('Error duplicating look', 'error');
+            });
+        }
+
+        function deleteLook(categoryId, lookId) {
+            if (!confirm('Are you sure you want to delete this look?')) return;
+
+            fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Look deleted successfully!', 'success');
+                    loadLooksForCategory(categoryId);
+                    loadMoodLookData(); // Refresh main view
+                } else {
+                    showNotification('Error deleting look: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting look:', error);
+                showNotification('Error deleting look', 'error');
+            });
+        }
+
+        function bulkUpdateImages(categoryId) {
+            const imageFiles = [];
+            const lookIds = [];
+            
+            // Collect all selected images
+            const fileInputs = document.querySelectorAll(`input[id^="image_"]`);
+            fileInputs.forEach(input => {
+                if (input.files[0]) {
+                    const lookId = input.id.replace('image_', '');
+                    imageFiles.push(input.files[0]);
+                    lookIds.push(lookId);
+                }
+            });
+
+            if (imageFiles.length === 0) {
+                showNotification('Please select at least one image to update', 'error');
+                return;
+            }
+
+            // Update images one by one
+            let completed = 0;
+            imageFiles.forEach((file, index) => {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                fetch(`/api/customization/mood-look/categories/${categoryId}/looks/${lookIds[index]}/upload`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    completed++;
+                    if (completed === imageFiles.length) {
+                        showNotification(`${completed} images updated successfully!`, 'success');
+                        loadLooksForCategory(categoryId);
+                        loadMoodLookData(); // Refresh main view
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating image:', error);
+                    completed++;
+                    if (completed === imageFiles.length) {
+                        showNotification('Some images failed to update', 'error');
+                        loadLooksForCategory(categoryId);
+                        loadMoodLookData(); // Refresh main view
+                    }
+                });
+            });
+        }
+
+        // Most Loved management functions
+        function loadMostLovedData() {
+            console.log('🔄 Loading most loved data...');
+            fetch('/api/customization/most-loved')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        console.log('📦 Loaded most loved data:', data.data);
+                        populateMostLovedForm(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading most loved data:', error);
+                    showNotification('Error loading most loved data', 'error');
+                });
+        }
+
+        function populateMostLovedForm(mostLovedData) {
+            // Populate settings form
+            document.getElementById('mostLovedTitle').value = mostLovedData.title?.text || 'Most Loved';
+            document.getElementById('mostLovedTitleFontSize').value = mostLovedData.title?.fontSize || '1.8rem';
+            document.getElementById('mostLovedTitleFontColor').value = mostLovedData.title?.fontColor || '#2d3748';
+            document.getElementById('mostLovedTitleFontFamily').value = mostLovedData.title?.fontFamily || '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif';
+            
+            document.getElementById('mostLovedSubtitle').value = mostLovedData.subtitle?.text || 'Customers favourite listed every 15 days';
+            document.getElementById('mostLovedSubtitleFontSize').value = mostLovedData.subtitle?.fontSize || '1rem';
+            document.getElementById('mostLovedSubtitleFontColor').value = mostLovedData.subtitle?.fontColor || '#718096';
+            document.getElementById('mostLovedSubtitleFontFamily').value = mostLovedData.subtitle?.fontFamily || '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif';
+            
+            document.getElementById('mostLovedShowDots').checked = mostLovedData.showCarouselDots !== false;
+            document.getElementById('mostLovedAutoplay').checked = mostLovedData.autoplay !== false;
+            document.getElementById('mostLovedAutoplayInterval').value = mostLovedData.autoplayInterval || 3000;
+            document.getElementById('mostLovedEnabled').checked = mostLovedData.enabled !== false;
+
+            // Render products list
+            renderMostLovedProducts(mostLovedData.products || []);
+        }
+
+        function renderMostLovedProducts(products) {
+            const container = document.getElementById('mostLovedProductsList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'customization-item';
+                productDiv.style.cssText = 'border: 1px solid #e9ecef; padding: 15px; margin-bottom: 10px; border-radius: 8px; background: #f8f9fa;';
+                
+                productDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/100x120?text=No+Image'}" 
+                             alt="${product.name}" 
+                             style="width: 100px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 10px 0;">${product.name}</h4>
+                            <p style="margin: 0 0 10px 0; color: #666;">${product.description}</p>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <input type="file" id="productImage_${product.id}" accept="image/*" style="flex: 1; min-width: 150px;">
+                                <button class="btn btn-primary" onclick="updateMostLovedProductImage('${product.id}')">Update Image</button>
+                                <button class="btn btn-secondary" onclick="editMostLovedProduct('${product.id}')">Edit Product</button>
+                                <button class="btn btn-danger" onclick="deleteMostLovedProduct('${product.id}')">Delete</button>
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                                <input type="url" id="productImageUrl_${product.id}" placeholder="Or enter image URL" style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <button class="btn btn-success" onclick="updateMostLovedProductImageUrl('${product.id}')">Update from URL</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(productDiv);
+            });
+        }
+
+        function updateMostLovedSettings() {
+            const title = {
+                text: document.getElementById('mostLovedTitle').value,
+                fontSize: document.getElementById('mostLovedTitleFontSize').value,
+                fontColor: document.getElementById('mostLovedTitleFontColor').value,
+                fontFamily: document.getElementById('mostLovedTitleFontFamily').value
+            };
+            
+            const subtitle = {
+                text: document.getElementById('mostLovedSubtitle').value,
+                fontSize: document.getElementById('mostLovedSubtitleFontSize').value,
+                fontColor: document.getElementById('mostLovedSubtitleFontColor').value,
+                fontFamily: document.getElementById('mostLovedSubtitleFontFamily').value
+            };
+            
+            const enabled = document.getElementById('mostLovedEnabled').checked;
+            const showCarouselDots = document.getElementById('mostLovedShowDots').checked;
+            const autoplay = document.getElementById('mostLovedAutoplay').checked;
+            const autoplayInterval = parseInt(document.getElementById('mostLovedAutoplayInterval').value) || 3000;
+
+            fetch('/api/customization/most-loved', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, subtitle, enabled, showCarouselDots, autoplay, autoplayInterval })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Most loved settings updated successfully!', 'success');
+                } else {
+                    showNotification('Error updating settings: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function addMostLovedProduct() {
+            const name = prompt('Enter product name:');
+            if (!name) return;
+
+            const description = prompt('Enter product description:');
+            if (!description) return;
+
+            const imageUrl = prompt('Enter image URL (optional):');
+
+            fetch('/api/customization/most-loved/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, description, imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product added successfully!', 'success');
+                    loadMostLovedData();
+                } else {
+                    showNotification('Error adding product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product:', error);
+                showNotification('Error adding product', 'error');
+            });
+        }
+
+        function editMostLovedProduct(productId) {
+            const newName = prompt('Enter new product name:');
+            if (!newName) return;
+
+            const newDescription = prompt('Enter new product description:');
+            if (!newDescription) return;
+
+            fetch(`/api/customization/most-loved/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName, description: newDescription })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product updated successfully!', 'success');
+                    loadMostLovedData();
+                } else {
+                    showNotification('Error updating product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating product:', error);
+                showNotification('Error updating product', 'error');
+            });
+        }
+
+        function deleteMostLovedProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            fetch(`/api/customization/most-loved/products/${productId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product deleted successfully!', 'success');
+                    loadMostLovedData();
+                } else {
+                    showNotification('Error deleting product: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting product:', error);
+                showNotification('Error deleting product', 'error');
+            });
+        }
+
+        function updateMostLovedProductImage(productId) {
+            const imageFile = document.getElementById(`productImage_${productId}`).files[0];
+            
+            if (!imageFile) {
+                showNotification('Please select an image', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            fetch(`/api/customization/most-loved/products/${productId}/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product image updated successfully!', 'success');
+                    document.getElementById(`productImage_${productId}`).value = '';
+                    loadMostLovedData();
+                } else {
+                    showNotification('Error updating image: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating image:', error);
+                showNotification('Error updating image', 'error');
+            });
+        }
+
+        function updateMostLovedProductImageUrl(productId) {
+            const imageUrl = document.getElementById(`productImageUrl_${productId}`).value;
+            
+            if (!imageUrl) {
+                showNotification('Please enter an image URL', 'error');
+                return;
+            }
+
+            // Validate URL format
+            try {
+                new URL(imageUrl);
+            } catch (e) {
+                showNotification('Please enter a valid URL', 'error');
+                return;
+            }
+
+            fetch(`/api/customization/most-loved/products/${productId}/update-url`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Product image URL updated successfully!', 'success');
+                    document.getElementById(`productImageUrl_${productId}`).value = '';
+                    loadMostLovedData();
+                } else {
+                    showNotification('Error updating image URL: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating image URL:', error);
+                showNotification('Error updating image URL', 'error');
             });
         }
     </script>

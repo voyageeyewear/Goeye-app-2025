@@ -1581,12 +1581,10 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             position: relative;
-            min-height: 180px;
-            min-width: 300px;
-            max-width: 300px;
+            width: 220px;
+            height: 270px;
             flex-shrink: 0;
-            display: flex;
-            align-items: center;
+            display: block;
             transition: transform 0.3s ease;
             padding: 0;
             cursor: pointer;
@@ -1674,9 +1672,8 @@
 
         @media (min-width: 480px) {
             .collection-card {
-                min-height: 200px;
-                min-width: 320px;
-                max-width: 320px;
+                width: 220px;
+                height: 270px;
             }
         }
 
@@ -1861,7 +1858,6 @@
         }
 
         .mood-category {
-            margin-bottom: 32px;
             background: white;
             border-radius: 16px;
             padding: 20px;
@@ -3333,74 +3329,9 @@
             <p class="mood-subtitle">Discover every look, for every style</p>
         </div>
         
-        <!-- Men Section -->
-        <div class="mood-category">
-            <div class="mood-category-header">
-                <h3 class="mood-category-title">Men</h3>
-                <p class="mood-category-subtitle">Explore All</p>
-                <div class="mood-arrow">→</div>
-            </div>
-            <div class="mood-looks-carousel">
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=240&fit=crop&crop=face" alt="CEO Look" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">CEO Look</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=240&fit=crop&crop=face" alt="Casual Wear" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">Casual Wear</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=240&fit=crop&crop=face" alt="Athletic Look" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">Athletic Look</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Women Section -->
-        <div class="mood-category">
-            <div class="mood-category-header">
-                <h3 class="mood-category-title">Women</h3>
-                <p class="mood-category-subtitle">Explore All</p>
-                <div class="mood-arrow">→</div>
-            </div>
-            <div class="mood-looks-carousel">
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=240&fit=crop&crop=face" alt="Boss Lady" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">Boss Lady</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=240&fit=crop&crop=face" alt="Glam Queen" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">Glam Queen</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mood-look-card">
-                    <div class="mood-look-image">
-                        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&h=240&fit=crop&crop=face" alt="Athletic Look" class="mood-image">
-                        <div class="mood-overlay">
-                            <span class="mood-look-name">Athletic Look</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Dynamic Categories Container -->
+        <div class="mood-categories">
+            <!-- Categories will be dynamically loaded here -->
         </div>
     </section>
 
@@ -3412,80 +3343,13 @@
         </div>
         
         <div class="most-loved-carousel-container">
-            <div class="most-loved-carousel">
-                <div class="most-loved-slide active">
-                    <div class="most-loved-card">
-                        <div class="most-loved-image">
-                            <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600&h=800&fit=crop&crop=center" alt="DRIP Silver wayfarer Eyeglasses" class="loved-product-image">
-                            <div class="most-loved-content">
-                                <h3 class="most-loved-product-name">DRIP</h3>
-                                <p class="most-loved-product-desc">Silver wayfarer Eyeglasses</p>
-                                <button class="most-loved-shop-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="most-loved-slide">
-                    <div class="most-loved-card">
-                        <div class="most-loved-image">
-                            <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=800&fit=crop&crop=center" alt="COMMANDER Black Frame Sunglasses" class="loved-product-image">
-                            <div class="most-loved-content">
-                                <h3 class="most-loved-product-name">COMMANDER</h3>
-                                <p class="most-loved-product-desc">Black Frame Sunglasses</p>
-                                <button class="most-loved-shop-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="most-loved-slide">
-                    <div class="most-loved-card">
-                        <div class="most-loved-image">
-                            <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=600&h=800&fit=crop&crop=center" alt="VOYAGE Classic Aviators" class="loved-product-image">
-                            <div class="most-loved-content">
-                                <h3 class="most-loved-product-name">VOYAGE</h3>
-                                <p class="most-loved-product-desc">Classic Aviator Sunglasses</p>
-                                <button class="most-loved-shop-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="most-loved-slide">
-                    <div class="most-loved-card">
-                        <div class="most-loved-image">
-                            <img src="https://images.unsplash.com/photo-1556306535-38febf6782e7?w=600&h=800&fit=crop&crop=center" alt="ELITE Premium Frames" class="loved-product-image">
-                            <div class="most-loved-content">
-                                <h3 class="most-loved-product-name">ELITE</h3>
-                                <p class="most-loved-product-desc">Premium Designer Frames</p>
-                                <button class="most-loved-shop-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="most-loved-slide">
-                    <div class="most-loved-card">
-                        <div class="most-loved-image">
-                            <img src="https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&h=800&fit=crop&crop=center" alt="SPORT Athletic Frames" class="loved-product-image">
-                            <div class="most-loved-content">
-                                <h3 class="most-loved-product-name">SPORT</h3>
-                                <p class="most-loved-product-desc">Athletic Performance Frames</p>
-                                <button class="most-loved-shop-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="most-loved-carousel" id="mostLovedCarousel">
+                <!-- Dynamic products will be loaded here -->
             </div>
             
             <!-- Navigation Dots -->
-            <div class="carousel-dots">
-                <span class="dot active" onclick="currentSlide(1)"></span>
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
-                <span class="dot" onclick="currentSlide(4)"></span>
-                <span class="dot" onclick="currentSlide(5)"></span>
+            <div class="carousel-dots" id="mostLovedCarouselDots">
+                <!-- Dynamic dots will be loaded here -->
             </div>
         </div>
     </section>
@@ -3736,7 +3600,34 @@
             }
 
             // Make currentSlide function globally available for onclick
-            window.currentSlide = currentSlideFunc;
+            window.currentSlide = function(n) {
+                // Check if this is for most loved carousel
+                const mostLovedDots = document.querySelectorAll('#mostLovedCarouselDots .dot');
+                if (mostLovedDots.length > 0) {
+                    showMostLovedSlide(n);
+                    // Reset autoplay timer
+                    if (mostLovedAutoplayInterval) {
+                        clearInterval(mostLovedAutoplayInterval);
+                        // Restart autoplay after user interaction
+                        setTimeout(() => {
+                            const mostLovedSection = document.querySelector('.most-loved-section');
+                            if (mostLovedSection) {
+                                // Get current data and restart autoplay
+                                fetch('http://localhost:3002/api/customization/most-loved')
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success && data.data) {
+                                            startMostLovedAutoplay(data.data);
+                                        }
+                                    });
+                            }
+                        }, 2000); // Wait 2 seconds before restarting
+                    }
+                } else {
+                    // Use existing carousel function
+                    currentSlideFunc(n);
+                }
+            };
 
             // Setup menu event listeners
             const menuOverlay = document.getElementById('menuOverlay');
@@ -4522,6 +4413,18 @@
                 case 'featuredProducts':
                     updateFeaturedProductsSection(data.data);
                     break;
+                case 'newArrivals':
+                    updateNewArrivalsSection(data.data);
+                    break;
+                case 'exclusive':
+                    updateExclusiveSection(data.data);
+                    break;
+                case 'moodLook':
+                    updateMoodLookSection(data.data);
+                    break;
+            case 'mostLoved':
+                updateMostLovedSection(data.data);
+                break;
                 case 'productDisplay':
                     updateProductDisplay(data.data);
                     break;
@@ -4870,6 +4773,451 @@
             console.log('✅ Featured products section updated successfully');
         }
 
+        function updateNewArrivalsSection(newArrivalsData) {
+            console.log('🔄 Updating new arrivals section:', newArrivalsData);
+            
+            // Find the new arrivals section (second featured-products-section)
+            const newArrivalsSections = document.querySelectorAll('.featured-products-section');
+            const newArrivalsSection = newArrivalsSections[1]; // Get the second one
+            
+            if (!newArrivalsSection) {
+                console.log('❌ New arrivals section not found');
+                return;
+            }
+            
+            // Update section title
+            const titleElement = newArrivalsSection.querySelector('.featured-title');
+            if (titleElement && newArrivalsData.title) {
+                titleElement.textContent = newArrivalsData.title;
+            }
+            
+            // Update section subtitle
+            const subtitleElement = newArrivalsSection.querySelector('.featured-subtitle');
+            if (subtitleElement && newArrivalsData.subtitle) {
+                subtitleElement.textContent = newArrivalsData.subtitle;
+            }
+            
+            // Show/hide section based on enabled status
+            if (newArrivalsData.enabled !== undefined) {
+                newArrivalsSection.style.display = newArrivalsData.enabled ? 'block' : 'none';
+            }
+            
+            // Update products
+            if (newArrivalsData.products && Array.isArray(newArrivalsData.products)) {
+                const carousel = newArrivalsSection.querySelector('.featured-carousel');
+                if (carousel) {
+                    // Clear existing products
+                    const existingProducts = carousel.querySelectorAll('.featured-product-card');
+                    existingProducts.forEach(product => product.remove());
+                    
+                    // Add new products
+                    newArrivalsData.products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'featured-product-card';
+                        
+                        const videoContainer = document.createElement('div');
+                        videoContainer.className = 'product-video-container';
+                        
+                        const video = document.createElement('video');
+                        video.className = 'product-video';
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.loop = true;
+                        video.playsinline = true;
+                        
+                        // Fix video URL to use correct port
+                        let videoUrl = product.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+                        if (videoUrl.startsWith('/uploads/')) {
+                            videoUrl = 'http://localhost:3002' + videoUrl;
+                        }
+                        
+                        const source = document.createElement('source');
+                        source.src = videoUrl;
+                        source.type = 'video/mp4';
+                        
+                        const overlay = document.createElement('div');
+                        overlay.className = 'product-overlay';
+                        
+                        const productName = document.createElement('h3');
+                        productName.className = 'product-name';
+                        productName.textContent = product.name || 'Product';
+                        
+                        video.appendChild(source);
+                        videoContainer.appendChild(video);
+                        videoContainer.appendChild(overlay);
+                        overlay.appendChild(productName);
+                        productCard.appendChild(videoContainer);
+                        
+                        carousel.appendChild(productCard);
+                    });
+                }
+            }
+            
+            console.log('✅ New arrivals section updated successfully');
+        }
+
+        function updateExclusiveSection(exclusiveData) {
+            console.log('🔄 Updating exclusive section:', exclusiveData);
+            
+            // Find the exclusive section
+            const exclusiveSection = document.querySelector('.exclusive-section');
+            if (!exclusiveSection) {
+                console.log('❌ Exclusive section not found');
+                return;
+            }
+            
+            // Update section title
+            const titleElement = exclusiveSection.querySelector('.exclusive-title');
+            if (titleElement && exclusiveData.title) {
+                titleElement.textContent = exclusiveData.title;
+            }
+            
+            // Update section subtitle
+            const subtitleElement = exclusiveSection.querySelector('.exclusive-subtitle');
+            if (subtitleElement && exclusiveData.subtitle) {
+                subtitleElement.textContent = exclusiveData.subtitle;
+            }
+            
+            // Update border color
+            if (exclusiveData.borderColor) {
+                const productContainers = exclusiveSection.querySelectorAll('.exclusive-product-container');
+                productContainers.forEach(container => {
+                    container.style.borderColor = exclusiveData.borderColor;
+                });
+            }
+            
+            // Show/hide section based on enabled status
+            if (exclusiveData.enabled !== undefined) {
+                exclusiveSection.style.display = exclusiveData.enabled ? 'block' : 'none';
+            }
+            
+            // Update products
+            if (exclusiveData.products && Array.isArray(exclusiveData.products)) {
+                const grid = exclusiveSection.querySelector('.exclusive-grid');
+                if (grid) {
+                    // Clear existing products
+                    const existingProducts = grid.querySelectorAll('.exclusive-product-card');
+                    existingProducts.forEach(product => product.remove());
+                    
+                    // Add new products
+                    exclusiveData.products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'exclusive-product-card';
+                        
+                        const productContainer = document.createElement('div');
+                        productContainer.className = 'exclusive-product-container';
+                        
+                        // Apply border color
+                        if (exclusiveData.borderColor) {
+                            productContainer.style.borderColor = exclusiveData.borderColor;
+                        }
+                        
+                        const video = document.createElement('video');
+                        video.className = 'exclusive-product-video';
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.loop = true;
+                        video.playsinline = true;
+                        
+                        // Fix video URL to use correct port
+                        let videoUrl = product.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+                        if (videoUrl.startsWith('/uploads/')) {
+                            videoUrl = 'http://localhost:3002' + videoUrl;
+                        }
+                        
+                        const source = document.createElement('source');
+                        source.src = videoUrl;
+                        source.type = 'video/mp4';
+                        
+                        video.appendChild(source);
+                        productContainer.appendChild(video);
+                        productCard.appendChild(productContainer);
+                        
+                        grid.appendChild(productCard);
+                    });
+                }
+            }
+            
+            console.log('✅ Exclusive section updated successfully');
+        }
+
+        function updateMoodLookSection(moodData) {
+            console.log('🔄 Updating mood look section:', moodData);
+            
+            // Find the mood look section
+            const moodSection = document.querySelector('.mood-look-section');
+            if (!moodSection) {
+                console.log('❌ Mood look section not found');
+                return;
+            }
+            
+            // Update section title
+            const titleElement = moodSection.querySelector('.mood-title');
+            if (titleElement && moodData.title) {
+                titleElement.textContent = moodData.title;
+            }
+            
+            // Update section highlight
+            const highlightElement = moodSection.querySelector('.mood-highlight');
+            if (highlightElement && moodData.highlight) {
+                highlightElement.textContent = moodData.highlight;
+            }
+            
+            // Update section subtitle
+            const subtitleElement = moodSection.querySelector('.mood-subtitle');
+            if (subtitleElement && moodData.subtitle) {
+                subtitleElement.textContent = moodData.subtitle;
+            }
+            
+            // Show/hide section based on enabled status
+            if (moodData.enabled !== undefined) {
+                moodSection.style.display = moodData.enabled ? 'block' : 'none';
+            }
+            
+            // Update categories
+            if (moodData.categories && Array.isArray(moodData.categories)) {
+                const categoriesContainer = moodSection.querySelector('.mood-categories');
+                if (categoriesContainer) {
+                    // Clear existing categories
+                    categoriesContainer.innerHTML = '';
+                    
+                    // Add new categories
+                    moodData.categories.forEach(category => {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'mood-category';
+                        
+                        const categoryHeader = document.createElement('div');
+                        categoryHeader.className = 'mood-category-header';
+                        
+                        const categoryTitle = document.createElement('h3');
+                        categoryTitle.className = 'mood-category-title';
+                        categoryTitle.textContent = category.title || 'Category';
+                        
+                        const categorySubtitle = document.createElement('p');
+                        categorySubtitle.className = 'mood-category-subtitle';
+                        categorySubtitle.textContent = category.subtitle || 'Explore All';
+                        
+                        const moodArrow = document.createElement('div');
+                        moodArrow.className = 'mood-arrow';
+                        moodArrow.textContent = '→';
+                        
+                        const looksContainer = document.createElement('div');
+                        looksContainer.className = 'mood-looks-carousel';
+                        
+                        // Add looks in horizontal row
+                        if (category.looks && Array.isArray(category.looks)) {
+                            category.looks.forEach(look => {
+                                const lookCard = document.createElement('div');
+                                lookCard.className = 'mood-look-card';
+                                
+                                const lookImageDiv = document.createElement('div');
+                                lookImageDiv.className = 'mood-look-image';
+                                
+                                const lookImage = document.createElement('img');
+                                lookImage.className = 'mood-image';
+                                // Fix image URL to use correct port
+                                let imageUrl = look.imageUrl || 'https://via.placeholder.com/100x120?text=Look';
+                                if (imageUrl.startsWith('/uploads/')) {
+                                    imageUrl = 'http://localhost:3002' + imageUrl;
+                                }
+                                lookImage.src = imageUrl;
+                                lookImage.alt = look.name || 'Look';
+                                
+                                const moodOverlay = document.createElement('div');
+                                moodOverlay.className = 'mood-overlay';
+                                
+                                const lookName = document.createElement('span');
+                                lookName.className = 'mood-look-name';
+                                lookName.textContent = look.name || 'Look';
+                                
+                                moodOverlay.appendChild(lookName);
+                                lookImageDiv.appendChild(lookImage);
+                                lookImageDiv.appendChild(moodOverlay);
+                                lookCard.appendChild(lookImageDiv);
+                                looksContainer.appendChild(lookCard);
+                            });
+                        }
+                        
+                        categoryHeader.appendChild(categoryTitle);
+                        categoryHeader.appendChild(categorySubtitle);
+                        categoryHeader.appendChild(moodArrow);
+                        categoryDiv.appendChild(categoryHeader);
+                        categoryDiv.appendChild(looksContainer);
+                        categoriesContainer.appendChild(categoryDiv);
+                    });
+                }
+            }
+            
+            console.log('✅ Mood look section updated successfully');
+        }
+
+        function updateMostLovedSection(mostLovedData) {
+            console.log('🔄 Updating most loved section:', mostLovedData);
+            
+            // Find the most loved section
+            const mostLovedSection = document.querySelector('.most-loved-section');
+            if (!mostLovedSection) {
+                console.log('❌ Most loved section not found');
+                return;
+            }
+            
+            // Show/hide section based on enabled status
+            if (mostLovedData.enabled !== undefined) {
+                mostLovedSection.style.display = mostLovedData.enabled ? 'block' : 'none';
+            }
+            
+            // Update title styling
+            const titleElement = mostLovedSection.querySelector('.most-loved-title');
+            if (titleElement && mostLovedData.title) {
+                titleElement.textContent = mostLovedData.title.text || 'Most Loved';
+                titleElement.style.fontSize = mostLovedData.title.fontSize || '1.8rem';
+                titleElement.style.fontFamily = mostLovedData.title.fontFamily || '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif';
+                titleElement.style.color = mostLovedData.title.fontColor || '#2d3748';
+            }
+            
+            // Update subtitle styling
+            const subtitleElement = mostLovedSection.querySelector('.most-loved-subtitle');
+            if (subtitleElement && mostLovedData.subtitle) {
+                subtitleElement.textContent = mostLovedData.subtitle.text || 'Customers favourite listed every 15 days';
+                subtitleElement.style.fontSize = mostLovedData.subtitle.fontSize || '1rem';
+                subtitleElement.style.fontFamily = mostLovedData.subtitle.fontFamily || '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif';
+                subtitleElement.style.color = mostLovedData.subtitle.fontColor || '#718096';
+            }
+            
+            // Update carousel dots visibility
+            const carouselDots = mostLovedSection.querySelector('#mostLovedCarouselDots');
+            if (carouselDots) {
+                carouselDots.style.display = mostLovedData.showCarouselDots !== false ? 'flex' : 'none';
+            }
+            
+            // Update products
+            if (mostLovedData.products && Array.isArray(mostLovedData.products)) {
+                const carousel = mostLovedSection.querySelector('#mostLovedCarousel');
+                const dotsContainer = mostLovedSection.querySelector('#mostLovedCarouselDots');
+                
+                if (carousel) {
+                    // Clear existing carousel
+                    carousel.innerHTML = '';
+                    
+                    // Add new products
+                    mostLovedData.products.forEach((product, index) => {
+                        const slideDiv = document.createElement('div');
+                        slideDiv.className = `most-loved-slide ${index === 0 ? 'active' : ''}`;
+                        
+                        const cardDiv = document.createElement('div');
+                        cardDiv.className = 'most-loved-card';
+                        
+                        const imageDiv = document.createElement('div');
+                        imageDiv.className = 'most-loved-image';
+                        
+                        const productImage = document.createElement('img');
+                        productImage.className = 'loved-product-image';
+                        // Fix image URL to use correct port
+                        let imageUrl = product.imageUrl || 'https://via.placeholder.com/600x800?text=Product';
+                        if (imageUrl.startsWith('/uploads/')) {
+                            imageUrl = 'http://localhost:3002' + imageUrl;
+                        }
+                        productImage.src = imageUrl;
+                        productImage.alt = product.name || 'Product';
+                        
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'most-loved-content';
+                        
+                        const productName = document.createElement('h3');
+                        productName.className = 'most-loved-product-name';
+                        productName.textContent = product.name || 'Product';
+                        
+                        const productDesc = document.createElement('p');
+                        productDesc.className = 'most-loved-product-desc';
+                        productDesc.textContent = product.description || 'Product description';
+                        
+                        const shopBtn = document.createElement('button');
+                        shopBtn.className = 'most-loved-shop-btn';
+                        shopBtn.textContent = 'Shop Now';
+                        
+                        contentDiv.appendChild(productName);
+                        contentDiv.appendChild(productDesc);
+                        contentDiv.appendChild(shopBtn);
+                        imageDiv.appendChild(productImage);
+                        cardDiv.appendChild(imageDiv);
+                        cardDiv.appendChild(contentDiv);
+                        slideDiv.appendChild(cardDiv);
+                        carousel.appendChild(slideDiv);
+                    });
+                }
+                
+                // Update carousel dots
+                if (dotsContainer && mostLovedData.showCarouselDots !== false) {
+                    dotsContainer.innerHTML = '';
+                    mostLovedData.products.forEach((_, index) => {
+                        const dot = document.createElement('span');
+                        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                        dot.onclick = () => currentSlide(index + 1);
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+                
+                // Start autoplay if enabled
+                startMostLovedAutoplay(mostLovedData);
+            }
+            
+            console.log('✅ Most loved section updated successfully');
+        }
+
+        // Global variables for autoplay
+        let mostLovedAutoplayInterval = null;
+        let currentMostLovedSlide = 0;
+
+        function startMostLovedAutoplay(mostLovedData) {
+            // Clear existing autoplay
+            if (mostLovedAutoplayInterval) {
+                clearInterval(mostLovedAutoplayInterval);
+                mostLovedAutoplayInterval = null;
+            }
+            
+            // Check if autoplay is enabled and there are products
+            if (!mostLovedData.autoplay || !mostLovedData.products || mostLovedData.products.length <= 1) {
+                return;
+            }
+            
+            const interval = mostLovedData.autoplayInterval || 3000;
+            currentMostLovedSlide = 0;
+            
+            mostLovedAutoplayInterval = setInterval(() => {
+                currentMostLovedSlide = (currentMostLovedSlide + 1) % mostLovedData.products.length;
+                showMostLovedSlide(currentMostLovedSlide + 1);
+            }, interval);
+            
+            console.log(`🔄 Most Loved autoplay started with ${interval}ms interval`);
+        }
+
+        function showMostLovedSlide(slideNumber) {
+            const slides = document.querySelectorAll('.most-loved-slide');
+            const dots = document.querySelectorAll('#mostLovedCarouselDots .dot');
+            
+            if (slides.length === 0) return;
+            
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Remove active class from all dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show current slide
+            const currentSlide = slides[slideNumber - 1];
+            if (currentSlide) {
+                currentSlide.classList.add('active');
+            }
+            
+            // Activate current dot
+            const currentDot = dots[slideNumber - 1];
+            if (currentDot) {
+                currentDot.classList.add('active');
+            }
+            
+            currentMostLovedSlide = slideNumber - 1;
+        }
+
         function updateHeaderStyles(data) {
             const header = document.querySelector('.header');
             if (header && data) {
@@ -5112,6 +5460,41 @@
                 if (featuredProductsData.success && featuredProductsData.data) {
                     console.log('📦 Loaded featured products data:', featuredProductsData.data);
                     updateFeaturedProductsSection(featuredProductsData.data);
+                }
+                
+                // Load new arrivals data
+                const newArrivalsResponse = await fetch('http://localhost:3002/api/customization/new-arrivals');
+                const newArrivalsData = await newArrivalsResponse.json();
+                
+                if (newArrivalsData.success && newArrivalsData.data) {
+                    console.log('📦 Loaded new arrivals data:', newArrivalsData.data);
+                    updateNewArrivalsSection(newArrivalsData.data);
+                }
+                
+                // Load exclusive data
+                const exclusiveResponse = await fetch('http://localhost:3002/api/customization/exclusive');
+                const exclusiveData = await exclusiveResponse.json();
+                
+                if (exclusiveData.success && exclusiveData.data) {
+                    console.log('📦 Loaded exclusive data:', exclusiveData.data);
+                    updateExclusiveSection(exclusiveData.data);
+                }
+                
+                // Load mood look data
+                const moodLookResponse = await fetch('http://localhost:3002/api/customization/mood-look');
+                const moodLookData = await moodLookResponse.json();
+                
+                if (moodLookData.success && moodLookData.data) {
+                    console.log('📦 Loaded mood look data:', moodLookData.data);
+                    updateMoodLookSection(moodLookData.data);
+                }
+                
+                // Load most loved data
+                const mostLovedResponse = await fetch('http://localhost:3002/api/customization/most-loved');
+                const mostLovedData = await mostLovedResponse.json();
+                if (mostLovedData.success && mostLovedData.data) {
+                    console.log('📦 Loaded most loved data:', mostLovedData.data);
+                    updateMostLovedSection(mostLovedData.data);
                 }
                 
                 console.log('✅ Initial data loaded successfully');

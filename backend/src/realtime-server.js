@@ -124,7 +124,7 @@ const storage = multer.diskStorage({
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB limit
+        fileSize: 100 * 1024 * 1024 // 100MB limit for video uploads
     }
 });
 
@@ -1024,6 +1024,417 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
             });
         });
 
+        // New Arrivals API Endpoints
+        app.get('/api/customization/new-arrivals', (req, res) => {
+            res.json({
+                success: true,
+                data: appCustomizations.newArrivals || {}
+            });
+        });
+
+        app.post('/api/customization/new-arrivals', (req, res) => {
+            const { title, subtitle, enabled } = req.body;
+
+            if (!appCustomizations.newArrivals) {
+                appCustomizations.newArrivals = {
+                    title: "New Arrivals",
+                    subtitle: "Discover our latest products through video",
+                    enabled: true,
+                    products: []
+                };
+            }
+
+            if (title !== undefined) appCustomizations.newArrivals.title = title;
+            if (subtitle !== undefined) appCustomizations.newArrivals.subtitle = subtitle;
+            if (enabled !== undefined) appCustomizations.newArrivals.enabled = enabled;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'newArrivals',
+                data: appCustomizations.newArrivals
+            });
+
+            res.json({
+                success: true,
+                message: 'New arrivals settings updated successfully',
+                data: appCustomizations.newArrivals
+            });
+        });
+
+        app.post('/api/customization/new-arrivals/products', (req, res) => {
+            const { name, videoUrl } = req.body;
+
+            if (!appCustomizations.newArrivals) {
+                appCustomizations.newArrivals = {
+                    title: "New Arrivals",
+                    subtitle: "Discover our latest products through video",
+                    enabled: true,
+                    products: []
+                };
+            }
+
+            if (!appCustomizations.newArrivals.products) {
+                appCustomizations.newArrivals.products = [];
+            }
+
+            const newProduct = {
+                id: `new_arrival_${Date.now()}`,
+                name: name || 'New Product',
+                videoUrl: videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                order: appCustomizations.newArrivals.products.length + 1
+            };
+
+            appCustomizations.newArrivals.products.push(newProduct);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'newArrivals',
+                data: appCustomizations.newArrivals
+            });
+
+            res.json({
+                success: true,
+                message: 'New arrival product added successfully',
+                data: newProduct
+            });
+        });
+
+        app.put('/api/customization/new-arrivals/products/:id', (req, res) => {
+            const { id } = req.params;
+            const { name, order } = req.body;
+
+            if (!appCustomizations.newArrivals?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'New arrivals products not found'
+                });
+            }
+
+            const productIndex = appCustomizations.newArrivals.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            if (name !== undefined) appCustomizations.newArrivals.products[productIndex].name = name;
+            if (order !== undefined) appCustomizations.newArrivals.products[productIndex].order = order;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'newArrivals',
+                data: appCustomizations.newArrivals
+            });
+
+            res.json({
+                success: true,
+                message: 'New arrival product updated successfully',
+                data: appCustomizations.newArrivals.products[productIndex]
+            });
+        });
+
+        app.delete('/api/customization/new-arrivals/products/:id', (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.newArrivals?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'New arrivals products not found'
+                });
+            }
+
+            const productIndex = appCustomizations.newArrivals.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            appCustomizations.newArrivals.products.splice(productIndex, 1);
+
+            // Reorder remaining products
+            appCustomizations.newArrivals.products.forEach((product, index) => {
+                product.order = index + 1;
+            });
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'newArrivals',
+                data: appCustomizations.newArrivals
+            });
+
+            res.json({
+                success: true,
+                message: 'New arrival product deleted successfully'
+            });
+        });
+
+        app.post('/api/customization/new-arrivals/products/:id/upload', upload.single('video'), (req, res) => {
+            const { id } = req.params;
+            
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No file uploaded'
+                });
+            }
+            
+            if (!appCustomizations.newArrivals?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'New arrivals products not found'
+                });
+            }
+            
+            const productIndex = appCustomizations.newArrivals.products.findIndex(product => product.id === id);
+            
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+            
+            const fileUrl = `/uploads/${req.file.filename}`;
+            appCustomizations.newArrivals.products[productIndex].videoUrl = fileUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'newArrivals',
+                data: appCustomizations.newArrivals
+            });
+            
+            res.json({
+                success: true,
+                message: 'Video uploaded successfully',
+                fileUrl: fileUrl,
+                data: appCustomizations.newArrivals.products[productIndex]
+            });
+        });
+
+        // Exclusive Section API Endpoints
+        app.get('/api/customization/exclusive', (req, res) => {
+            res.json({
+                success: true,
+                data: appCustomizations.exclusive || {}
+            });
+        });
+
+        app.post('/api/customization/exclusive', (req, res) => {
+            const { title, subtitle, enabled, borderColor } = req.body;
+
+            if (!appCustomizations.exclusive) {
+                appCustomizations.exclusive = {
+                    title: "Exclusively at GOEYE",
+                    subtitle: "Get the perfect vision and style",
+                    enabled: true,
+                    borderColor: "#fd7f6f",
+                    products: []
+                };
+            }
+
+            if (title !== undefined) appCustomizations.exclusive.title = title;
+            if (subtitle !== undefined) appCustomizations.exclusive.subtitle = subtitle;
+            if (enabled !== undefined) appCustomizations.exclusive.enabled = enabled;
+            if (borderColor !== undefined) appCustomizations.exclusive.borderColor = borderColor;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+
+            res.json({
+                success: true,
+                message: 'Exclusive section settings updated successfully',
+                data: appCustomizations.exclusive
+            });
+        });
+
+        app.post('/api/customization/exclusive/products', (req, res) => {
+            const { videoUrl } = req.body;
+
+            if (!appCustomizations.exclusive) {
+                appCustomizations.exclusive = {
+                    title: "Exclusively at GOEYE",
+                    subtitle: "Get the perfect vision and style",
+                    enabled: true,
+                    borderColor: "#fd7f6f",
+                    products: []
+                };
+            }
+
+            if (!appCustomizations.exclusive.products) {
+                appCustomizations.exclusive.products = [];
+            }
+
+            const newProduct = {
+                id: `exclusive_${Date.now()}`,
+                videoUrl: videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                order: appCustomizations.exclusive.products.length + 1
+            };
+
+            appCustomizations.exclusive.products.push(newProduct);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+
+            res.json({
+                success: true,
+                message: 'Exclusive product added successfully',
+                data: newProduct
+            });
+        });
+
+        app.put('/api/customization/exclusive/products/:id', (req, res) => {
+            const { id } = req.params;
+            const { order } = req.body;
+
+            if (!appCustomizations.exclusive?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Exclusive products not found'
+                });
+            }
+
+            const productIndex = appCustomizations.exclusive.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            if (order !== undefined) appCustomizations.exclusive.products[productIndex].order = order;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+
+            res.json({
+                success: true,
+                message: 'Exclusive product updated successfully',
+                data: appCustomizations.exclusive.products[productIndex]
+            });
+        });
+
+        app.delete('/api/customization/exclusive/products/:id', (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.exclusive?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Exclusive products not found'
+                });
+            }
+
+            const productIndex = appCustomizations.exclusive.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            appCustomizations.exclusive.products.splice(productIndex, 1);
+
+            // Reorder remaining products
+            appCustomizations.exclusive.products.forEach((product, index) => {
+                product.order = index + 1;
+            });
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+
+            res.json({
+                success: true,
+                message: 'Exclusive product deleted successfully'
+            });
+        });
+
+        app.post('/api/customization/exclusive/products/:id/upload', upload.single('video'), (req, res) => {
+            const { id } = req.params;
+            
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No file uploaded'
+                });
+            }
+            
+            if (!appCustomizations.exclusive?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Exclusive products not found'
+                });
+            }
+            
+            const productIndex = appCustomizations.exclusive.products.findIndex(product => product.id === id);
+            
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+            
+            const fileUrl = `/uploads/${req.file.filename}`;
+            appCustomizations.exclusive.products[productIndex].videoUrl = fileUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+            
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'exclusive',
+                data: appCustomizations.exclusive
+            });
+            
+            res.json({
+                success: true,
+                message: 'Video uploaded successfully',
+                fileUrl: fileUrl,
+                data: appCustomizations.exclusive.products[productIndex]
+            });
+        });
+
         // Mood Look API Endpoints
         app.get('/api/customization/mood-look', (req, res) => {
             res.json({
@@ -1103,6 +1514,31 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
             });
         });
 
+        app.get('/api/customization/mood-look/categories/:id', (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const category = appCustomizations.moodLook.categories.find(category => category.id === id);
+
+            if (!category) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                data: category
+            });
+        });
+
         app.put('/api/customization/mood-look/categories/:id', (req, res) => {
             const { id } = req.params;
             const { title, subtitle } = req.body;
@@ -1178,9 +1614,9 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
             });
         });
 
-        app.post('/api/customization/mood-look/categories/:categoryId/looks', (req, res) => {
+        app.post('/api/customization/mood-look/categories/:categoryId/looks', upload.single('image'), (req, res) => {
             const { categoryId } = req.params;
-            const { name } = req.body;
+            const { name, imageUrl } = req.body;
 
             if (!appCustomizations.moodLook?.categories) {
                 return res.status(404).json({
@@ -1198,10 +1634,29 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
                 });
             }
 
+            let finalImageUrl = 'https://via.placeholder.com/200x200?text=Look';
+            
+            // Handle image upload
+            if (req.file) {
+                const timestamp = Date.now();
+                const randomId = Math.floor(Math.random() * 1000000000);
+                const fileExtension = path.extname(req.file.originalname);
+                const fileName = `mood-look-${timestamp}-${randomId}${fileExtension}`;
+                const filePath = path.join(uploadsDir, fileName);
+                
+                // Move uploaded file to uploads directory
+                fs.renameSync(req.file.path, filePath);
+                
+                finalImageUrl = `/uploads/${fileName}`;
+            } else if (imageUrl) {
+                // Use provided image URL
+                finalImageUrl = imageUrl;
+            }
+
             const newLook = {
                 id: `look_${Date.now()}`,
                 name: name || 'Look',
-                imageUrl: 'https://via.placeholder.com/200x200?text=Look',
+                imageUrl: finalImageUrl,
                 order: appCustomizations.moodLook.categories[categoryIndex].looks.length + 1
             };
 
@@ -1270,6 +1725,61 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
             });
         });
 
+        app.post('/api/customization/mood-look/categories/:categoryId/looks/:lookId/duplicate', (req, res) => {
+            const { categoryId, lookId } = req.params;
+            const { name } = req.body;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const lookIndex = appCustomizations.moodLook.categories[categoryIndex].looks.findIndex(look => look.id === lookId);
+
+            if (lookIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Look not found'
+                });
+            }
+
+            const originalLook = appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex];
+            
+            const duplicatedLook = {
+                id: `look_${Date.now()}`,
+                name: name || `${originalLook.name} (Copy)`,
+                imageUrl: originalLook.imageUrl, // Copy the same image
+                order: appCustomizations.moodLook.categories[categoryIndex].looks.length + 1
+            };
+
+            appCustomizations.moodLook.categories[categoryIndex].looks.push(duplicatedLook);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Look duplicated successfully',
+                data: duplicatedLook
+            });
+        });
+
         app.delete('/api/customization/mood-look/categories/:categoryId/looks/:lookId', (req, res) => {
             const { categoryId, lookId } = req.params;
 
@@ -1312,6 +1822,309 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
                 success: true,
                 message: 'Look deleted successfully',
                 data: deletedLook
+            });
+        });
+
+        // Most Loved Section API Endpoints
+        app.get('/api/customization/most-loved', (req, res) => {
+            if (!appCustomizations.mostLoved) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                data: appCustomizations.mostLoved
+            });
+        });
+
+        app.post('/api/customization/most-loved', (req, res) => {
+            const { title, subtitle, enabled, showCarouselDots, autoplay, autoplayInterval } = req.body;
+
+            if (!appCustomizations.mostLoved) {
+                appCustomizations.mostLoved = {
+                    enabled: true,
+                    title: { text: "Most Loved", fontSize: "1.8rem", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontColor: "#2d3748" },
+                    subtitle: { text: "Customers favourite listed every 15 days", fontSize: "1rem", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontColor: "#718096" },
+                    showCarouselDots: true,
+                    autoplay: true,
+                    autoplayInterval: 3000,
+                    products: []
+                };
+            }
+
+            if (title !== undefined) appCustomizations.mostLoved.title = title;
+            if (subtitle !== undefined) appCustomizations.mostLoved.subtitle = subtitle;
+            if (enabled !== undefined) appCustomizations.mostLoved.enabled = enabled;
+            if (showCarouselDots !== undefined) appCustomizations.mostLoved.showCarouselDots = showCarouselDots;
+            if (autoplay !== undefined) appCustomizations.mostLoved.autoplay = autoplay;
+            if (autoplayInterval !== undefined) appCustomizations.mostLoved.autoplayInterval = autoplayInterval;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Most loved settings updated successfully',
+                data: appCustomizations.mostLoved
+            });
+        });
+
+        app.post('/api/customization/most-loved/products', (req, res) => {
+            const { name, description, imageUrl } = req.body;
+
+            if (!appCustomizations.mostLoved) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            if (!appCustomizations.mostLoved.products) {
+                appCustomizations.mostLoved.products = [];
+            }
+
+            const newProduct = {
+                id: `most_loved_${Date.now()}`,
+                name: name || 'Product',
+                description: description || 'Product description',
+                imageUrl: imageUrl || 'https://via.placeholder.com/600x800?text=Product',
+                order: appCustomizations.mostLoved.products.length + 1
+            };
+
+            appCustomizations.mostLoved.products.push(newProduct);
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Product added successfully',
+                data: newProduct
+            });
+        });
+
+        app.put('/api/customization/most-loved/products/:id', (req, res) => {
+            const { id } = req.params;
+            const { name, description, order } = req.body;
+
+            if (!appCustomizations.mostLoved?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            const productIndex = appCustomizations.mostLoved.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            if (name !== undefined) appCustomizations.mostLoved.products[productIndex].name = name;
+            if (description !== undefined) appCustomizations.mostLoved.products[productIndex].description = description;
+            if (order !== undefined) appCustomizations.mostLoved.products[productIndex].order = order;
+
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Product updated successfully',
+                data: appCustomizations.mostLoved.products[productIndex]
+            });
+        });
+
+        app.delete('/api/customization/most-loved/products/:id', (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.mostLoved?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            const productIndex = appCustomizations.mostLoved.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            const deletedProduct = appCustomizations.mostLoved.products.splice(productIndex, 1)[0];
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Product deleted successfully',
+                data: deletedProduct
+            });
+        });
+
+        app.post('/api/customization/most-loved/products/:id/upload', upload.single('image'), (req, res) => {
+            const { id } = req.params;
+
+            if (!appCustomizations.mostLoved?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            const productIndex = appCustomizations.mostLoved.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No image file provided'
+                });
+            }
+
+            const timestamp = Date.now();
+            const randomId = Math.floor(Math.random() * 1000000000);
+            const fileExtension = path.extname(req.file.originalname);
+            const fileName = `most-loved-${timestamp}-${randomId}${fileExtension}`;
+            const filePath = path.join(uploadsDir, fileName);
+
+            // Move uploaded file to uploads directory
+            fs.renameSync(req.file.path, filePath);
+
+            appCustomizations.mostLoved.products[productIndex].imageUrl = `/uploads/${fileName}`;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Product image updated successfully',
+                data: appCustomizations.mostLoved.products[productIndex]
+            });
+        });
+
+        app.put('/api/customization/most-loved/products/:id/update-url', (req, res) => {
+            const { id } = req.params;
+            const { imageUrl } = req.body;
+
+            if (!appCustomizations.mostLoved?.products) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Most loved section not found'
+                });
+            }
+
+            const productIndex = appCustomizations.mostLoved.products.findIndex(product => product.id === id);
+
+            if (productIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+            }
+
+            appCustomizations.mostLoved.products[productIndex].imageUrl = imageUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'mostLoved',
+                data: appCustomizations.mostLoved
+            });
+
+            res.json({
+                success: true,
+                message: 'Product image URL updated successfully',
+                data: appCustomizations.mostLoved.products[productIndex]
+            });
+        });
+
+        app.put('/api/customization/mood-look/categories/:categoryId/looks/:lookId/update-url', (req, res) => {
+            const { categoryId, lookId } = req.params;
+            const { imageUrl } = req.body;
+
+            if (!appCustomizations.moodLook?.categories) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Mood look not found'
+                });
+            }
+
+            const categoryIndex = appCustomizations.moodLook.categories.findIndex(category => category.id === categoryId);
+
+            if (categoryIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const lookIndex = appCustomizations.moodLook.categories[categoryIndex].looks.findIndex(look => look.id === lookId);
+
+            if (lookIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Look not found'
+                });
+            }
+
+            appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex].imageUrl = imageUrl;
+            appCustomizations.lastUpdated = new Date().toISOString();
+            saveData(appCustomizations);
+
+            // Broadcast update
+            io.emit('customization:updated', {
+                section: 'moodLook',
+                data: appCustomizations.moodLook
+            });
+
+            res.json({
+                success: true,
+                message: 'Image URL updated successfully',
+                data: appCustomizations.moodLook.categories[categoryIndex].looks[lookIndex]
             });
         });
 
@@ -1371,6 +2184,41 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
         
         // Serve uploaded files
         app.use('/uploads', express.static(uploadsDir));
+
+// Multer error handling middleware
+app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        console.error('Multer error:', err);
+        
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({
+                success: false,
+                message: 'File too large. Maximum size is 100MB.'
+            });
+        }
+        
+        if (err.code === 'LIMIT_FILE_COUNT') {
+            return res.status(400).json({
+                success: false,
+                message: 'Too many files uploaded.'
+            });
+        }
+        
+        if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+            return res.status(400).json({
+                success: false,
+                message: 'Unexpected file field.'
+            });
+        }
+        
+        return res.status(400).json({
+            success: false,
+            message: 'File upload error: ' + err.message
+        });
+    }
+    
+    next(err);
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

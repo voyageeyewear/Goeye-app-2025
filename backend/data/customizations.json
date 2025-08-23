@@ -26,11 +26,18 @@
   "collections": {
     "items": [
       {
-        "id": "collection_1755932030225",
-        "title": "New",
-        "imageUrl": "/uploads/image-1755932035014-511956654.jpg",
+        "id": "collection_1755943425962",
+        "title": "NEw",
+        "imageUrl": "https://goeye.in/cdn/shop/files/Artboard_3_4.png?v=1755705555&width=440",
         "clickUrl": "",
-        "order": 3
+        "order": 1
+      },
+      {
+        "id": "collection_1755944976158",
+        "title": "New 2",
+        "imageUrl": "https://goeye.in/cdn/shop/files/air_banner_1.jpg?v=1750422574&width=440",
+        "clickUrl": "",
+        "order": 2
       }
     ]
   },
@@ -121,37 +128,37 @@
       }
     ]
   },
+  "newArrivals": {
+    "title": "New Arrivals",
+    "subtitle": "Discover our latest products through video",
+    "enabled": true,
+    "products": [
+      {
+        "id": "new_arrival_1",
+        "name": "TITAN",
+        "videoUrl": "/uploads/video-1755944037670-151664445.mp4",
+        "order": 1
+      },
+      {
+        "id": "new_arrival_2",
+        "name": "PHOENIX",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        "order": 2
+      },
+      {
+        "id": "new_arrival_3",
+        "name": "MATRIX",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+        "order": 3
+      }
+    ]
+  },
   "moodLook": {
     "title": "Today's mood",
     "highlight": "Look",
     "subtitle": "Discover every look, for every style",
     "enabled": true,
     "categories": [
-      {
-        "id": "mood_men",
-        "title": "Men",
-        "subtitle": "Explore All",
-        "looks": [
-          {
-            "id": "look_men_1",
-            "name": "CEO Look",
-            "imageUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
-            "order": 1
-          },
-          {
-            "id": "look_men_2",
-            "name": "Casual Wear",
-            "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
-            "order": 2
-          },
-          {
-            "id": "look_men_3",
-            "name": "Athletic Look",
-            "imageUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face",
-            "order": 3
-          }
-        ]
-      },
       {
         "id": "mood_women",
         "title": "Women",
@@ -160,24 +167,142 @@
           {
             "id": "look_women_1",
             "name": "Boss Lady",
-            "imageUrl": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face",
+            "imageUrl": "https://goeye.in/cdn/shop/files/women_2_1_600x600_crop_center.jpg?v=1750832692",
             "order": 1
           },
           {
             "id": "look_women_2",
             "name": "Glam Queen",
-            "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face",
+            "imageUrl": "https://goeye.in/cdn/shop/files/women_1_1_600x600_crop_center.jpg?v=1750832692",
             "order": 2
           },
           {
             "id": "look_women_3",
             "name": "Athletic Look",
-            "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face",
+            "imageUrl": "https://goeye.in/cdn/shop/files/women_3_1_600x600_crop_center.jpg?v=1750832692",
+            "order": 3
+          }
+        ]
+      },
+      {
+        "id": "mood_1755941710685",
+        "title": "Men",
+        "subtitle": "Explore All",
+        "looks": [
+          {
+            "id": "look_1755941731539",
+            "name": "Sunglasses",
+            "imageUrl": "https://goeye.in/cdn/shop/files/men_2_1_600x600_crop_center.jpg?v=1750832692",
+            "order": 1
+          },
+          {
+            "id": "look_1755942095088",
+            "name": "New 2 ",
+            "imageUrl": "https://goeye.in/cdn/shop/files/men_1_1_600x600_crop_center.jpg?v=1750832692",
+            "order": 2
+          },
+          {
+            "id": "look_1755942129086",
+            "name": "New 3 ",
+            "imageUrl": "https://goeye.in/cdn/shop/files/men_3_1_600x600_crop_center.jpg?v=1750832692",
             "order": 3
           }
         ]
       }
     ]
   },
-  "lastUpdated": "2025-08-23T09:09:32.419Z"
+  "mostLoved": {
+    "enabled": true,
+    "title": {
+      "text": "Most Loved",
+      "fontSize": "1.8rem",
+      "fontColor": "#2d3748",
+      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    },
+    "subtitle": {
+      "text": "Customers favourite listed every 15 days",
+      "fontSize": "1rem",
+      "fontColor": "#718096",
+      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    },
+    "showCarouselDots": false,
+    "products": [
+      {
+        "id": "most_loved_1",
+        "name": "DRIP",
+        "description": "Silver wayfarer Eyeglasses",
+        "imageUrl": "https://goeye.in/cdn/shop/files/VICTOR_1200x.png?v=1750679985",
+        "order": 1
+      },
+      {
+        "id": "most_loved_2",
+        "name": "COMMANDER",
+        "description": "Black Frame Sunglasses",
+        "imageUrl": "https://goeye.in/cdn/shop/files/strom_2_1200x.jpg?v=1750679985",
+        "order": 2
+      },
+      {
+        "id": "most_loved_3",
+        "name": "VOYAGE",
+        "description": "Classic Aviator Sunglasses",
+        "imageUrl": "https://goeye.in/cdn/shop/files/PILOT_1_1200x.png?v=1750679985",
+        "order": 3
+      },
+      {
+        "id": "most_loved_4",
+        "name": "ELITE",
+        "description": "Premium Designer Frames",
+        "imageUrl": "https://images.unsplash.com/photo-1556306535-38febf6782e7?w=600&h=800&fit=crop&crop=center",
+        "order": 4
+      },
+      {
+        "id": "most_loved_5",
+        "name": "SPORT",
+        "description": "Athletic Performance Frames",
+        "imageUrl": "https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&h=800&fit=crop&crop=center",
+        "order": 5
+      }
+    ],
+    "autoplay": true,
+    "autoplayInterval": 2000
+  },
+  "exclusive": {
+    "title": "Exclusively at GOEYE",
+    "subtitle": "Get the perfect vision and style",
+    "enabled": true,
+    "borderColor": "#fd7f6f",
+    "products": [
+      {
+        "id": "exclusive_1",
+        "videoUrl": "/uploads/video-1755944518154-570780039.mp4",
+        "order": 1
+      },
+      {
+        "id": "exclusive_2",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "order": 2
+      },
+      {
+        "id": "exclusive_3",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "order": 3
+      },
+      {
+        "id": "exclusive_4",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+        "order": 4
+      },
+      {
+        "id": "exclusive_5",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        "order": 5
+      },
+      {
+        "id": "exclusive_6",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+        "order": 6
+      }
+    ]
+  },
+  "lastUpdated": "2025-08-23T10:29:54.757Z"
 }
