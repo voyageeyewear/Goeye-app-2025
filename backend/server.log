@@ -255,3 +255,23 @@
 ❌ Client disconnected: Bo_xqhgeP_F5mEfsAAAh (transport close)
 🔗 Client connected: _PgC-cHMcfZJNsCEAAAj
 👤 Client authenticated: user123 (customer)
+❌ Client disconnected: _PgC-cHMcfZJNsCEAAAj (transport close)
+🔗 Client connected: 6Ece6TWn1Nbpg1xrAAAl
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: 6Ece6TWn1Nbpg1xrAAAl (transport close)
+🔗 Client connected: DFSLX_Bh857LxtbGAAAn
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: DFSLX_Bh857LxtbGAAAn (transport close)
+🔗 Client connected: wLzhXHxdmB2fgGfSAAAp
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: wLzhXHxdmB2fgGfSAAAp (transport close)
+🔗 Client connected: wspg3ue9iFZTvhEiAAAr
+👤 Client authenticated: user123 (customer)
+❌ Client disconnected: JOxaWb_BkjDxr0xoAAAX (transport close)
+🔗 Client connected: H0VjuzfBihmrvazgAAAt
+👤 Client authenticated: admin123 (admin)
+🔄 SIGTERM received, shutting down gracefully
+🔄 SIGTERM received, shutting down gracefully
+❌ Client disconnected: H0VjuzfBihmrvazgAAAt (transport close)
+❌ Client disconnected: wspg3ue9iFZTvhEiAAAr (forced close)
+✅ Server closed

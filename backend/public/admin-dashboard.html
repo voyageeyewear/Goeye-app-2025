@@ -3022,6 +3022,9 @@
                         <button class="btn btn-primary" onclick="uploadGlassesCategoryImage('${type}', '${category.id}')">
                             📁 Upload Image
                         </button>
+                        <button class="btn btn-info" onclick="uploadGlassesCategoryImageURL('${type}', '${category.id}')">
+                            🔗 Upload Image URL
+                        </button>
                         <button class="btn btn-secondary" onclick="editGlassesCategory('${type}', '${category.id}')">
                             ✏️ Edit
                         </button>
@@ -3173,6 +3176,32 @@
                 }
             };
             input.click();
+        }
+
+        function uploadGlassesCategoryImageURL(type, categoryId) {
+            const imageUrl = prompt('Enter image URL:');
+            if (!imageUrl) return;
+
+            fetch(`/api/customization/glasses/${type}/categories/${categoryId}/image-url`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Image URL updated successfully!', 'success');
+                    loadGlassesData();
+                } else {
+                    showNotification('Error updating image URL: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating image URL:', error);
+                showNotification('Error updating image URL', 'error');
+            });
         }
 
         function handleGlassesImageUpload(file, type, categoryId) {

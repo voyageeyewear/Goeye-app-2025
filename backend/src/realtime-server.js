@@ -866,7 +866,52 @@ app.post('/api/customization/glasses/:type/categories/:id/upload', upload.single
         fileUrl: fileUrl,
         data: appCustomizations.glasses[type].categories[categoryIndex]
     });
+});
+
+app.put('/api/customization/glasses/:type/categories/:id/image-url', (req, res) => {
+    const { type, id } = req.params;
+    const { imageUrl } = req.body;
+
+    if (!imageUrl) {
+        return res.status(400).json({
+            success: false,
+            message: 'Image URL is required'
         });
+    }
+
+    if (!appCustomizations.glasses?.[type]) {
+        return res.status(404).json({
+            success: false,
+            message: 'Glasses type not found'
+        });
+    }
+
+    const categoryIndex = appCustomizations.glasses[type].categories.findIndex(cat => cat.id === id);
+
+    if (categoryIndex === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Category not found'
+        });
+    }
+
+    // Update the image URL
+    appCustomizations.glasses[type].categories[categoryIndex].imageUrl = imageUrl;
+    appCustomizations.lastUpdated = new Date().toISOString();
+    saveData(appCustomizations);
+
+    // Broadcast update
+    io.emit('customization:updated', {
+        section: 'glasses',
+        data: appCustomizations.glasses
+    });
+
+    res.json({
+        success: true,
+        message: 'Image URL updated successfully',
+        data: appCustomizations.glasses[type].categories[categoryIndex]
+    });
+});
         
         // Featured Products API Endpoints
         app.get('/api/customization/featured-products', (req, res) => {

@@ -62,25 +62,25 @@
         {
           "id": "eyeglasses_men",
           "name": "Men",
-          "imageUrl": "/uploads/image-1755933668698-191202982.png",
+          "imageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face",
           "order": 1
         },
         {
           "id": "eyeglasses_women",
           "name": "Women",
-          "imageUrl": "/uploads/image-1755933420390-870864351.jpg",
+          "imageUrl": "https://goeye.in/cdn/shop/files/women.jpg?v=1750675041",
           "order": 2
         },
         {
           "id": "eyeglasses_kids",
           "name": "Kids",
-          "imageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face",
+          "imageUrl": "https://goeye.in/cdn/shop/files/kid-1.jpg?v=1750675041",
           "order": 3
         },
         {
           "id": "eyeglasses_essentials",
           "name": "Essentials",
-          "imageUrl": "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=200&h=200&fit=crop&crop=center",
+          "imageUrl": "https://goeye.in/cdn/shop/files/kid_copy_2.jpg?v=1750675041",
           "order": 4
         }
       ]
@@ -92,25 +92,25 @@
         {
           "id": "sunglasses_men",
           "name": "Men",
-          "imageUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
+          "imageUrl": "https://goeye.in/cdn/shop/files/men_copy.jpg?v=1750675042",
           "order": 1
         },
         {
           "id": "sunglasses_women",
           "name": "Women",
-          "imageUrl": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=face",
+          "imageUrl": "https://goeye.in/cdn/shop/files/women_copy_2.jpg?v=1750675041",
           "order": 2
         },
         {
           "id": "sunglasses_kids",
           "name": "Kids",
-          "imageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=200&h=200&fit=crop&crop=face",
+          "imageUrl": "https://goeye.in/cdn/shop/files/kid.jpg?v=1750675041",
           "order": 3
         },
         {
           "id": "sunglasses_essentials",
           "name": "Essentials",
-          "imageUrl": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=200&fit=crop&crop=center",
+          "imageUrl": "https://goeye.in/cdn/shop/files/kid_copy_3.jpg?v=1750675040",
           "order": 4
         }
       ]
@@ -317,5 +317,5 @@
       }
     ]
   },
-  "lastUpdated": "2025-08-23T12:21:14.869Z"
+  "lastUpdated": "2025-08-24T07:20:32.901Z"
 }
