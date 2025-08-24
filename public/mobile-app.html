@@ -471,7 +471,7 @@
         .product-name {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #111827;
+            color: #ffffff;
             margin: 0 0 4px 0;
         }
 
@@ -2110,10 +2110,10 @@
         }
 
         .product-name {
-            font-size: 1.1rem;
+            font-size: 16px;
             font-weight: 700;
             margin: 0;
-            text-align: center;
+            text-align: left;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             letter-spacing: 1px;
         }
@@ -4664,8 +4664,8 @@
                             }, 200);
                         } else {
                             // Close story when all stories are complete
-                            setTimeout(() => {
-                                closeStory();
+                setTimeout(() => {
+                    closeStory();
                             }, 500);
                         }
                     }
@@ -4728,12 +4728,12 @@
             const storyViewer = document.getElementById('storyViewer');
             
             if (storyViewer) {
-                // Close story when clicking outside
+            // Close story when clicking outside
                 storyViewer.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeStory();
-                    }
-                });
+                if (e.target === this) {
+                    closeStory();
+                }
+            });
 
                 // Pause on touch/mouse down
                 storyViewer.addEventListener('mousedown', pauseStory);
@@ -5159,7 +5159,7 @@
                     break;
             case 'mostLoved':
                 updateMostLovedSection(data.data);
-                break;
+                    break;
                 case 'productDisplay':
                     updateProductDisplay(data.data);
                     break;
@@ -5668,14 +5668,15 @@
                         const overlay = document.createElement('div');
                         overlay.className = 'product-overlay';
                         
-                        const productName = document.createElement('h3');
-                        productName.className = 'product-name';
-                        productName.textContent = product.name || 'Product';
+                        // Product name removed for New Arrivals section - only show video
+                        // const productName = document.createElement('h3');
+                        // productName.className = 'product-name';
+                        // productName.textContent = product.name || 'Product';
                         
                         video.appendChild(source);
                         videoContainer.appendChild(video);
                         videoContainer.appendChild(overlay);
-                        overlay.appendChild(productName);
+                        // overlay.appendChild(productName);
                         productCard.appendChild(videoContainer);
                         
                         carousel.appendChild(productCard);
