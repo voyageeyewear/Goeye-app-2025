@@ -335,6 +335,356 @@
             color: #3b82f6;
         }
 
+        /* Chat Modal Styles */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .chat-modal.active {
+            display: flex;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            gap: 12px;
+        }
+
+        .chat-back-btn, .chat-menu-btn {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .chat-profile-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 12px;
+        }
+
+        .chat-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+        }
+
+        .chat-user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .chat-user-status {
+            color: #28a745;
+            font-size: 14px;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background: white;
+        }
+
+        .chat-date-separator {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .chat-date-separator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .chat-date-separator span {
+            background: white;
+            padding: 0 16px;
+            color: #6c757d;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chat-message {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 16px;
+            gap: 8px;
+            position: relative;
+        }
+
+        .chat-message.received {
+            justify-content: flex-start;
+            flex-direction: row;
+        }
+
+        .chat-message.sent {
+            justify-content: flex-end;
+            flex-direction: column;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .chat-message.sent .message-bubble {
+            background: #313652;
+            color: white;
+        }
+
+        .message-bubble p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+
+
+        .message-time {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .chat-message.received .message-time {
+            text-align: left;
+        }
+
+        .chat-message.sent .message-time {
+            text-align: right;
+        }
+
+        /* Image Message */
+        .image-message {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .image-placeholder {
+            width: 200px;
+            height: 150px;
+            background: #e9ecef;
+            border-radius: 12px;
+        }
+
+        /* Voice Message */
+        .voice-message {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+            max-width: 300px;
+            width: auto;
+            transition: width 0.3s ease;
+            padding: 8px 12px;
+        }
+
+        .voice-play-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #007bff;
+            flex-shrink: 0;
+            min-width: 32px;
+            min-height: 32px;
+        }
+
+        .voice-waveform {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .wave-bar {
+            width: 3px;
+            background: white;
+            border-radius: 2px;
+            margin: 0 1px;
+        }
+
+        .voice-duration {
+            font-size: 14px;
+            color: white;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* Chat Input */
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            gap: 12px;
+        }
+
+        .chat-attach-btn, .chat-mic-btn {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .chat-mic-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .chat-mic-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            padding: 12px 16px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #313652;
+        }
+
+        /* Attachment Menu */
+        .attachment-menu {
+            position: absolute;
+            bottom: 80px;
+            left: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 10001;
+        }
+
+        .attachment-menu.active {
+            display: flex;
+        }
+
+        .attachment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #333;
+        }
+
+        .attachment-option:hover {
+            background: #f8f9fa;
+        }
+
+        .attachment-option svg {
+            color: #007bff;
+        }
+
+        /* Voice Recording Indicator */
+        .voice-recording-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #dc3545;
+            color: white;
+            border-radius: 25px;
+            padding: 16px 24px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .voice-recording-indicator.active {
+            display: flex;
+        }
+
+        .recording-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .recording-icon {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .recording-text {
+            font-weight: 500;
+        }
+
+        .recording-time {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         /* Video Modal Styles - Exact match to image */
         .video-modal {
             position: fixed;
@@ -1680,15 +2030,21 @@
         .story-nav-left {
             flex: 1;
             cursor: pointer;
+            outline: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .story-nav-right {
             flex: 1;
             cursor: pointer;
+            outline: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Story Counter */
-        .story-counter {
+        /* Story Counter - Removed */
+        /* .story-counter {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -1698,7 +2054,7 @@
             border-radius: 12px;
             font-size: 12px;
             z-index: 20;
-        }
+        } */
 
 
 
@@ -1737,12 +2093,26 @@
         }
 
         .story-close {
-            background: none;
+            background: transparent;
             border: none;
             font-size: 24px;
             color: white;
             cursor: pointer;
-            padding: 4px;
+            padding: 8px;
+            border-radius: 50%;
+            z-index: 1000;
+            position: relative;
+            transition: all 0.2s ease;
+            min-width: 40px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
         }
 
         .story-body {
@@ -2710,16 +3080,16 @@
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #e5e7eb;
+            bottom: 10px;
+            left: 20px;
+            right: 20px;
+            background: #1f2937;
+            border-radius: 25px;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 16px 0;
             z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         .nav-item {
@@ -2727,19 +3097,23 @@
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: #6b7280;
+            color: white;
             transition: all 0.2s;
             padding: 8px;
-            border-radius: 8px;
+            border-radius: 50%;
+            position: relative;
         }
 
         .nav-item.active {
-            color: #2563eb;
-            background: #eff6ff;
+            color: #1f2937;
+            background: white;
+            border-radius: 50%;
+            padding: 10px 17px;
+            margin: -4px 0;
         }
 
         .nav-item:hover {
-            color: #2563eb;
+            color: #d1d5db;
             transform: scale(1.05);
         }
 
@@ -3007,8 +3381,8 @@
                 <!-- Progress bars will be dynamically generated -->
             </div>
             
-            <!-- Story Counter -->
-            <div class="story-counter" id="storyCounter">1/3</div>
+            <!-- Story Counter - Removed -->
+            <!-- <div class="story-counter" id="storyCounter">1/3</div> -->
             
 
             
@@ -3019,8 +3393,13 @@
                     <div class="story-profile-name" id="storyProfileName">Eyejack</div>
                     <div class="story-time">2h ago</div>
                 </div>
-                <button class="story-close" onclick="closeStory()">×</button>
+                <button class="story-close" onclick="closeStory()" style="pointer-events: auto !important; position: relative !important; z-index: 99999 !important;">×</button>
             </div>
+            
+            <!-- Invisible close area for easier clicking -->
+            <div onclick="closeStory()" style="position: absolute; top: 0; right: 0; width: 60px; height: 60px; z-index: 999999; cursor: pointer; background: transparent;"></div>
+            
+
             
             <!-- Story Body -->
             <div class="story-body">
@@ -3092,6 +3471,169 @@
                             <polyline points="9,18 15,12 9,6"></polyline>
                         </svg>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <button class="chat-back-btn" onclick="closeChat()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                </button>
+                <div class="chat-profile-info">
+                    <div class="chat-profile-pic"></div>
+                    <div class="chat-user-info">
+                        <div class="chat-user-name">Angie Brekke</div>
+                        <div class="chat-user-status">Online</div>
+                    </div>
+                </div>
+                <button class="chat-menu-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages">
+                <div class="chat-date-separator">
+                    <span>TODAY</span>
+                </div>
+                
+                <!-- Message from Angie (Received) -->
+                <div class="chat-message received">
+                    <div class="message-bubble">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                    <div class="message-time">08:04 pm</div>
+                </div>
+
+                <!-- Message from User (Sent) -->
+                <div class="chat-message sent">
+                    <div class="message-bubble">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                    <div class="message-time">08:04 pm</div>
+                </div>
+
+                <!-- Image message from Angie (Received) -->
+                <div class="chat-message received">
+                    <div class="message-bubble image-message">
+                        <div class="image-placeholder"></div>
+                    </div>
+                    <div class="message-time">08:04 pm</div>
+                </div>
+
+                <!-- Voice message from User (Sent) -->
+                <div class="chat-message sent">
+                    <div class="message-bubble voice-message" style="width: 280px;">
+                        <div class="voice-play-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                                <polygon points="5,3 19,12 5,21"></polygon>
+                            </svg>
+                        </div>
+                        <div class="voice-waveform">
+                            <div class="wave-bar" style="height: 12px;"></div>
+                            <div class="wave-bar" style="height: 18px;"></div>
+                            <div class="wave-bar" style="height: 8px;"></div>
+                            <div class="wave-bar" style="height: 15px;"></div>
+                            <div class="wave-bar" style="height: 10px;"></div>
+                            <div class="wave-bar" style="height: 20px;"></div>
+                            <div class="wave-bar" style="height: 6px;"></div>
+                            <div class="wave-bar" style="height: 14px;"></div>
+                            <div class="wave-bar" style="height: 9px;"></div>
+                            <div class="wave-bar" style="height: 16px;"></div>
+                            <div class="wave-bar" style="height: 11px;"></div>
+                            <div class="wave-bar" style="height: 7px;"></div>
+                            <div class="wave-bar" style="height: 13px;"></div>
+                        </div>
+                        <div class="voice-duration">• 0:13</div>
+                    </div>
+                    <div class="message-time">08:04 pm</div>
+                </div>
+
+                <!-- Text message from User (Sent) -->
+                <div class="chat-message sent">
+                    <div class="message-bubble">
+                        <p>Hii</p>
+                    </div>
+                    <div class="message-time">11:13</div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <button class="chat-attach-btn" onclick="openAttachmentMenu()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <input type="text" class="chat-input" placeholder="Type message..." onkeypress="handleChatInput(event)" oninput="handleInputChange(event)">
+                <button class="chat-mic-btn" id="sendButton" onclick="handleSendButtonClick()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="micIcon">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="sendIcon" style="display: none;">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Attachment Menu -->
+            <div id="attachmentMenu" class="attachment-menu">
+                <div class="attachment-option" onclick="attachImage()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21,15 16,10 5,21"></polyline>
+                    </svg>
+                    <span>Photo</span>
+                </div>
+                <div class="attachment-option" onclick="attachCamera()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Camera</span>
+                </div>
+                <div class="attachment-option" onclick="attachDocument()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14,2 14,8 20,8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10,9 9,9 8,9"></polyline>
+                    </svg>
+                    <span>Document</span>
+                </div>
+            </div>
+            
+            <!-- Voice Recording Indicator -->
+            <div id="voiceRecordingIndicator" class="voice-recording-indicator">
+                <div class="recording-content">
+                    <div class="recording-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </div>
+                    <div class="recording-text">Recording... Tap to stop</div>
+                    <div class="recording-time">0:00</div>
                 </div>
             </div>
         </div>
@@ -3872,34 +4414,48 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
+        <a href="#" class="nav-item">
             <div class="nav-icon">
-                <svg class="svg-icon nav-svg" viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                <svg class="svg-icon nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
                 </svg>
             </div>
             <div class="nav-label">Home</div>
         </a>
         <a href="#" class="nav-item">
             <div class="nav-icon">
-                <svg class="svg-icon nav-svg" viewBox="0 0 24 24">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                <svg class="svg-icon nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    <circle cx="10" cy="10" r="3"/>
                 </svg>
             </div>
-            <div class="nav-label">Search</div>
+            <div class="nav-label">Shop</div>
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon">
+                <svg class="svg-icon nav-svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </div>
+            <div class="nav-label">Loved</div>
+        </a>
+        <a href="#" class="nav-item" onclick="openChat()">
+            <div class="nav-icon">
+                <svg class="svg-icon nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="12" r="1"/>
+                    <circle cx="16" cy="12" r="1"/>
+                    <circle cx="8" cy="12" r="1"/>
+                </svg>
+            </div>
+            <div class="nav-label">Chat</div>
         </a>
         <a href="#" class="nav-item">
             <div class="nav-icon">
-                <svg class="svg-icon nav-svg" viewBox="0 0 24 24">
-                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-            </div>
-            <div class="nav-label">Cart</div>
-        </a>
-        <a href="#" class="nav-item">
-            <div class="nav-icon">
-                <svg class="svg-icon nav-svg" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                <svg class="svg-icon nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
                 </svg>
             </div>
             <div class="nav-label">Profile</div>
@@ -3953,6 +4509,323 @@
             console.log('Selected brand:', brand);
             alert(`You selected ${brand === 'voyage' ? 'Voyage Eyewear' : 'Eyejack Eyewear'}`);
             closeBrandModal();
+        }
+
+        // Chat Modal Functions
+        window.openChat = function() {
+            console.log('Opening chat modal');
+            const chatModal = document.getElementById('chatModal');
+            if (chatModal) {
+                chatModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('Chat modal opened successfully');
+            } else {
+                console.error('Chat modal element not found');
+            }
+        }
+
+        window.closeChat = function() {
+            console.log('Closing chat modal');
+            const chatModal = document.getElementById('chatModal');
+            if (chatModal) {
+                chatModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                console.log('Chat modal closed successfully');
+            }
+        }
+
+        // Chat Input Functions
+        let isRecording = false;
+        let recordingTimer = null;
+        let recordingStartTime = null;
+
+        window.openAttachmentMenu = function() {
+            const attachmentMenu = document.getElementById('attachmentMenu');
+            if (attachmentMenu) {
+                attachmentMenu.classList.toggle('active');
+                console.log('Attachment menu toggled');
+            }
+        }
+
+        window.attachImage = function() {
+            console.log('Attaching image...');
+            // Create file input for image
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    console.log('Image selected:', file.name);
+                    addImageMessage(file);
+                }
+            };
+            input.click();
+            closeAttachmentMenu();
+        }
+
+        window.attachCamera = function() {
+            console.log('Opening camera...');
+            // Create file input for camera
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.capture = 'camera';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    console.log('Photo taken:', file.name);
+                    addImageMessage(file);
+                }
+            };
+            input.click();
+            closeAttachmentMenu();
+        }
+
+        window.attachDocument = function() {
+            console.log('Attaching document...');
+            // Create file input for documents
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf,.doc,.docx,.txt';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    console.log('Document selected:', file.name);
+                    addDocumentMessage(file);
+                }
+            };
+            input.click();
+            closeAttachmentMenu();
+        }
+
+        function closeAttachmentMenu() {
+            const attachmentMenu = document.getElementById('attachmentMenu');
+            if (attachmentMenu) {
+                attachmentMenu.classList.remove('active');
+            }
+        }
+
+        window.handleChatInput = function(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const message = input.value.trim();
+                if (message) {
+                    addTextMessage(message);
+                    input.value = '';
+                    updateSendButton(); // Update button state after sending
+                }
+            }
+        }
+
+        window.handleInputChange = function(event) {
+            updateSendButton();
+        }
+
+        function updateSendButton() {
+            const input = document.querySelector('.chat-input');
+            const micIcon = document.getElementById('micIcon');
+            const sendIcon = document.getElementById('sendIcon');
+            const sendButton = document.getElementById('sendButton');
+            
+            if (input && micIcon && sendIcon && sendButton) {
+                const hasText = input.value.trim().length > 0;
+                
+                if (hasText) {
+                    // Show send icon, hide mic icon
+                    micIcon.style.display = 'none';
+                    sendIcon.style.display = 'block';
+                    sendButton.style.background = '#313652'; // Active color
+                    sendButton.style.color = 'white';
+                } else {
+                    // Show mic icon, hide send icon
+                    micIcon.style.display = 'block';
+                    sendIcon.style.display = 'none';
+                    sendButton.style.background = '#6c757d'; // Default color
+                    sendButton.style.color = 'white';
+                }
+            }
+        }
+
+        window.handleSendButtonClick = function() {
+            const input = document.querySelector('.chat-input');
+            const hasText = input.value.trim().length > 0;
+            
+            if (hasText) {
+                // Send message
+                const message = input.value.trim();
+                addTextMessage(message);
+                input.value = '';
+                updateSendButton();
+            } else {
+                // Start voice recording
+                startVoiceRecording();
+            }
+        }
+
+        window.startVoiceRecording = function() {
+            if (!isRecording) {
+                isRecording = true;
+                recordingStartTime = Date.now();
+                
+                // Show recording indicator
+                const indicator = document.getElementById('voiceRecordingIndicator');
+                if (indicator) {
+                    indicator.classList.add('active');
+                }
+                
+                // Start timer
+                recordingTimer = setInterval(updateRecordingTime, 1000);
+                
+                console.log('Voice recording started');
+                
+                // Add click listener to stop recording
+                indicator.addEventListener('click', stopVoiceRecording);
+            }
+        }
+
+        function stopVoiceRecording() {
+            if (isRecording) {
+                isRecording = false;
+                
+                // Hide recording indicator
+                const indicator = document.getElementById('voiceRecordingIndicator');
+                if (indicator) {
+                    indicator.classList.remove('active');
+                }
+                
+                // Stop timer
+                if (recordingTimer) {
+                    clearInterval(recordingTimer);
+                    recordingTimer = null;
+                }
+                
+                // Calculate duration
+                const duration = Math.floor((Date.now() - recordingStartTime) / 1000);
+                console.log('Voice recording stopped, duration:', duration + 's');
+                
+                // Add voice message
+                addVoiceMessage(duration);
+            }
+        }
+
+        function updateRecordingTime() {
+            if (isRecording && recordingStartTime) {
+                const duration = Math.floor((Date.now() - recordingStartTime) / 1000);
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                const timeElement = document.querySelector('.recording-time');
+                if (timeElement) {
+                    timeElement.textContent = timeString;
+                }
+            }
+        }
+
+        function addTextMessage(text) {
+            const messagesContainer = document.querySelector('.chat-messages');
+            if (messagesContainer) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">
+                        <p>${text}</p>
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                `;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                console.log('Text message added:', text);
+            }
+        }
+
+        function addImageMessage(file) {
+            const messagesContainer = document.querySelector('.chat-messages');
+            if (messagesContainer) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'chat-message sent';
+                    messageDiv.innerHTML = `
+                        <div class="message-bubble image-message">
+                            <img src="${e.target.result}" style="width: 200px; height: 150px; object-fit: cover; border-radius: 12px;">
+                        </div>
+                        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                    `;
+                    messagesContainer.appendChild(messageDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    console.log('Image message added');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addDocumentMessage(file) {
+            const messagesContainer = document.querySelector('.chat-messages');
+            if (messagesContainer) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,8 20,8"></polyline>
+                            </svg>
+                            <span>${file.name}</span>
+                        </div>
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                `;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                console.log('Document message added:', file.name);
+            }
+        }
+
+        function addVoiceMessage(duration) {
+            const messagesContainer = document.querySelector('.chat-messages');
+            if (messagesContainer) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Calculate width based on duration
+                const baseWidth = 120; // Minimum width
+                const widthPerSecond = 12; // Width increase per second
+                const calculatedWidth = Math.min(baseWidth + (duration * widthPerSecond), 300); // Max 300px
+                
+                // Generate wave bars based on duration
+                const waveBarCount = Math.max(5, Math.min(duration * 2, 20)); // 2 bars per second, min 5, max 20
+                let waveBarsHTML = '';
+                
+                for (let i = 0; i < waveBarCount; i++) {
+                    // Generate random height between 4px and 20px
+                    const height = Math.floor(Math.random() * 16) + 4;
+                    waveBarsHTML += `<div class="wave-bar" style="height: ${height}px;"></div>`;
+                }
+                
+                messageDiv.innerHTML = `
+                    <div class="message-bubble voice-message" style="width: ${calculatedWidth}px;">
+                        <div class="voice-play-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                                <polygon points="5,3 19,12 5,21"></polygon>
+                            </svg>
+                        </div>
+                        <div class="voice-waveform">
+                            ${waveBarsHTML}
+                        </div>
+                        <div class="voice-duration">• ${timeString}</div>
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                `;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                console.log('Voice message added, duration:', timeString, 'width:', calculatedWidth + 'px', 'wave bars:', waveBarCount);
+            }
         }
 
         // Add click event listeners to glasses category cards with better error handling
@@ -4515,7 +5388,7 @@
             });
 
             // Story viewer functions
-            function openStory(category) {
+            window.openStory = function(category) {
                 const story = storyData[category];
                 if (!story) {
                     console.error('No story data found for category:', category);
@@ -4551,6 +5424,9 @@
 
                 // Load first story
                 loadStory(0);
+                
+                // Add close button listener after story is shown
+                setTimeout(addCloseButtonListener, 100);
             }
 
             function generateProgressBars(storyCount) {
@@ -4588,7 +5464,7 @@
                 const storyContent = document.getElementById('storyContent');
                 const storyTitle = document.getElementById('storyTitle');
                 const storyDescription = document.getElementById('storyDescription');
-                const storyCounter = document.getElementById('storyCounter');
+                // const storyCounter = document.getElementById('storyCounter'); // Removed story counter
                 const viewProductBtn = document.querySelector('.view-product-btn');
 
                 console.log('Loading story', storyIndex, ':', story.title);
@@ -4601,8 +5477,8 @@
                 // Set background image
                 storyContent.style.backgroundImage = `url(${story.backgroundImage})`;
 
-                // Update counter
-                storyCounter.textContent = `${storyIndex + 1}/${currentStoryData.stories.length}`;
+                // Update counter - Removed
+                // storyCounter.textContent = `${storyIndex + 1}/${currentStoryData.stories.length}`;
 
                 // Reset all progress bars
                 const progressBars = document.querySelectorAll('.story-progress-fill');
@@ -4673,7 +5549,14 @@
             }
 
             window.closeStory = function() {
+                console.log('closeStory function called');
+                
                 const storyViewer = document.getElementById('storyViewer');
+                
+                if (!storyViewer) {
+                    console.error('Story viewer element not found');
+                    return;
+                }
                 
                 // Clear progress interval
                 if (storyProgressInterval) {
@@ -4686,7 +5569,10 @@
                 isStoryPaused = false;
                 
                 storyViewer.classList.remove('active');
+                console.log('Story closed successfully');
             };
+            
+
 
             // Pause story when user touches/holds
             function pauseStory() {
@@ -4747,6 +5633,38 @@
                 storyViewer.addEventListener('mouseleave', resumeStory);
             } else {
                 console.error('Story viewer element not found!');
+            }
+
+            // Add event listener to close button as backup
+            document.addEventListener('DOMContentLoaded', function() {
+                const closeButton = document.querySelector('.story-close');
+                if (closeButton) {
+                    closeButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Close button clicked via event listener');
+                        closeStory();
+                    });
+                }
+            });
+            
+            // Alternative approach - add listener after story opens
+            function addCloseButtonListener() {
+                const closeButton = document.querySelector('.story-close');
+                if (closeButton) {
+                    // Remove any existing listeners
+                    closeButton.removeEventListener('click', handleCloseClick);
+                    // Add new listener
+                    closeButton.addEventListener('click', handleCloseClick);
+                    console.log('Close button listener added');
+                }
+            }
+            
+            function handleCloseClick(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Close button clicked via handleCloseClick');
+                closeStory();
             }
 
 
@@ -5195,18 +6113,16 @@
                 position: fixed;
                 top: 10px;
                 right: 10px;
-                padding: 8px 12px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 600;
+                padding: 6px;
+                border-radius: 50%;
                 z-index: 10000;
                 display: flex;
                 align-items: center;
-                gap: 6px;
+                justify-content: center;
                 transition: all 0.3s ease;
                 ${connected ? 
-                    'background: #10b981; color: white;' : 
-                    'background: #ef4444; color: white;'
+                    'background: #10b981;' : 
+                    'background: #ef4444;'
                 }
             `;
 
@@ -5219,8 +6135,9 @@
                 ${connected ? 'animation: pulse 2s infinite;' : ''}
             `;
 
+            // Removed Live/Offline text - only show the dot indicator
             statusDiv.appendChild(dot);
-            statusDiv.appendChild(document.createTextNode(connected ? 'Live' : 'Offline'));
+            // statusDiv.appendChild(document.createTextNode(connected ? 'Live' : 'Offline'));
             document.body.appendChild(statusDiv);
 
             // Auto-hide after 3 seconds if connected
